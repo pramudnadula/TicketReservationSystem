@@ -1,15 +1,26 @@
-import Layout from "../../Partials/Layout";
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import InputComponent from "../../helpers/InputComponent";
 
 export default function Signup() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState(" ");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Submitted");
+    console.log(firstName, lastName, email, password);
+
+  }
+
 
   return (
-    <Layout childrenClasses="pt-0 pb-0">
-      <div className="title-area flex flex-col justify-center items-center relative text-center mb-7">
-        <h1 className="text-[34px] font-bold leading-[74px] text-qblack">
-          Create Account
-        </h1>
-        <div className="shape -mt-6">
+    <div className="container my-5">
+      <div className="text-center mb-5">
+        <h1 className="display-4">Create User</h1>
+        <div className="shape">
           <svg
             width="172"
             height="29"
@@ -23,24 +34,60 @@ export default function Signup() {
             />
           </svg>
         </div>
-        <div className="w-[350px]">
-          <div className="flex flex-col w-full mt-5 gap-4">
-            <input placeholder="Email Address" label="Email Address*" name="email" type="email"
-              className="input-field placeholder:text-sm text-sm px-6 py-4 text-dark-gray w-full h-full font-normal bg-white focus:ring-0 focus:outline-none"
+      </div>
+      <div className="w-50 mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <InputComponent
+              label="First Name"
+              name="firstName"
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              inputHandler={setFirstName}
             />
-            <input placeholder="Password" label="Password*" name="password" type="password"
-              className="input-field placeholder:text-sm text-sm px-6 py-4 text-dark-gray w-full h-full font-normal bg-white focus:ring-0 focus:outline-none"
+          </div>
+          <div className="mb-3">
+            <InputComponent
+              label="Last Name"
+              name="lastName"
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              inputHandler={setLastName}
+            />
+          </div>
+          <div className="mb-3">
+            <InputComponent
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              inputHandler={setEmail}
+            />
+          </div>
+          <div className="mb-3">
+            <InputComponent
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={password}
+              inputHandler={setPassword}
             />
           </div>
 
-        </div>
-        <button
-          type="button"
-          className="text-lg px-6 py-4 text-black w-full h-full font-normal bg-qred focus:ring-0 focus:outline-none"
-        >
-          Create
-        </button>
+          <div className="d-flex justify-content-between align-items-center">
+            <button type="submit" className="btn btn-primary">
+              Create User
+            </button>
+            <Link className="btn btn-link" to="/login">
+              Log In
+            </Link>
+          </div>
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 }

@@ -1,15 +1,23 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Layout from "../../Partials/Layout";
+import InputComponent from "../../helpers/InputComponent";
 
 export default function Login() {
+  const [email, setEmail] = useState(" ");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Submitted");
+    console.log(email, password);
+
+  }
 
   return (
-    <Layout childrenClasses="pt-0 pb-0">
-      <div className="title-area flex flex-col justify-center items-center relative text-center mb-7">
-        <h1 className="text-[34px] font-bold leading-[74px] text-qblack">
-          Log In
-        </h1>
-        <div className="shape -mt-6">
+    <div className="container my-5">
+      <div className="text-center mb-5">
+        <h1 className="display-4">Log In</h1>
+        <div className="shape">
           <svg
             width="172"
             height="29"
@@ -23,32 +31,40 @@ export default function Login() {
             />
           </svg>
         </div>
-        <div className="w-[350px]">
-          <div className="flex flex-col w-full mt-5 gap-4">
-            <input placeholder="Email Address" label="Email Address*" name="email" type="email"
-              className="input-field placeholder:text-sm text-sm px-6 py-4 text-dark-gray w-full h-full font-normal bg-white focus:ring-0 focus:outline-none"
-            />
-            <input placeholder="Password" label="Password*" name="password" type="password"
-              className="input-field placeholder:text-sm text-sm px-6 py-4 text-dark-gray w-full h-full font-normal bg-white focus:ring-0 focus:outline-none"
-            />
-          </div>
-          <div className="flex items-center justify-between gap-5 w-full mt-5">
-            <div className="flex items-center">
-              <input type="checkbox" id="remember" name="remember" value="remember" />
-              <label className="ml-2" htmlFor="remember">Remember me</label>
-            </div>
-            <div className="flex items-center">
-              <Link className="text-black text-sm font-600" to="/signup">Create Account</Link>
-            </div>
-          </div>
-        </div>
-        <button
-          type="button"
-          className="text-lg px-6 py-4 text-black w-full h-full font-normal bg-qred focus:ring-0 focus:outline-none"
-        >
-          Log In
-        </button>
       </div>
-    </Layout>
+      <div className="w-50 mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <InputComponent
+              label="Email Address"
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              inputHandler={setEmail}
+            />
+          </div>
+          <div className="mb-3">
+            <InputComponent
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={password}
+              inputHandler={setPassword}
+            />
+          </div>
+
+          <div className="d-flex justify-content-between align-items-center">
+            <button type="submit" className="btn btn-primary">
+              Log In
+            </button>
+            <Link className="btn btn-link" to="/signup">
+              Create Account
+            </Link>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
