@@ -1,25 +1,34 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
-import InputComponent from "../../helpers/InputComponent";
-import Layout from "../../Partials/Layout";
+import { Link, useNavigate } from "react-router-dom";
+import InputComponent from "../helpers/InputComponent";
+import Layout from "../Partials/Layout";
 
-export default function Signup() {
+export default function UserCreation() {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Submitted");
     console.log(firstName, lastName, email, password);
-
+    navigate("/user-list");
   }
-
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
-      <div className="container-xxl my-5">
+      <div className="container-xxl my-2">
+        <Link to="/user-list">
+          <button type="button" className="btn btn-primary float-end">
+            User List
+          </button>
+        </Link>
+        <br />
+      </div>
+      <div className="container-xxl my-2">
         <div className="text-center mb-5">
           <h1 className="display-4">Create User</h1>
           <div className="shape">
@@ -78,6 +87,24 @@ export default function Signup() {
                 value={password}
                 inputHandler={setPassword}
               />
+            </div>
+            {/* user role Travel Agent and  Backoffice  */}
+            <div className="mb-3">
+              <label htmlFor="role" className="form-label">
+                Role
+              </label>
+              <select
+                className="form-select"
+                name="role"
+                id="role"
+                value={role}
+                onBlur={(e) => setRole(e.target.value)}
+              >
+
+                <option value="">Select Role</option>
+                <option value="Travel Agent">Travel Agent</option>
+                <option value="Backoffice">Backoffice</option>
+              </select>
             </div>
 
             <div className="d-flex justify-content-between align-items-center">

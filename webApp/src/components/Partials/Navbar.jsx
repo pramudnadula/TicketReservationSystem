@@ -39,13 +39,13 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            <Link className="nav-link" to="/signup">
-              <li className={`nav-item ${isActive("/signup") ? "active text-white font-weight-bold" : ""}`}>
-                Create Admin Account
+            <Link className="nav-link" to="/user-creation">
+              <li className={`nav-item ${isActive("/user-creation") ? "active text-white font-weight-bold" : ""}`}>
+                User Creation
               </li>
             </Link>
             <li className="nav-item">
-              <button type="button" onClick={signOut} className="nav-link btn btn-link text-black">
+              <button type="button" onClick={signOut} className="nav-link btn btn-link">
                 Sign Out
               </button>
             </li>
