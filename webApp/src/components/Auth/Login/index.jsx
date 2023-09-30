@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InputComponent from "../../helpers/InputComponent";
 
 export default function Login() {
@@ -61,9 +61,6 @@ export default function Login() {
             <button type="submit" className="btn btn-primary">
               Log In
             </button>
-            <Link className="btn btn-link" to="/signup">
-              Create Account
-            </Link>
           </div>
         </form>
       </div>

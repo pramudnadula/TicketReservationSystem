@@ -1,18 +1,22 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const signOut = () => {
     localStorage.clear();
     navigate("/login");
   }
 
+  // Define a function to check if a given path matches the current location
+  const isActive = (path) => location.pathname === path
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-warning">
-      <div className="container">
-        <Link className="navbar-brand" to="/">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/home">
           <img
             src={`${process.env.PUBLIC_URL}/android-chrome-512x512.png`}
             width="36"
@@ -35,13 +39,13 @@ export default function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
+            <Link className="nav-link" to="/signup">
+              <li className={`nav-item ${isActive("/signup") ? "active text-white font-weight-bold" : ""}`}>
+                Create Admin Account
+              </li>
+            </Link>
             <li className="nav-item">
-              <Link className="nav-link" to="/blogs">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <button type="button" onClick={signOut} className="nav-link btn btn-link text-dark font-weight-bold">
+              <button type="button" onClick={signOut} className="nav-link btn btn-link text-black">
                 Sign Out
               </button>
             </li>
