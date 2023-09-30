@@ -54,6 +54,14 @@ namespace TicketReservationSystem.Service
         {
             _user.ReplaceOne(user => user.Id == id, user);
         }
+
+        // update user active status    void UpdateActiveStatus(String id, bool active);  public String Role { get; set; } = String.Empty;  [BsonElement("active")]
+        public void UpdateActiveStatus(string id, bool active)
+        {
+            var filter = Builders<User>.Filter.Eq("Id", id);
+            var update = Builders<User>.Update.Set("Active", active);
+            _user.UpdateOne(filter, update);
+        }
     }
 
 }

@@ -21,5 +21,7 @@ namespace TicketReservationSystem.Service
         void Update(String id, User user);
         // remove user using id
         void Remove(String id);
+        // update active status
+        void UpdateActiveStatus(String id, bool active);
     }
 }

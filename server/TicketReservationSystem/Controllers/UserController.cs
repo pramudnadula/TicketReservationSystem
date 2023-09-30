@@ -123,5 +123,21 @@ namespace TicketReservationSystem.Controllers
 
             return Ok($"Student with id = {id} deleted");
         }
+
+        //UPDATE active status
+        [HttpPut("active/{id}")]
+        public ActionResult UpdateActiveStatus(String id, [FromBody] User user)
+        {
+            var existingUser = userService.Get(id);
+
+            if (existingUser == null)
+            {
+                return NotFound($"Student with id = {id} not found");
+            }
+
+            userService.UpdateActiveStatus(id, user.Active);
+
+            return NoContent();
+        }
     }
 }
