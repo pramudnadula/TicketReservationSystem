@@ -1,42 +1,53 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+export default function Navbar() {
+  const navigate = useNavigate();
 
-export default function Navbar({ className, type }) {
+  const signOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  }
 
   return (
-    <div
-      className={`nav-widget-wrapper w-full  h-[60px] relative z-30 ${type === 3 ? 'bg-qh3-blue' : 'bg-qyellow'}  ${className || ""
-        }`}
-    >
-      <div className="container-x mx-auto h-full">
-        <div className="w-full h-full relative">
-          <div className="w-full h-full flex justify-between items-center">
-            <div className="category-and-nav flex xl:space-x-7 space-x-3 items-center">
-
-              <div className="nav">
-                <ul className="nav-wrapper flex xl:space-x-10 space-x-5">
-
-                  <li>
-                    <Link to="/blogs">
-                      <span className={`flex items-center text-sm font-600 cursor-pointer ${type === 3 ? 'text-white' : 'text-qblacktext'}`}>
-                        <span>Blog</span>
-                      </span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/contact">
-                      <span className={`flex items-center text-sm font-600 cursor-pointer ${type === 3 ? 'text-white' : 'text-qblacktext'}`}>
-                        <span>Contact</span>
-                      </span>
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-          </div>
+    <nav className="navbar navbar-expand-lg navbar-light bg-warning">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          <img
+            src={`${process.env.PUBLIC_URL}/android-chrome-512x512.png`}
+            width="36"
+            height="36"
+            alt="country logo"
+            className="overflow-hidden rounded-full mr-2"
+          />
+          Ticket Reservation System
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/blogs">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <button type="button" onClick={signOut} className="nav-link btn btn-link text-dark font-weight-bold">
+                Sign Out
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
