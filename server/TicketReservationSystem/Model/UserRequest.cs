@@ -7,12 +7,14 @@ namespace TicketReservationSystem.Model
     public class UserRequest
     {
         public String Username { get; set; } = String.Empty;
-     
+
         public String Email { get; set; } = String.Empty;
-        
+
         public String Password { get; set; } = String.Empty;
 
         public String Role { get; set; } = String.Empty;
+
+        public bool Active { get; set; } = false;
 
 
     }

@@ -20,5 +20,7 @@ namespace TicketReservationSystem.Model
         public byte[]? PasswordKey { get; set; }
         [BsonElement("role")]
         public String Role { get; set; } = String.Empty;
+        [BsonElement("active")]
+        public bool Active { get; set; } = false;
     }
 }

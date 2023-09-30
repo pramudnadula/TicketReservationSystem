@@ -42,7 +42,7 @@ namespace TicketReservationSystem.Controllers
             {
                 return NotFound($"user with id = {id} not found");
             }
-            
+
             return user;
         }
 
@@ -62,9 +62,10 @@ namespace TicketReservationSystem.Controllers
             user.Password = passwordHash;
             user.PasswordKey = passwordKey;
             user.Role = request.Role;
+            user.Active = request.Active;
 
             userService.Create(user);
-            return  CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
 
         //POST login api 
@@ -87,7 +88,7 @@ namespace TicketReservationSystem.Controllers
             {
                 return NotFound("Your username or password is wrong");
             }
-            
+
             return Ok(existingUser);
         }
 
