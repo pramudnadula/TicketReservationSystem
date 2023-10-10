@@ -15,8 +15,8 @@ namespace TicketReservationSystem.Service
         User Get(String id);
         // create user
         User Create(User user);
-        // get user using username
-        User GetUserByUsername(string username);
+        // get user using Email
+        User GetUserByEmail(string email);
         // update user using id
         void Update(String id, User user);
         // remove user using id

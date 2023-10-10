@@ -72,21 +72,21 @@ namespace TicketReservationSystem.Controllers
         [HttpPost("login")]
         public ActionResult<User> Login([FromBody] UserRequest request)
         {
-            if (request.Username == null || request.Password == null)
+            if (request.Email == null || request.Password == null)
             {
                 return BadRequest("Fail to login");
             }
-            var existingUser = userService.GetUserByUsername(request.Username);
+            var existingUser = userService.GetUserByEmail(request.Email);
 
             if (existingUser == null)
             {
-                return NotFound($"user with username = {request.Username} not found");
+                return NotFound($"user with email = {request.Email} not found");
             }
             bool verification = authService.VerifyPassword(request.Password, existingUser.Password, existingUser.PasswordKey);
 
             if (!verification)
             {
-                return NotFound("Your username or password is wrong");
+                return NotFound("Your email or password is wrong");
             }
 
             return Ok(existingUser);

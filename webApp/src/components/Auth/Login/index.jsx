@@ -5,18 +5,18 @@ import InputComponent from "../../helpers/InputComponent";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [username, setUserName] = useState("string");
+  const [email, setEmail] = useState("string@gmail.com");
   const [password, setPassword] = useState("string");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       console.log("Form Submitted");
-      console.log(username, password);
+      console.log(email, password);
 
       const rest = await axios.post('https://localhost:7104/api/User/login',
         {
-          username,
+          email,
           password
         }
       )
@@ -52,12 +52,12 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <InputComponent
-              label="User Name"
-              name="username"
-              type="text"
+              label="Email Address"
+              name="email"
+              type="email"
               placeholder="Email Address"
-              value={username}
-              inputHandler={setUserName}
+              value={email}
+              inputHandler={setEmail}
             />
           </div>
           <div className="mb-3">

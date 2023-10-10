@@ -31,10 +31,10 @@ namespace TicketReservationSystem.Service
             return _user.Find(user => user.Id == id).FirstOrDefault();
         }
 
-        // get user using username
-        public User GetUserByUsername(string username)
+        // get user using Email
+        public User GetUserByEmail(string email)
         {
-            return _user.Find(user => user.Username == username).FirstOrDefault();
+            return _user.Find(user => user.Email == email).FirstOrDefault();
         }
 
         // get all user in the collection
