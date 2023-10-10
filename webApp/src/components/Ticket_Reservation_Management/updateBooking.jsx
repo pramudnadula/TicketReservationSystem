@@ -44,7 +44,7 @@ export default function UpdateBooking() {
                         >
                             <path
                                 d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
-                                stroke="#FFBB38"
+                                stroke="#D5C0ED"
                             />
                         </svg>
                     </div>

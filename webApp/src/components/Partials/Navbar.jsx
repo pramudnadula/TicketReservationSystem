@@ -14,7 +14,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-warning">
+    <nav className="navbar navbar-expand-lg navbar-light bg-color">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/home">
           <img
