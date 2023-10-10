@@ -13,6 +13,9 @@
 
         // get the user collection name
         string UserCollectionName { get; set; }
+
+        // get the train collection name
+        string TrainCollectionName { get; set; }
           
 
 

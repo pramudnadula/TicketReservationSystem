@@ -14,6 +14,10 @@
         // get the user collection name
         public string UserCollectionName { get; set; } = String.Empty;
 
+          // get the Train collection name
+        public string TrainCollectionName { get; set; } = String.Empty;
+
+
     }
 
     }
