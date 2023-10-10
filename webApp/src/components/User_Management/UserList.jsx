@@ -1,34 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
+import axios from 'axios'
 
 export default function UserList() {
+    const [members, setMembers] = useState([]);
     const navigate = useNavigate();
-    const userList = [
-        { id: 1, name: "John Doe", email: "john@example.com", active: true },
-        { id: 2, name: "Jane Doe", email: "jane@example.com", active: false },
-        // Add more users as needed
-    ];
+
+    useEffect(() => {
+        async function loadMembers() {
+            try {
+                const response = await axios.get("https://localhost:7104/api/User");
+                setMembers(response.data);
+            } catch (error) {
+                console.error("Error loading members:", error);
+            }
+        }
+        loadMembers();
+    }, []);
 
     const handleEdit = (id) => {
-        // Implement edit logic
         console.log(`Edit user with ID ${id}`);
         navigate(`/user-update/${id}`);
     };
 
     const handleDelete = (id) => {
-        // Implement delete logic
         console.log(`Delete user with ID ${id}`);
+        // Implement delete logic here
     };
 
     const handleActivate = (id) => {
-        // Implement activate logic
         console.log(`Activate user with ID ${id}`);
+        // Implement activate logic here
     };
 
     const handleDeactivate = (id) => {
-        // Implement deactivate logic
         console.log(`Deactivate user with ID ${id}`);
+        // Implement deactivate logic here
     };
 
     return (
@@ -63,38 +71,38 @@ export default function UserList() {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                               
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {userList.map((user) => (
-                                <tr key={user.id}>
-                                    <th scope="row">{user.id}</th>
-                                    <td>{user.name}</td>
-                                    <td>{user.email}</td>
+                            {members.map((member) => (
+                                <tr key={member.id}>
+                                    <th scope="row">{member.username}</th>
+                                    <td>{member.email}</td>
+                                   
                                     <td>
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-info mx-1"
-                                            onClick={() => handleEdit(user.id)}
+                                            onClick={() => handleEdit(member.id)}
                                         >
                                             Edit
                                         </button>
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger mx-1"
-                                            onClick={() => handleDelete(user.id)}
+                                            onClick={() => handleDelete(member.id)}
                                         >
                                             Delete
                                         </button>
-                                        {user.active ? (
+                                        {member.active ? (
                                             <button
                                                 type="button"
                                                 className="btn btn-sm btn-warning mx-1"
-                                                onClick={() => handleDeactivate(user.id)}
+                                                onClick={() => handleDeactivate(member.id)}
                                             >
                                                 Deactivate
                                             </button>
@@ -102,7 +110,7 @@ export default function UserList() {
                                             <button
                                                 type="button"
                                                 className="btn btn-sm btn-success mx-1"
-                                                onClick={() => handleActivate(user.id)}
+                                                onClick={() => handleActivate(member.id)}
                                             >
                                                 Activate
                                             </button>
