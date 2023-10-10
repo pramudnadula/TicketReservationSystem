@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../Partials/Layout";
-import { Link } from "react-router-dom";
-import axios from 'axios'
-
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Layout from '../Partials/Layout';
 
 export default function TrainDetails() {
-
   const [trains, setTrains] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     async function loadTrains() {
-        try {
-            const response = await axios.get("https://localhost:7104/api/Train");
-            setTrains(response.data);
-        } catch (error) {
-            console.error("Error loading train details:", error);
-        }
+      try {
+        const response = await axios.get('https://localhost:7104/api/Train');
+        setTrains(response.data);
+      } catch (error) {
+        console.error('Error loading train details:', error);
+      }
     }
     loadTrains();
-}, []);
+  }, []);
 
-const filterData = (searchKey) => {
-  const result = trains.filter((train) =>
-  train.trainName.toLowerCase().includes(searchKey) 
-  );
-  setFilteredPosts(result);
-};
+  const filterData = (searchKey) => {
+    const result = trains.filter((train) =>
+      train.trainName.toLowerCase().includes(searchKey)
+    );
+    setFilteredPosts(result);
+  };
 
-const handleSearchArea = (e) => {
-  const searchKey = e.currentTarget.value;
-  filterData(searchKey);
-};
+  const handleSearchArea = (e) => {
+    const searchKey = e.currentTarget.value;
+    filterData(searchKey);
+  };
 
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
@@ -63,35 +61,33 @@ const handleSearchArea = (e) => {
             </tr>
           </thead>
           <tbody>
-          {trains.map((train) => (
- <tr>
- <th scope="row"></th>
- <td>{train.trainName}</td>
- <td>{train.startLocation}</td>
- <td>{train.endLocation}</td>
- <td>{train.departureTime}</td>
- <td>{train.arrivalTime}</td>
- <td>
-   <a className="btn btn-primary" href="mail">
-     <i className="fas fa-edit"></i>&nbsp;Active
-   </a>
-   &nbsp; &nbsp;
-   <a className="btn btn-warning" href={`/edit`}>
-     <i className="fas fa-edit"></i>&nbsp;Publish
-   </a>
-   &nbsp;
-   <button className="btn btn-danger">
-     <i className="fas fa-trash-alt"></i>&nbsp;Cancel
-   </button>
-   &nbsp;
-   <Link to={"/updateTrain/"} className="btn  btn-info">
-     Update
-   </Link>
- </td>
-</tr>
-
-))}
-           
+            {trains.map((train) => (
+              <tr>
+                <th scope="row"></th>
+                <td>{train.trainName}</td>
+                <td>{train.startLocation}</td>
+                <td>{train.endLocation}</td>
+                <td>{train.departureTime}</td>
+                <td>{train.arrivalTime}</td>
+                <td>
+                  <a className="btn btn-primary" href="mail">
+                    <i className="fas fa-edit"></i>&nbsp;Active
+                  </a>
+                  &nbsp; &nbsp;
+                  <a className="btn btn-warning" href="/edit">
+                    <i className="fas fa-edit"></i>&nbsp;Publish
+                  </a>
+                  &nbsp;
+                  <button type='button' className="btn btn-danger">
+                    <i className="fas fa-trash-alt"></i>&nbsp;Cancel
+                  </button>
+                  &nbsp;
+                  <Link to="/updateTrain/" className="btn  btn-info">
+                    Update
+                  </Link>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

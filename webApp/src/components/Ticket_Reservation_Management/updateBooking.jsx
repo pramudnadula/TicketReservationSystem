@@ -16,7 +16,7 @@ export default function UpdateBooking() {
     const handleUpdate = (e) => {
         e.preventDefault();
         console.log("Train Reservation Details Updated Successfully !");
-        console.log(fromStation, toStation, journeyDate, noOfTickets);
+        console.log(fromStation, toStation, journeyDate, noOfTickets, ticketclass);
         navigate("/booking-list");
 
     }

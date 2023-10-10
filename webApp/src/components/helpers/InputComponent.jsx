@@ -9,7 +9,7 @@ export default function InputComponent({
   inputHandler,
   value,
   inputClasses,
-  labelClasses = "text-muted text-sm font-normal",
+  labelClasses = "text-sm font-normal",
 }) {
   return (
     <div className="form-group">
@@ -17,8 +17,9 @@ export default function InputComponent({
         <label
           className={`capitalize ${labelClasses || ""}`}
           htmlFor={name}
+          style={{ color: "#7a25a5" }}
         >
-          {label}
+          <b>{label}</b>
         </label>
       )}
       <div className="input-wrapper">

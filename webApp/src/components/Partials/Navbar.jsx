@@ -14,7 +14,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-color">
+    <nav className="navbar navbar-expand-lg navbar-light bg-color shadow">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/home">
           <img
@@ -40,19 +40,19 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto ">
             <Link className="nav-link" to="/user-creation">
-              <li className={`nav-item ${isActive("/user-creation") ? "active text-white font-weight-bold" : ""}`}>
+              <li className={`nav-item ${isActive("/user-creation") ? "active link-color font-weight-bold" : ""}`}>
                 User Creation
               </li>
             </Link>
 
             <Link className="nav-link" to="/create-train">
-              <li className={`nav-item ${isActive("/create-train") ? "active text-white font-weight-bold" : ""}`}>
+              <li className={`nav-item ${isActive("/create-train") ? "active link-color font-weight-bold" : ""}`}>
                 Travel Creation
               </li>
             </Link>
 
             <Link className="nav-link" to="/create-booking">
-              <li className={`nav-item ${isActive("/create-booking") ? "active text-white font-weight-bold" : ""}`}>
+              <li className={`nav-item ${isActive("/create-booking") ? "active link-color font-weight-bold" : ""}`}>
                 Ticket Reservation
               </li>
             </Link>

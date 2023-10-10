@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import { POST } from "../helpers/HTTPHelper";
-import axios from "axios";
+import MainHeaderTitle from "../Partials/MainHeaderTitle";
 
 export default function UserCreation() {
   const navigate = useNavigate();
@@ -23,10 +23,9 @@ export default function UserCreation() {
         password,
         role
       }
-
-      const rest = await axios.post("https://localhost:7104/api/User/registration-new", user);
+      const rest = await POST('User/registration', user)
       console.log(rest);
-      // navigate("/user-list");
+      navigate("/user-list");
     } catch (error) {
       console.log(error)
     }
@@ -35,32 +34,8 @@ export default function UserCreation() {
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
-        <Link to="/user-list">
-          <button type="button" className="btn btn-primary float-end">
-            User List
-          </button>
-        </Link>
-        <br />
-      </div>
-      <div className="container-xxl my-2">
-        <div className="text-center mb-5">
-          <h1 className="display-4">Create User</h1>
-          <div className="shape">
-            <svg
-              width="172"
-              height="29"
-              viewBox="0 0 172 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
-                stroke="#D5C0ED"
-              />
-            </svg>
-          </div>
-        </div>
-        <div className="w-50 mx-auto">
+        <div className="card p-5 shadow w-50 mx-auto">
+          <MainHeaderTitle title="User Creation" link="/user-list" buttonTitle="User List" />
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <InputComponent
@@ -104,8 +79,8 @@ export default function UserCreation() {
             </div>
             {/* user role Travel Agent and  Backoffice  */}
             <div className="mb-3">
-              <label htmlFor="role" className="form-label">
-                Role
+              <label htmlFor="role" className="form-label" style={{ color: "#7a25a5" }}>
+                <b> Role </b>
               </label>
               <select
                 className="form-select"
@@ -120,9 +95,9 @@ export default function UserCreation() {
                 <option value="Backoffice">Backoffice</option>
               </select>
             </div>
-
-            <div className="d-flex justify-content-between align-items-center">
-              <button type="submit" className="btn btn-primary">
+            <br />
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn" style={{ backgroundColor: '#7a25a5', color: 'white' }}>
                 Create User
               </button>
             </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
+import MainHeaderTitle from "../Partials/MainHeaderTitle";
 
 export default function CreateBooking() {
   const navigate = useNavigate();
@@ -21,133 +22,77 @@ export default function CreateBooking() {
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
-        <Link to="/booking-list">
-          <button type="button" className="btn btn-primary float-end">
-            Booking List
-          </button>
-        </Link>
-        <br />
-      </div>
-
-      <div className="container-xxl my-2">
-        <div className="text-center mb-5">
-          <br></br>
-          <h1
-            className="text-center topic"
-            style={{ color: "#00008b" }}
-          >
-            Train Ticket Reservation Form
-          </h1>
-          <div className="shape">
-            <svg
-              width="172"
-              height="29"
-              viewBox="0 0 172 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
-                stroke="#D5C0ED"
+        <div className="card p-5 shadow w-50 mx-auto">
+          <MainHeaderTitle title="Train Ticket Reservation" link="/user-list" buttonTitle="User List" />
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <InputComponent
+                label="From Station"
+                name="fromStation"
+                type="text"
+                placeholder="From Station"
+                value={fromStation}
+                inputHandler={setFromStation}
               />
-            </svg>
-          </div>
-        </div>
-        <form
-          className="needs-validation"
-          align="center"
-          style={{
-            marginLeft: "310px",
-            width: "50%",
-            borderLeftWidth: "7px",
-            borderRightWidth: "7px",
-            borderStyle: "solid",
-            borderWidth: "6px",
-            boxShadow: "0 8px 350px 0 rgba(0, 0, 0, 0.5)",
-            alignContent: "center",
-            borderColor: "navy",
-          }}
-          noValidate
-        >&nbsp;
-          <div className="w-50 mx-auto">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="ticketclass" className="form-label">
-                  <b>From Station</b> </label>
-                <InputComponent
-                  label=""
-                  name="fromStation"
-                  type="text"
-                  placeholder="From Station"
-                  value={fromStation}
-                  inputHandler={setFromStation}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="ticketclass" className="form-label">
-                  <b>To Station</b> </label>
-                <InputComponent
-                  label=""
-                  name="toStation"
-                  type="text"
-                  placeholder="To Station"
-                  value={toStation}
-                  inputHandler={setToStation}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="ticketclass" className="form-label">
-                  <b>Journey Date</b> </label>
-                <InputComponent
-                  label=""
-                  name="journeyDate"
-                  type="date"
-                  placeholder="Journey Date"
-                  value={journeyDate}
-                  inputHandler={setJourneyDate}
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="ticketclass" className="form-label">
-                  <b>Number Of Tickets</b>
-                </label>
-                <InputComponent
-                  label=""
-                  name="noOfTickets"
-                  type="integer"
-                  placeholder="Number Of Tickets"
-                  value={noOfTickets}
-                  inputHandler={setnoOfTickets}
-                />
-              </div>
-              {/* Train Ticket Classes */}
-              <div className="mb-3">
-                <label htmlFor="ticketclass" className="form-label">
-                  <b>Train Ticket Classes</b>
-                </label>
-                <select
-                  className="form-select"
-                  name="ticketclass"
-                  id="ticketclass"
-                  value={ticketclass}
-                  onBlur={(e) => setTicketClass(e.target.value)}
-                >
+            </div>
+            <div className="mb-3">
+              <InputComponent
+                label="To Station"
+                name="toStation"
+                type="text"
+                placeholder="To Station"
+                value={toStation}
+                inputHandler={setToStation}
+              />
+            </div>
+            <div className="mb-3">
+              <InputComponent
+                label="Journey Date"
+                name="journeyDate"
+                type="date"
+                placeholder="Journey Date"
+                value={journeyDate}
+                inputHandler={setJourneyDate}
+              />
+            </div>
+            <div className="mb-3">
+              <InputComponent
+                label="Number Of Tickets"
+                name="noOfTickets"
+                type="integer"
+                placeholder="Number Of Tickets"
+                value={noOfTickets}
+                inputHandler={setnoOfTickets}
+              />
+            </div>
+            {/* Train Ticket Classes */}
+            <div className="mb-3">
+              <label htmlFor="ticketclass" className="form-label" style={{ color: "#7a25a5" }}>
+                <b>Train Ticket Classes</b>
+              </label>
+              <select
+                className="form-select"
+                name="ticketclass"
+                id="ticketclass"
+                value={ticketclass}
+                onBlur={(e) => setTicketClass(e.target.value)}
+              >
 
-                  <option value="">Select Train Ticket Class</option>
-                  <option value="First Class">First Class</option>
-                  <option value="Second Class">Second Class</option>
-                  <option value="Third Class">Third Class</option>
-                </select>
-              </div>
-              &nbsp;&nbsp;
-              <div className="d-flex justify-content-center">
-                <button type="submit" className="btn" style={{ backgroundColor: 'navy', color: 'white' }}>
-                  Reserve Ticket
-                </button>
-              </div>&nbsp;
-            </form>
-          </div>
-        </form>
+                <option value="">Select Train Ticket Class</option>
+                <option value="First Class">First Class</option>
+                <option value="Second Class">Second Class</option>
+                <option value="Third Class">Third Class</option>
+              </select>
+            </div>
+            <br />
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn" style={{ backgroundColor: '#7a25a5', color: 'white' }}>
+                Reserve Ticket
+              </button>
+            </div>
+          </form>
+
+        </div>
       </div>
     </Layout>
   );

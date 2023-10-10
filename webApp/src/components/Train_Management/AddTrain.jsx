@@ -1,77 +1,113 @@
-import React from "react";
+/* eslint-disable jsx-a11y/no-onchange */
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Layout from "../Partials/Layout";
-import { Link } from "react-router-dom";
+import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import { POST } from "../helpers/HTTPHelper";
+import InputComponent from "../helpers/InputComponent";
 
 export default function AddTrain() {
-  return (
-    <Layout childrenClasses="pt-4 pb-0 ">
-      <div className="container d-flex justify-content-center align-items-center h-100">
-        <div className="card p-5 shadow ">
-          <center>
-            <h1 className="topic">
-              <b>Train Management</b>
-              <div className="shape">
-                <svg
-                  width="172"
-                  height="29"
-                  viewBox="0 0 172 29"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
-                    stroke="#D5C0ED"
-                  />
-                </svg>
-              </div>
-            </h1>
-          </center>
-          <center>
-            <form className="travelform">
-              <div className="form-group ">
-                <br></br>
-                <label>Train Name </label>
-                <br />
+  const navigate = useNavigate();
 
-                <select className="form-control">
-                  <option value="option1">1 st Class</option>
-                  <option value="option2">2 nd Class</option>
-                  <option value="option3">3 rd Class</option>
-                </select>
+  const [trainName, setTrainName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
+  const [startLocation, setStartLocation] = useState("");
+  const [endLocation, setEndLocation] = useState("");
+  const [departureTime, setDepartureTime] = useState("");
+  const [arrivalTime, setArrivalTime] = useState("");
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      const train = {
+        trainName,
+        startLocation,
+        endLocation,
+        departureTime,
+        arrivalTime,
+      };
+
+      const rest = await POST('Train/create', train)
+      console.log(rest);
+      navigate("/train-details");
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return (
+    <Layout childrenClasses="pt-0 pb-0">
+      <div className="container-xxl my-2">
+        <div className="card p-5 shadow w-50 mx-auto">
+          <MainHeaderTitle title="Train Management" link="/train-details" buttonTitle="Train Details" />
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="trainName" className="form-label" style={{ color: "#7a25a5" }}>
+                <b>Train Name</b>
+              </label>
+              <select
+                className="form-select"
+                name="trainName"
+                id="trainName"
+                value={trainName}
+                onChange={(e) => setTrainName(e.target.value)}
+              >
+
+                <option value="">Select Train Name</option>
+                <option value="1">1 st Class</option>
+                <option value="2">2 nd Class</option>
+                <option value="3">3 rd Class</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <InputComponent
+                label="Start Location"
+                name="startLocation"
+                type="text"
+                placeholder="Start Location"
+                value={startLocation}
+                inputHandler={setStartLocation}
+              />
+            </div>
+
+            <div className="mb-3">
+              <InputComponent
+                label="End Location"
+                name="endLocation"
+                type="text"
+                placeholder="End Location"
+                value={endLocation}
+                inputHandler={setEndLocation}
+              />
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                <InputComponent
+                  label="Departure Time"
+                  name="departureTime"
+                  type="time"
+                  placeholder="Departure Time"
+                  value={departureTime}
+                  inputHandler={setDepartureTime}
+                />
               </div>
-              <label>Start Location </label> <br />
-              <input type="text" className="form-control" />
-              <br />
-              <label>End Location </label> <br />
-              <input type="text" className="form-control" /> <br />
-              <div className="row">
-                <div className="col-md-6">
-                  <label>Departure Time</label>
-                  <input
-                    type="time"
-                    name="departureTime"
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label>Arrival Time</label>
-                  <input
-                    type="time"
-                    name="arrivalTime"
-                    className="form-control"
-                    required
-                  />
-                </div>
+              <div className="col-md-6">
+                <InputComponent
+                  label="Arrival Time"
+                  name="arrivalTime"
+                  type="time"
+                  placeholder="Arrival Time"
+                  value={arrivalTime}
+                  inputHandler={setArrivalTime}
+                />
               </div>
-              <br />
-              <div className="form-group">
-                <Link to={"/train-details/"} className="btn btn-primary">
-                  Add Reservations
-                </Link>
-              </div>
-            </form>
-          </center>
+            </div>
+            <br />
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn" style={{ backgroundColor: '#7a25a5', color: 'white' }}>
+                Add Reservations
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </Layout>
