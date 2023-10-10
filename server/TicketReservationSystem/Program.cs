@@ -16,6 +16,9 @@ builder.Services.AddScoped<IAuthHashService, AuthHashService>();
 // user 
 builder.Services.AddScoped<IUserService, UserService>();
 
+//train
+builder.Services.AddScoped<ITrainService, TrainService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
