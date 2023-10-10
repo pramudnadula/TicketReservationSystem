@@ -4,6 +4,9 @@ import UserCreation from "./components/User_Management/UserCreation";
 import Home from "./components/Home";
 import UserList from "./components/User_Management/UserList";
 import UserUpdate from "./components/User_Management/UserUpdate";
+import AddTrain from "./components/Train_Management/AddTrain";
+import TrainDetails from "./components/Train_Management/TrainDetails";
+import UpdateTrain from "./components/Train_Management/UpdateTrain";
 
 
 export default function Routers() {
@@ -15,6 +18,11 @@ export default function Routers() {
       <Route exact path="/user-creation" element={<UserCreation />} />
       <Route exact path="/user-list" element={<UserList />} />
       <Route exact path="/user-update/:id" element={<UserUpdate />} />
+
+    {/* Train management */}
+      <Route exact path="/createTrain" element={<AddTrain />} />
+      <Route exact path="/trainDetails" element={<TrainDetails />} />
+      <Route exact path="/updateTrain" element={<UpdateTrain />} />
     </Routes>
   );
 }
