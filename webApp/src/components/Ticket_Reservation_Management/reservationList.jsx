@@ -1,36 +1,44 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 
-export default function reservationList() {
+export default function ReservationList() {
     const navigate = useNavigate();
-    const userList = [
-        { id: 1, fromStation: "Colombo-Fort", toStation: "Kandy", journeyDate: "11.18.2023", noOfTickets: "2", ticketclass: "First Class", active: false },
-        { id: 2, fromStation: "Colombo-Fort", toStation: "Galle", journeyDate: "10.20.2023", noOfTickets: "3", ticketclass: "Second Class", active: false },
-        { id: 3, fromStation: "Jaffna", toStation: "Colombo-Fort", journeyDate: "10.28.2023", noOfTickets: "1", ticketclass: "First Class", active: false },
-        { id: 4, fromStation: "Badulla", toStation: "Kandy", journeyDate: "11.18.2023", noOfTickets: "2", ticketclass: "Third Class", active: false },
-        { id: 5, fromStation: "Colombo-Fort", toStation: "Batticaloa", journeyDate: "11.02.2023", noOfTickets: "3", ticketclass: "First Class", active: false },
-      ];
+    const [bookings, setBookings] = useState([]); // create state varible for store values
+
+    // Implement booking get funtion api 
+    useEffect(() => {
+        async function loadTrains() {
+            try {
+                const response = await axios.get("https://localhost:7104/api/Booking");
+                setBookings(response.data);
+            } catch (error) {
+                console.error("Error loading booking details:", error);
+            }
+        }
+        loadTrains();
+    }, []);
 
     const handleEdit = (id) => {
         // Implement edit logic
-        console.log(`Edit user with ID ${id}`);
-        navigate(`/user-update/${id}`);
+        console.log(`Edit booking with ID ${id}`);
+        navigate(`/booking-update/${id}`);
     };
 
     const handleDelete = (id) => {
         // Implement delete logic
-        console.log(`Delete user with ID ${id}`);
+        console.log(`Delete booking with ID ${id}`);
     };
 
     const handleActivate = (id) => {
         // Implement activate logic
-        console.log(`Activate user with ID ${id}`);
+        console.log(`Activate booking with ID ${id}`);
     };
 
     const handleDeactivate = (id) => {
         // Implement deactivate logic
-        console.log(`Deactivate user with ID ${id}`);
+        console.log(`Deactivate booking with ID ${id}`);
     };
 
     return (
@@ -38,14 +46,16 @@ export default function reservationList() {
             <div className="container-xxl my-2">
                 <Link to="/create-booking">
                     <button type="button" className="btn btn-primary float-end">
-                    Download
+                        Download
                     </button>
                 </Link>
                 <br />
             </div>
             <div className="container-xxl my-2">
                 <div className="text-center mb-5">
-                    <h1 className="text-center topic" style={{ color: "#00008b" }}>Reserved Ticket List</h1>
+                    <h1 className="text-center topic" style={{ color: "#00008b" }}>
+                        Reserved Ticket List
+                    </h1>
                     <div className="shape">
                         <svg
                             width="172"
@@ -65,7 +75,6 @@ export default function reservationList() {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">Refer. ID</th>
                                 <th scope="col">From Station</th>
                                 <th scope="col">To Station</th>
                                 <th scope="col">Journey Date</th>
@@ -75,34 +84,34 @@ export default function reservationList() {
                             </tr>
                         </thead>
                         <tbody>
-                            {userList.map((user) => (
-                                <tr key={user.id}>
-                                    <th scope="row">{user.id}</th>
-                                    <td>{user.fromStation}</td>
-                                    <td>{user.toStation}</td>
-                                    <td>{user.journeyDate}</td>
-                                    <td>{user.noOfTickets}</td>
-                                    <td>{user.ticketclass}</td>
+                            {/* call the usestate varible for display values */}
+                            {bookings.map((booking) => (
+                                <tr key={booking.id}>
+                                    <td>{booking.fromStation}</td>
+                                    <td>{booking.toStation}</td>
+                                    <td>{booking.journeyDate}</td>
+                                    <td>{booking.noOfTickets}</td>
+                                    <td>{booking.ticketclass}</td>
                                     <td>
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-info mx-1"
-                                            onClick={() => handleEdit(user.id)}
+                                            onClick={() => handleEdit(booking.id)}
                                         >
                                             Modify
                                         </button>
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger mx-1"
-                                            onClick={() => handleDelete(user.id)}
+                                            onClick={() => handleDelete(booking.id)}
                                         >
                                             Cancel
                                         </button>
-                                        {user.active ? (
+                                        {booking.active ? (
                                             <button
                                                 type="button"
                                                 className="btn btn-sm btn-warning mx-1"
-                                                onClick={() => handleDeactivate(user.id)}
+                                                onClick={() => handleDeactivate(booking.id)}
                                             >
                                                 Deactivate
                                             </button>
@@ -110,7 +119,7 @@ export default function reservationList() {
                                             <button
                                                 type="button"
                                                 className="btn btn-sm btn-success mx-1"
-                                                onClick={() => handleActivate(user.id)}
+                                                onClick={() => handleActivate(booking.id)}
                                             >
                                                 Summary
                                             </button>

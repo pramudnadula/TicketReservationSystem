@@ -38,27 +38,31 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ml-auto ">
-  <Link className="nav-link" to="/user-creation">
-    <li className={`nav-item ${isActive("/user-creation") ? "active text-white font-weight-bold" : ""}`}>
-      User Creation
-    </li>
-  </Link>
-  
-  <Link className="nav-link" to="/createTrain">
-    <li className={`nav-item ${isActive("/createTrain") ? "active text-white font-weight-bold" : ""}`}>
-      Travel Creation
-    </li>
-  </Link>
+          <ul className="navbar-nav ml-auto ">
+            <Link className="nav-link" to="/user-creation">
+              <li className={`nav-item ${isActive("/user-creation") ? "active text-white font-weight-bold" : ""}`}>
+                User Creation
+              </li>
+            </Link>
 
-  
-  
-  <li className="nav-item">
-    <button type="button" onClick={signOut} className="nav-link btn btn-link">
-      Sign Out
-    </button>
-  </li>
-</ul>
+            <Link className="nav-link" to="/create-train">
+              <li className={`nav-item ${isActive("/create-train") ? "active text-white font-weight-bold" : ""}`}>
+                Travel Creation
+              </li>
+            </Link>
+
+            <Link className="nav-link" to="/create-booking">
+              <li className={`nav-item ${isActive("/create-booking") ? "active text-white font-weight-bold" : ""}`}>
+                Ticket Reservation
+              </li>
+            </Link>
+
+            <li className="nav-item">
+              <button type="button" onClick={signOut} className="nav-link btn btn-link">
+                Sign Out
+              </button>
+            </li>
+          </ul>
 
         </div>
       </div>

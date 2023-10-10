@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 
-export default function updateBooking() {
+export default function UpdateBooking() {
     const navigate = useNavigate();
     const { id } = useParams();
     console.log(id);

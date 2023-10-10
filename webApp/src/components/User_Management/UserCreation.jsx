@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
+import { POST } from "../helpers/HTTPHelper";
+import axios from "axios";
 
 export default function UserCreation() {
   const navigate = useNavigate();
@@ -11,11 +14,22 @@ export default function UserCreation() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Submitted");
-    console.log(firstName, lastName, email, password);
-    navigate("/user-list");
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const user = {
+        username: `${firstName} ${lastName}`,
+        email,
+        password,
+        role
+      }
+
+      const rest = await axios.post("https://localhost:7104/api/User/registration-new", user);
+      console.log(rest);
+      // navigate("/user-list");
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -98,7 +112,7 @@ export default function UserCreation() {
                 name="role"
                 id="role"
                 value={role}
-                onBlur={(e) => setRole(e.target.value)}
+                onChange={(e) => setRole(e.target.value)}
               >
 
                 <option value="">Select Role</option>

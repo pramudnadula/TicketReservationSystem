@@ -66,7 +66,7 @@ export default function UpdateTrain() {
               </div>
               <br />
               <div className="form-group">
-                <Link to={"/trainDetails/"} className="btn btn-primary">
+                <Link to={"/train-details/"} className="btn btn-primary">
                   Update Reservations
                 </Link>
               </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 
-export default function createBooking() {
+export default function CreateBooking() {
   const navigate = useNavigate();
   const [fromStation, setFromStation] = useState("");
   const [toStation, setToStation] = useState("");

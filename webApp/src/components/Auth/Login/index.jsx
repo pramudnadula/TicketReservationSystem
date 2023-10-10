@@ -1,18 +1,32 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../../helpers/InputComponent";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState(" ");
-  const [password, setPassword] = useState("");
+  const [username, setUserName] = useState("string");
+  const [password, setPassword] = useState("string");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted");
-    console.log(email, password);
-    navigate("/home");
+    try {
+      console.log("Form Submitted");
+      console.log(username, password);
 
+      const rest = await axios.post('https://localhost:7104/api/User/login',
+        {
+          username,
+          password
+        }
+      )
+      console.log(rest);
+
+      navigate("/home");
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -38,12 +52,12 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <InputComponent
-              label="Email Address"
-              name="email"
-              type="email"
+              label="User Name"
+              name="username"
+              type="text"
               placeholder="Email Address"
-              value={email}
-              inputHandler={setEmail}
+              value={username}
+              inputHandler={setUserName}
             />
           </div>
           <div className="mb-3">
