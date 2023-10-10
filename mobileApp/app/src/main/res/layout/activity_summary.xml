@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D5C0ED"
+    tools:context=".Summary">
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Your Reservation Summary"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="#7A25A5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Class 1 : LRK 1000 per ticket\nClass 2 : LRK 600 per ticket\nClass 3 : LRK 300 per ticket"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:lineHeight="28sp"
+        android:textColor="#7C7C7C"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="35dp"
+        android:text="Reservation Number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
+
+    <TextView
+        android:id="@+id/num_val"
+        android:layout_width="wrap_content"
+        android:width="100sp"
+        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:text="101"
+        app:layout_constraintStart_toEndOf="@+id/num"
+        app:layout_constraintTop_toTopOf="@+id/num" />
+
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Total Price"
+        app:layout_constraintStart_toStartOf="@+id/num"
+        app:layout_constraintTop_toBottomOf="@+id/num" />
+
+    <TextView
+        android:id="@+id/price_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:width="100sp"
+        android:background="@android:color/white"
+        android:text="LRK 1000"
+        app:layout_constraintStart_toEndOf="@+id/total"
+        app:layout_constraintTop_toTopOf="@+id/total" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Duration"
+        app:layout_constraintStart_toStartOf="@+id/total"
+        app:layout_constraintTop_toBottomOf="@+id/total" />
+
+    <TextView
+        android:id="@+id/duration_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="4dp"
+        android:width="100sp"
+        android:background="@android:color/white"
+        android:text="12 days"
+        app:layout_constraintStart_toEndOf="@+id/duration"
+        app:layout_constraintTop_toTopOf="@+id/duration" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Date"
+        app:layout_constraintStart_toStartOf="@+id/duration"
+        app:layout_constraintTop_toBottomOf="@+id/duration" />
+
+    <TextView
+        android:id="@+id/date_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:width="100sp"
+        android:background="@android:color/white"
+        android:text="5th Aug 2023"
+        app:layout_constraintStart_toEndOf="@+id/date"
+        app:layout_constraintTop_toTopOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/trainClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Train Class"
+        app:layout_constraintStart_toStartOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/trainClass_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:width="100sp"
+        android:background="@android:color/white"
+        android:text="Class 1"
+        app:layout_constraintStart_toEndOf="@+id/trainClass"
+        app:layout_constraintTop_toTopOf="@+id/trainClass" />
+
+    <Button
+        android:id="@+id/confirmBtn"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:lineHeight="20sp"
+        android:text="Confirm Your Reservation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trainClass" />
+</androidx.constraintlayout.widget.ConstraintLayout>
