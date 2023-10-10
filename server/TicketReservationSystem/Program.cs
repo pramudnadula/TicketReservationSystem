@@ -24,16 +24,29 @@ builder.Services.AddScoped<ITrainService, TrainService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 
 // Enable CORS
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy("AllowSpecificOrigin",
+//         builder =>
+//         {
+//             builder.WithOrigins("http://localhost:3000", "http://192.168.56.1:3000")
+//                 .AllowAnyHeader()
+//                 .AllowAnyMethod();
+//         });
+// });
+
+// Enable CORS for all origins, headers and methods.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin",
+    options.AddPolicy("AllowAllOrigins",
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000", "http://192.168.56.1:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
         });
 });
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -42,8 +55,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Enable CORS
-app.UseCors("AllowSpecificOrigin"); // Place this line early in the pipeline
+// Enable CORS for specific origins, headers and methods.
+// app.UseCors("AllowSpecificOrigin"); // Place this line early in the pipeline
+
+// Enable CORS for all origins, headers and methods.
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 app.UseRouting();
