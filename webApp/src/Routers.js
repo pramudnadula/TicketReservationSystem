@@ -9,6 +9,7 @@ import TrainDetails from "./components/Train_Management/TrainDetails";
 import UpdateTrain from "./components/Train_Management/UpdateTrain";
 import createBooking from "./components/Ticket_Reservation_Management/createBooking";
 import reservationList from "./components/Ticket_Reservation_Management/reservationList";
+import updateBooking from "./components/Ticket_Reservation_Management/updateBooking";
 
 export default function Routers() {
   return (
@@ -28,6 +29,7 @@ export default function Routers() {
      {/* Ticket Reservation Management */} 
       <Route exact path="/create-booking" element={<createBooking />} />
       <Route exact path="/booking-list" element={<reservationList />} />
+      <Route exact path="/update-booking" element={<updateBooking />} />
     </Routes>
 
     
