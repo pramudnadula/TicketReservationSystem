@@ -44,13 +44,13 @@ export default function Navbar() {
                 User Creation
               </li>
             </Link>
-
-            <Link className="nav-link" to="/create-train">
-              <li className={`nav-item ${isActive("/create-train") ? "active link-color font-weight-bold" : ""}`}>
-                Travel Creation
-              </li>
-            </Link>
-
+            {localStorage.getItem("role") === "BACKOFFICE" && (
+              <Link className="nav-link" to="/create-train">
+                <li className={`nav-item ${isActive("/create-train") ? "active link-color font-weight-bold" : ""}`}>
+                  Travel Creation
+                </li>
+              </Link>
+            )}
             <Link className="nav-link" to="/create-booking">
               <li className={`nav-item ${isActive("/create-booking") ? "active link-color font-weight-bold" : ""}`}>
                 Ticket Reservation

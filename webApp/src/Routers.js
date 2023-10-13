@@ -18,14 +18,16 @@ export default function Routers() {
       <Route exact path="/" element={<Login />} />
       <Route exact path="/home" element={<Home />} />
       <Route exact path="/login" element={<Login />} />
+
+      {/* User Management */}
       <Route exact path="/user-creation" element={<UserCreation />} />
       <Route exact path="/user-list" element={<UserList />} />
       <Route exact path="/user-update/:id" element={<UserUpdate />} />
 
-      {/* Train management */}
-      <Route exact path="/create-train" element={<AddTrain />} />
-      <Route exact path="/train-details" element={<TrainDetails />} />
-      <Route path="/updateTrain/:id" element={<UpdateTrain />} />
+      {/* Train Management */}
+      <Route exact path="/create-train" element={localStorage.getItem("role") === "BACKOFFICE" ? <AddTrain /> : <Home />} />
+      <Route exact path="/train-details" element={localStorage.getItem("role") === "BACKOFFICE" ? <TrainDetails /> : <Home />} />
+      <Route path="/updateTrain/:id" element={localStorage.getItem("role") === "BACKOFFICE" ? <UpdateTrain /> : <Home />} />
 
       {/* Ticket Reservation Management */}
       <Route exact path="/create-booking" element={<CreateBooking />} />
