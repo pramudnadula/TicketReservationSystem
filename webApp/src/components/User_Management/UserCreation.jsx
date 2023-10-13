@@ -5,6 +5,8 @@ import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import { POST } from "../helpers/HTTPHelper";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import swal from "sweetalert";
+
 
 export default function UserCreation() {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ export default function UserCreation() {
       }
       const rest = await POST('User/registration', user)
       console.log(rest);
+      swal("Your User Details Succefully Added!");
       navigate("/user-list");
     } catch (error) {
       console.log(error)
