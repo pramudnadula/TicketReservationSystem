@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../../helpers/InputComponent";
+import { toastFail, toastSuccess } from "../../helpers/ToastNotification";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("string@gmail.com");
-  const [password, setPassword] = useState("string");
+  const [email, setEmail] = useState("shamli@gmail.com");
+  const [password, setPassword] = useState("123456");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,11 +22,16 @@ export default function Login() {
         }
       )
       console.log(rest);
+      toastSuccess('Login Successfull');
+      localStorage.setItem('token', rest.data.password);
+      localStorage.setItem('user', rest.data.email);
+      localStorage.setItem('role', rest.data.role);
 
       navigate("/home");
 
     } catch (error) {
       console.log(error);
+      toastFail(`${error.response.data}`);
     }
   }
 
