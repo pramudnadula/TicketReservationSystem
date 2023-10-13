@@ -18,12 +18,12 @@ namespace TicketReservationSystem.Controllers
     {
         // variable for hold servies interfaces
         private readonly IBookingService bookingService;
-       
+
         // constructor 
         public BookingController(IBookingService bookingService)
         {
             this.bookingService = bookingService;
-           
+
         }
 
         // GET: api/<Booking controller>
@@ -54,7 +54,7 @@ namespace TicketReservationSystem.Controllers
             {
                 return BadRequest("Fail to add booking");
             }
-            
+
 
             Booking booking = new Booking();
             booking.fromStation = request.fromStation;
@@ -62,13 +62,13 @@ namespace TicketReservationSystem.Controllers
             booking.journeyDate = request.journeyDate;
             booking.noOfTickets = request.noOfTickets;
             booking.ticketclass = request.ticketclass;
-           
+
 
             bookingService.Create(booking);
             return CreatedAtAction(nameof(Get), new { id = booking.Id }, booking);
         }
 
-       
+
 
         // PUT api/<Bookingcontroller>/5
         [HttpPut("{id}")]
@@ -83,7 +83,7 @@ namespace TicketReservationSystem.Controllers
 
             bookingService.Update(id, booking);
 
-            return NoContent();
+            return Ok($"Booking with id = {id} updated");
         }
 
         // DELETE api/<UserController>/5
@@ -102,6 +102,6 @@ namespace TicketReservationSystem.Controllers
             return Ok($"Booking with id = {id} deleted");
         }
 
-        
+
     }
 }

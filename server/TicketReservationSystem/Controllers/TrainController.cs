@@ -18,13 +18,13 @@ namespace TicketReservationSystem.Controllers
     {
         // variable for hold servies interfaces
         private readonly ITrainService trainService;
-      
+
         // constructor 
         public TrainController(ITrainService trainService)
         {
             this.trainService = trainService;
 
-           
+
         }
 
         // GET: api/<UserController>
@@ -51,11 +51,11 @@ namespace TicketReservationSystem.Controllers
         [HttpPost("create")]
         public ActionResult<Train> Registration([FromBody] TrainRequest request)
         {
-            if (request.TrainName == null || request.StartLocation == null || request.EndLocation == null ||  request.DepartureTime == null||  request.ArrivalTime == null)
+            if (request.TrainName == null || request.StartLocation == null || request.EndLocation == null || request.DepartureTime == null || request.ArrivalTime == null)
             {
                 return BadRequest("Fail to create");
             }
-           
+
 
             Train train = new Train();
             train.TrainName = request.TrainName;
@@ -63,13 +63,13 @@ namespace TicketReservationSystem.Controllers
             train.EndLocation = request.EndLocation;
             train.DepartureTime = request.DepartureTime;
             train.ArrivalTime = request.ArrivalTime;
-           
+
 
             trainService.Create(train);
             return CreatedAtAction(nameof(Get), new { id = train.Id }, train);
         }
 
-      
+
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
@@ -84,7 +84,7 @@ namespace TicketReservationSystem.Controllers
 
             trainService.Update(id, train);
 
-            return NoContent();
+            return Ok($"train with id = {id} updated");
         }
 
         // DELETE api/<UserController>/5
