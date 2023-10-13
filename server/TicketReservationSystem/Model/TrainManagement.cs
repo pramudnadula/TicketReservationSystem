@@ -14,6 +14,8 @@ namespace TicketReservationSystem.Model
          public String TrainName { get; set; } = String.Empty;
           [BsonElement("startLocation")]
         public String StartLocation { get; set; } = String.Empty;
+         [BsonElement("trainClassName")]
+        public String TrainClassName { get; set; } = String.Empty;
         [BsonElement("endLocation")]
         public String  EndLocation { get; set; } = String.Empty;
        [BsonElement("departureTime")]
