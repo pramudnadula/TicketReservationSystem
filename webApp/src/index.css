@@ -37,3 +37,39 @@ body {
   align-content: center;
   /* border-color: #ffffff; */
 }
+
+.button-btn {
+  background-color: #7a25a5 !important;
+  border-color: #7a25a5 !important;
+  color: white !important;
+}
+
+.button-btn:hover {
+  background-color: #6c2192 !important;
+  border-color: #6c2192 !important;
+  color: white !important;
+}
+
+.button-btn-outline {
+  background-color: #ffffff !important;
+  border-color: #7a25a5 !important;
+  color: #7a25a5 !important;
+}
+
+.button-btn-outline:hover {
+  background-color: #ffffff !important;
+  border-color: #6c2192 !important;
+  color: #6c2192 !important;
+}
+
+.button-btn-active {
+  background-color: #7a25a5 !important;
+  border-color: #7a25a5 !important;
+  color: white !important;
+}
+
+.button-btn-active:hover {
+  background-color: #6c2192 !important;
+  border-color: #6c2192 !important;
+  color: white !important;
+}

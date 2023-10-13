@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import React, { useState } from "react";
+import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
-import swal from "sweetalert";
 
 
 export default function CreateBooking() {
@@ -103,7 +104,7 @@ export default function CreateBooking() {
             </div>
             <br />
             <div className="d-flex justify-content-center">
-              <button type="submit" className="btn" style={{ backgroundColor: '#7a25a5', color: 'white' }}>
+              <button type="submit" className="btn button-btn">
                 Reserve Ticket
               </button>
             </div>

@@ -30,7 +30,7 @@ export default function Home() {
                                     <div className="card-body">
                                         <h5 className="card-title">User Creation</h5>
                                         <p className="card-text">View users here.</p>
-                                        <Link to="/user-creation" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to User Creation</Link>
+                                        <Link to="/user-list" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to User Creation</Link>
                                     </div>
                                 </div>
                             </div>
