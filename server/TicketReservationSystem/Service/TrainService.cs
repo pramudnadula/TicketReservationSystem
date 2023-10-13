@@ -49,7 +49,7 @@ namespace TicketReservationSystem.Service
             _train.DeleteOne(train => train.Id == id);
         }
 
-        // update user using id
+        // update trin using id
         public void Update(string id, Train train)
         {
             _train.ReplaceOne(train => train.Id == id, train);
