@@ -25,10 +25,10 @@ namespace TicketReservationSystem.Service
             return user;
         }
 
-        // get user using id
-        public User Get(string id)
+        // get user using NIC
+        public User Get(string nic)
         {
-            return _user.Find(user => user.Id == id).FirstOrDefault();
+            return _user.Find(user => user.NIC == nic).FirstOrDefault();
         }
 
         // get user using Email
@@ -44,21 +44,21 @@ namespace TicketReservationSystem.Service
         }
 
         // remove user using id
-        public void Remove(string id)
+        public void Remove(string nic)
         {
-            _user.DeleteOne(user => user.Id == id);
+            _user.DeleteOne(user => user.NIC == nic);
         }
 
         // update user using id
-        public void Update(string id, User user)
+        public void Update(string nic, User user)
         {
-            _user.ReplaceOne(user => user.Id == id, user);
+            _user.ReplaceOne(user => user.NIC == nic, user);
         }
 
         // update user active status
-        public void UpdateActiveStatus(string id, bool active)
+        public void UpdateActiveStatus(string nic, bool active)
         {
-            var filter = Builders<User>.Filter.Eq("Id", id);
+            var filter = Builders<User>.Filter.Eq("NIC", nic);
             var update = Builders<User>.Update.Set("Active", active);
             _user.UpdateOne(filter, update);
         }

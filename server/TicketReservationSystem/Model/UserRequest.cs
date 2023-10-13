@@ -16,6 +16,6 @@ namespace TicketReservationSystem.Model
 
         public bool Active { get; set; } = false;
 
-
+        public string NIC { get; set; } = String.Empty;
     }
 }

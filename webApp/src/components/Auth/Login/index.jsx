@@ -30,53 +30,71 @@ export default function Login() {
   }
 
   return (
-    <div className="container my-5">
-      <div className="text-center mb-5">
-        <h1 className="display-4">Log In</h1>
-        <div className="shape">
-          <svg
-            width="172"
-            height="29"
-            viewBox="0 0 172 29"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
-              stroke="#D5C0ED"
-            />
-          </svg>
-        </div>
-      </div>
-      <div className="w-50 mx-auto">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <InputComponent
-              label="Email Address"
-              name="email"
-              type="email"
-              placeholder="Email Address"
-              value={email}
-              inputHandler={setEmail}
-            />
+    <div className="">
+      <div style={{
+        backgroundImage: `url(${`${process.env.PUBLIC_URL}assets/images/background.jpg`})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+      }}>
+        <div style={{
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          paddingTop: "15vh",
+          paddingBottom: "15vh",
+          paddingLeft: "10vw",
+          paddingRight: "10vw",
+          height: "100vh",
+        }}
+        >
+          <div className="text-center mb-5">
+            <h1 className="display-4">Log In</h1>
+            <div className="shape">
+              <svg
+                width="172"
+                height="29"
+                viewBox="0 0 172 29"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
+                  stroke="#D5C0ED"
+                />
+              </svg>
+            </div>
           </div>
-          <div className="mb-3">
-            <InputComponent
-              label="Password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              inputHandler={setPassword}
-            />
-          </div>
+          <div className="w-50 mx-auto">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <InputComponent
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  inputHandler={setEmail}
+                />
+              </div>
+              <div className="mb-3">
+                <InputComponent
+                  label="Password"
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  inputHandler={setPassword}
+                />
+              </div>
 
-          <div className="d-flex justify-content-between align-items-center">
-            <button type="submit" className="btn btn-primary">
-              Log In
-            </button>
+              <div className="d-flex justify-content-between align-items-center">
+                <button type="submit" className="btn btn-primary">
+                  Log In
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

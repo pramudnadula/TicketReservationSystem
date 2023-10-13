@@ -7,9 +7,12 @@ namespace TicketReservationSystem.Model
      * **/
     public class User
     {
+        // [BsonId]
+        // [BsonRepresentation(BsonType.ObjectId)]
+        // public String Id { get; set; } = String.Empty;
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public String Id { get; set; } = String.Empty;
+        [BsonElement("nic")]
+        public string NIC { get; set; } = String.Empty;
         [BsonElement("username")]
         public String Username { get; set; } = String.Empty;
         [BsonElement("email")]
@@ -22,5 +25,6 @@ namespace TicketReservationSystem.Model
         public String Role { get; set; } = String.Empty;
         [BsonElement("active")]
         public bool Active { get; set; } = false;
+
     }
 }

@@ -34,13 +34,13 @@ namespace TicketReservationSystem.Controllers
         }
 
         // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public ActionResult<User> Get(String id)
+        [HttpGet("{nic}")]
+        public ActionResult<User> Get(String nic)
         {
-            var user = userService.Get(id);
+            var user = userService.Get(nic);
             if (user == null)
             {
-                return NotFound($"user with id = {id} not found");
+                return NotFound($"user with nic = {nic} not found");
             }
 
             return user;
@@ -50,13 +50,21 @@ namespace TicketReservationSystem.Controllers
         [HttpPost("registration")]
         public ActionResult<User> Registration([FromBody] UserRequest request)
         {
-            if (request.Username == null || request.Email == null || request.Password == null)
+            if (request.Username == null || request.Email == null || request.Password == null || request.Role == null || request.NIC == null)
             {
                 return BadRequest("Fail to registre");
             }
+            // Check if a user with the provided NIC already exists
+            var existingUser = userService.Get(request.NIC);
+            if (existingUser != null)
+            {
+                return BadRequest("A user with this NIC already exists");
+            }
+
             authService.PasswordHashing(request.Password, out byte[] passwordHash, out byte[] passwordKey);
 
             User user = new User();
+            user.NIC = request.NIC;
             user.Username = request.Username;
             user.Email = request.Email;
             user.Password = passwordHash;
@@ -65,7 +73,8 @@ namespace TicketReservationSystem.Controllers
             user.Active = request.Active;
 
             userService.Create(user);
-            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            // nic is primary key 
+            return CreatedAtAction(nameof(Get), new { nic = user.NIC }, user);
         }
 
         //POST login api 
@@ -93,51 +102,68 @@ namespace TicketReservationSystem.Controllers
         }
 
         // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public ActionResult Put(String id, [FromBody] User user)
+        [HttpPut("{nic}")]
+        public ActionResult Put(String nic, [FromBody] User user)
         {
-            var existingUser = userService.Get(id);
+            var existingUser = userService.Get(nic);
 
             if (existingUser == null)
             {
-                return NotFound($"Student with id = {id} not found");
+                return NotFound($"Student with nic = {nic} not found");
             }
 
-            userService.Update(id, user);
+            // Check if the user provided a non-null password
+            if (user.Password != null)
+            {
+                // Update password and passwordKey if not null
+                existingUser.Password = user.Password;
+                existingUser.PasswordKey = user.PasswordKey;
+            }
+
+            // Update other fields if needed
+            existingUser.Username = user.Username;
+            existingUser.Email = user.Email;
+            existingUser.Role = user.Role;
+            existingUser.Active = user.Active;
+
+            userService.Update(nic, existingUser);
 
             return NoContent();
         }
 
         // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public ActionResult Delete(String id)
+        [HttpDelete("{nic}")]
+        public ActionResult Delete(String nic)
         {
-            var user = userService.Get(id);
+            var user = userService.Get(nic);
 
             if (user == null)
             {
-                return NotFound($"Student with id = {id} not found");
+                return NotFound($"Student with nic = {nic} not found");
             }
 
-            userService.Remove(user.Id);
+            userService.Remove(user.NIC);
 
-            return Ok($"Student with id = {id} deleted");
+            return Ok($"Student with nic = {nic} deleted");
         }
 
         //UPDATE active status
-        [HttpPut("active/{id}")]
-        public ActionResult UpdateActiveStatus(String id, [FromBody] User user)
+        [HttpPut("active/{nic}")]
+        public ActionResult UpdateActiveStatus(String nic, [FromBody] User user)
         {
-            var existingUser = userService.Get(id);
+            var existingUser = userService.Get(nic);
 
             if (existingUser == null)
             {
-                return NotFound($"Student with id = {id} not found");
+                return NotFound($"Student with nic = {nic} not found");
             }
 
-            userService.UpdateActiveStatus(id, user.Active);
+            userService.UpdateActiveStatus(nic, user.Active);
 
-            return NoContent();
+
+            // Return a success message along with the value of user.Active
+            return Ok($"Active status updated to {(user.Active ? "active" : "inactive")}");
         }
+
     }
 }
