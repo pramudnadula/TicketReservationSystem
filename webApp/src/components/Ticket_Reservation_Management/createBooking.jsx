@@ -4,6 +4,8 @@ import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
+import swal from "sweetalert";
+
 
 export default function CreateBooking() {
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ export default function CreateBooking() {
 
       const rest = await POST('Booking/addBooking', booking)
       console.log(rest);
+      swal("Your Booking Details Succefully Added!");
       navigate("/booking-list");
     } catch (error) {
       console.log(error)

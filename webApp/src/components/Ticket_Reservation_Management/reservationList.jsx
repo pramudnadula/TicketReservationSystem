@@ -2,7 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import { GET } from "../helpers/HTTPHelper";
+import { GET, DELETE } from "../helpers/HTTPHelper";
+import swal from "sweetalert";
+
 
 export default function ReservationList() {
     const navigate = useNavigate();
@@ -21,16 +23,34 @@ export default function ReservationList() {
         loadTrains();
     }, []);
 
+    //implement delete function in here
+    
+  const onDelete = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        DELETE(`/Booking/${id}`).then((res) => {
+          swal("Deleted Successfully", "Booking Details Are Removed", "success");
+          window.location.reload();
+        });
+      } else {
+        swal("Your Details are saved!");
+      }
+    });
+  };
+
     const handleEdit = (id) => {
         // Implement edit logic
         console.log(`Edit booking with ID ${id}`);
         navigate(`/update-booking/${id}`);
     };
 
-    const handleDelete = (id) => {
-        // Implement delete logic
-        console.log(`Delete booking with ID ${id}`);
-    };
+
 
     const handleActivate = (id) => {
         // Implement activate logic
@@ -104,7 +124,7 @@ export default function ReservationList() {
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger mx-1"
-                                            onClick={() => handleDelete(booking.id)}
+                                            onClick={() => onDelete(booking.id)}
                                         >
                                             Cancel
                                         </button>

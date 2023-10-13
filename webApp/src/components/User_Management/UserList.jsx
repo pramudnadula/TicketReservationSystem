@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import { GET } from "../helpers/HTTPHelper";
+import { GET, DELETE } from "../helpers/HTTPHelper";
+import swal from "sweetalert";
 
 export default function UserList() {
     const [members, setMembers] = useState([]);
@@ -18,6 +19,27 @@ export default function UserList() {
         }
         loadMembers();
     }, []);
+
+
+    //implement delete function here
+    const onDelete = (id) => {
+        swal({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this imaginary file!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            DELETE(`/User/${id}`).then((res) => {
+              swal("Deleted Successfully", "User Details Are Removed", "success");
+              window.location.reload();
+            });
+          } else {
+            swal("Your user details are safe!");
+          }
+        });
+      };
 
     const handleEdit = (id) => {
         console.log(`Edit user with ID ${id}`);
@@ -94,7 +116,7 @@ export default function UserList() {
                                         <button
                                             type="button"
                                             className="btn btn-sm btn-danger mx-1"
-                                            onClick={() => handleDelete(member.id)}
+                                            onClick={() => onDelete(member.id)}
                                         >
                                             Delete
                                         </button>
