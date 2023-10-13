@@ -103,21 +103,13 @@ namespace TicketReservationSystem.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{nic}")]
-        public ActionResult Put(String nic, [FromBody] User user)
+        public ActionResult Put(String nic, [FromBody] UserUpdateRequest user)
         {
             var existingUser = userService.Get(nic);
 
             if (existingUser == null)
             {
                 return NotFound($"Student with nic = {nic} not found");
-            }
-
-            // Check if the user provided a non-null password
-            if (user.Password != null)
-            {
-                // Update password and passwordKey if not null
-                existingUser.Password = user.Password;
-                existingUser.PasswordKey = user.PasswordKey;
             }
 
             // Update other fields if needed
@@ -149,7 +141,7 @@ namespace TicketReservationSystem.Controllers
 
         //UPDATE active status
         [HttpPut("active/{nic}")]
-        public ActionResult UpdateActiveStatus(String nic, [FromBody] User user)
+        public ActionResult UpdateActiveStatus(String nic, bool active)
         {
             var existingUser = userService.Get(nic);
 
@@ -158,11 +150,11 @@ namespace TicketReservationSystem.Controllers
                 return NotFound($"Student with nic = {nic} not found");
             }
 
-            userService.UpdateActiveStatus(nic, user.Active);
+            userService.UpdateActiveStatus(nic, active);
 
 
             // Return a success message along with the value of user.Active
-            return Ok($"Active status updated to {(user.Active ? "active" : "inactive")}");
+            return Ok($"Active status updated to {(active ? "active" : "inactive")}");
         }
 
         // PUT api/<UserController>/updatepassword/5
