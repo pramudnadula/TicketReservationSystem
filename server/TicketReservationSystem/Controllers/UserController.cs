@@ -165,5 +165,46 @@ namespace TicketReservationSystem.Controllers
             return Ok($"Active status updated to {(user.Active ? "active" : "inactive")}");
         }
 
+        // PUT api/<UserController>/updatepassword/5
+        [HttpPut("updatepassword/{nic}")]
+        public ActionResult UpdatePassword(String nic, [FromBody] PasswordUpdateRequest request)
+        {
+            var existingUser = userService.Get(nic);
+
+            if (existingUser == null)
+            {
+                return NotFound($"User with NIC = {nic} not found");
+            }
+
+            if (request.OldPassword == null)
+            {
+                return BadRequest("Old password cannot be empty");
+            }
+
+            // Check if the provided old password matches the stored password hash
+            bool verification = authService.VerifyPassword(request.OldPassword, existingUser.Password, existingUser.PasswordKey);
+
+            if (!verification)
+            {
+                return BadRequest("Old password is incorrect");
+            }
+
+            if (request.NewPassword == null)
+            {
+                return BadRequest("New password cannot be empty");
+            }
+
+            // Hash the new password and update the user's information
+            authService.PasswordHashing(request.NewPassword, out byte[] passwordHash, out byte[] passwordKey);
+
+            existingUser.Password = passwordHash;
+            existingUser.PasswordKey = passwordKey;
+
+            userService.Update(nic, existingUser);
+
+            return Ok("Password updated successfully");
+        }
+
+
     }
 }
