@@ -69,7 +69,8 @@ export default function TrainDetails() {
       train.trainName.toLowerCase().includes(searchKey.toLowerCase()) ||
       train.trainClassName.toLowerCase().includes(searchKey.toLowerCase()) ||
       train.startLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.endLocation.toLowerCase().includes(searchKey.toLowerCase())
+      train.endLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.status.toLowerCase().includes(searchKey.toLowerCase())
   );
 
   return (
@@ -94,11 +95,12 @@ export default function TrainDetails() {
             <tr>
               <th scope="col"></th>
               <th scope="col">Train Name</th>
-              <th scope="col">Train Class Name</th>
+              <th scope="col">Train Class </th>
               <th scope="col">Start Location</th>
               <th scope="col">End Location</th>
               <th scope="col">Departure Time</th>
               <th scope="col">Arrival Time</th>
+              <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -112,12 +114,25 @@ export default function TrainDetails() {
                 <td>{train.endLocation}</td>
                 <td>{formatTimeTo12Hour(train.departureTime)}</td>
                 <td>{formatTimeTo12Hour(train.arrivalTime)}</td>
+                <td
+                  className={
+                    train.status === "Active"
+                      ? "text-success font-weight-bold"
+                      : "text-warning font-weight-bold "
+                  }
+                >
+                  {train.status}
+                </td>
+
                 <td>
-                  &nbsp; &nbsp;
-                  <a className="btn-sm btn-warning">
-                    <i className="fas fa-edit"></i>&nbsp;Publish
-                  </a>
-                  &nbsp;
+                <button
+                    type="button"
+                    className="btn btn-sm btn-info mx-1"
+                    onClick={() => handleEdit(train.id)}
+                  >
+                    View & Update
+                  </button>
+                  &nbsp; 
                   <button
                     type="button"
                     className="btn-sm btn-danger"
@@ -126,13 +141,7 @@ export default function TrainDetails() {
                     <i className="fas fa-trash-alt"></i>&nbsp;Cancel
                   </button>
                   &nbsp;
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-info mx-1"
-                    onClick={() => handleEdit(train.id)}
-                  >
-                    Edit
-                  </button>
+                 
                 </td>
               </tr>
             ))}

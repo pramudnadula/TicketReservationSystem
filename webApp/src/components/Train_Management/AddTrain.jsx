@@ -16,10 +16,15 @@ export default function AddTrain() {
   const [endLocation, setEndLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
+  const [status, setStatus] = useState("Deactive");
+  const [showStatusField, setShowStatusField] = useState(false);
+
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+
+      setStatus("Deactive");
 
       const train = {
         trainName,
@@ -28,6 +33,7 @@ export default function AddTrain() {
         endLocation,
         departureTime,
         arrivalTime,
+        status,
       };
 
       const rest = await POST("Train/create", train);
@@ -48,6 +54,7 @@ export default function AddTrain() {
             buttonTitle="Train Details"
           />
           <form onSubmit={handleSubmit}>
+          
             <div className="mb-3">
               <InputComponent
                 label="Train Name"
@@ -55,6 +62,7 @@ export default function AddTrain() {
                 type="text"
                 placeholder="Train Name"
                 value={trainName}
+                required
                 inputHandler={setTrainName}
               />
             </div>
@@ -71,6 +79,7 @@ export default function AddTrain() {
                 name="trainClassName"
                 id="trainClassName"
                 value={trainClassName}
+                required
                 onChange={(e) => setTrainClassName(e.target.value)}
               >
                 <option value="">Select Train Name</option>
@@ -87,6 +96,7 @@ export default function AddTrain() {
                 type="text"
                 placeholder="Start Location"
                 value={startLocation}
+                required
                 inputHandler={setStartLocation}
               />
             </div>
@@ -98,6 +108,7 @@ export default function AddTrain() {
                 type="text"
                 placeholder="End Location"
                 value={endLocation}
+                required
                 inputHandler={setEndLocation}
               />
             </div>
@@ -109,6 +120,7 @@ export default function AddTrain() {
                   type="text"
                   placeholder="Departure Time"
                   value={departureTime}
+                  required
                   inputHandler={setDepartureTime}
                 />
               </div>
@@ -119,9 +131,36 @@ export default function AddTrain() {
                   type="text"
                   placeholder="Arrival Time"
                   value={arrivalTime}
+                  required
                   inputHandler={setArrivalTime}
                 />
               </div>
+             
+              <div className="mb-3">
+              {showStatusField && (
+            <>
+              <label
+                htmlFor="trainName"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Status</b>
+              </label>
+              <select
+                className="form-select"
+                name="trainClassName"
+                id="trainClassName"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="">Select Train Status</option>
+                <option value="option2">Active</option>
+                <option value="option2">Deactive</option>
+                
+              </select>
+              </>
+            )}
+            </div>
             </div>
             <br />
             <div className="d-flex justify-content-center">
@@ -133,6 +172,8 @@ export default function AddTrain() {
                 Add Reservations
               </button>
             </div>
+          
+
           </form>
         </div>
       </div>

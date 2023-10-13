@@ -51,7 +51,7 @@ namespace TicketReservationSystem.Controllers
         [HttpPost("create")]
         public ActionResult<Train> Registration([FromBody] TrainRequest request)
         {
-            if (request.TrainName == null || request.StartLocation == null || request.EndLocation == null || request.DepartureTime == null || request.ArrivalTime == null)
+            if (request.TrainName == null || request.TrainClassName == null || request.StartLocation == null || request.EndLocation == null || request.DepartureTime == null || request.ArrivalTime == null)
             {
                 return BadRequest("Fail to create");
             }
@@ -64,6 +64,7 @@ namespace TicketReservationSystem.Controllers
             train.EndLocation = request.EndLocation;
             train.DepartureTime = request.DepartureTime;
             train.ArrivalTime = request.ArrivalTime;
+            train.Status = request.Status;
 
 
             trainService.Create(train);

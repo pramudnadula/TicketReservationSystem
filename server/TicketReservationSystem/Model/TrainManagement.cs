@@ -22,6 +22,8 @@ namespace TicketReservationSystem.Model
         public String  DepartureTime { get; set; } = String.Empty;
          [BsonElement("arrivalTime")]
         public String  ArrivalTime { get; set; } = String.Empty;
+         [BsonElement("status")]
+        public String  Status { get; set; } = String.Empty;
        
        
     }
