@@ -13,9 +13,10 @@ export default function UserUpdate() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(" ");
+  const [role, setRole] = useState("");
+
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [role, setRole] = useState("");
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -127,8 +128,7 @@ export default function UserUpdate() {
                   name="password"
                   type="password"
                   placeholder="Current Password"
-                  // value={firstName}
-                  inputHandler={password}
+                  inputHandler={setPassword}
                 />
               </div>
 
@@ -138,8 +138,7 @@ export default function UserUpdate() {
                   name="newPassword"
                   type="newPassword"
                   placeholder="New Password"
-                  // value={firstName}
-                  inputHandler={newPassword}
+                  inputHandler={setNewPassword}
                 />
               </div>
 
