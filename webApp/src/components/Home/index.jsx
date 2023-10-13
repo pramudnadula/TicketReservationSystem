@@ -36,15 +36,17 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-4">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Train Management</h5>
-                                        <p className="card-text">Manage trains and schedules.</p>
-                                        <Link to="/train-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
+                            {localStorage.getItem("role") === "BACKOFFICE" && (
+                                <div className="col-lg-4">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5 className="card-title">Train Management</h5>
+                                            <p className="card-text">Manage trains and schedules.</p>
+                                            <Link to="/train-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            )}
                             <div className="col-lg-4">
                                 <div className="card">
                                     <div className="card-body">
