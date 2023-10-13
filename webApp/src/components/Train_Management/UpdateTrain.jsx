@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { Link } from "react-router-dom";
 
 export default function UpdateTrain() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [trainS, setTrainS] = useState("");
+  const [trainName, setTrainName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
+  const [startLocation, setStartLocation] = useState("");
+  const [endLocation, setEndLocation] = useState("");
+  const [departureTime, setDepartureTime] = useState("");
+  const [arrivalTime, setArrivalTime] = useState("");
+
+  useEffect(() => {
+    fetch(`https://localhost:7104/api/Train/${id}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTrainName(data.trainName);
+        setStartLocation(data.startLocation);
+        setEndLocation(data.endLocation);
+        setDepartureTime(data.departureTime);
+        setArrivalTime(data.arrivalTime);
+      })
+
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id]);
+
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
       <div className="container d-flex justify-content-center align-items-center h-100">
@@ -33,23 +63,38 @@ export default function UpdateTrain() {
                 <label>Train Name </label>
                 <br />
 
-                <select className="form-control">
+                <select
+                  className="form-control"
+                  value={trainName}
+                  onChange={(event) => setTrainName(event.target.value)}
+                >
                   <option value="option1">1 st Class</option>
                   <option value="option2">2 nd Class</option>
                   <option value="option3">3 rd Class</option>
                 </select>
               </div>
               <label>Start Location </label> <br />
-              <input type="text" className="form-control" />
+              <input
+                type="text"
+                className="form-control"
+                value={startLocation}
+                onChange={(event) => setStartLocation(event.target.value)}
+              />
               <br />
               <label>End Location </label> <br />
-              <input type="text" className="form-control" /> <br />
+              <input
+                type="text"
+                className="form-control"
+                value={endLocation}
+                onChange={(event) => setEndLocation(event.target.value)}
+              />{" "}
+              <br />
               <div className="row">
                 <div className="col-md-6">
                   <label>Departure Time</label>
                   <input
-                    type="time"
-                    name="departureTime"
+                    value={departureTime}
+                    onChange={(event) => setDepartureTime(event.target.value)}
                     className="form-control"
                     required
                   />
@@ -57,9 +102,10 @@ export default function UpdateTrain() {
                 <div className="col-md-6">
                   <label>Arrival Time</label>
                   <input
-                    type="time"
                     name="arrivalTime"
                     className="form-control"
+                    value={arrivalTime}
+                    onChange={(event) => setArrivalTime(event.target.value)}
                     required
                   />
                 </div>

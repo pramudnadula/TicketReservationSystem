@@ -1,36 +1,64 @@
-/* eslint-disable no-unused-vars */
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Layout from '../Partials/Layout';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Layout from "../Partials/Layout";
+import { DELETE, GET } from "../helpers/HTTPHelper";
+import swal from "sweetalert";
 
 export default function TrainDetails() {
   const [trains, setTrains] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadTrains() {
       try {
-        const response = await axios.get('https://localhost:7104/api/Train');
+        const response = await GET("Train");
         setTrains(response.data);
       } catch (error) {
-        console.error('Error loading train details:', error);
+        console.error("Error loading train details:", error);
       }
     }
     loadTrains();
   }, []);
 
-  const filterData = (searchKey) => {
-    const result = trains.filter((train) =>
-      train.trainName.toLowerCase().includes(searchKey)
-    );
-    setFilteredPosts(result);
+  const handleEdit = (id) => {
+    console.log(`Edit train with ID ${id}`);
+    navigate(`/updateTrain/${id}`);
   };
 
-  const handleSearchArea = (e) => {
-    const searchKey = e.currentTarget.value;
-    filterData(searchKey);
+  const onDelete = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        DELETE(`/Train/${id}`).then((res) => {
+          swal("Deleted Successfully", "Train Details Are Removed", "success");
+          window.location.reload();
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
   };
+
+  //search function start here
+  const handleSearch = (e) => {
+    setSearchKey(e.target.value);
+  };
+
+  const filteredTrains = trains.filter(
+    (train) =>
+      train.trainName.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.startLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.endLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.departureTime.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.arrivalTime.toLowerCase().includes(searchKey.toLowerCase())
+  );
 
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
@@ -44,7 +72,7 @@ export default function TrainDetails() {
               className="form-control"
               type="search"
               placeholder="Search by Train Name"
-              onChange={handleSearchArea}
+              onChange={handleSearch}
             />
           </div>
         </div>
@@ -62,7 +90,7 @@ export default function TrainDetails() {
             </tr>
           </thead>
           <tbody>
-            {trains.map((train) => (
+            {filteredTrains.map((train) => (
               <tr>
                 <th scope="row"></th>
                 <td>{train.trainName}</td>
@@ -71,21 +99,43 @@ export default function TrainDetails() {
                 <td>{train.departureTime}</td>
                 <td>{train.arrivalTime}</td>
                 <td>
-                  <a className="btn btn-primary" href="mail">
-                    <i className="fas fa-edit"></i>&nbsp;Active
-                  </a>
-                  &nbsp; &nbsp;
-                  <a className="btn btn-warning" href="/edit">
+                  {train.active ? (
+                    <button
+                      type="button"
+                      className="btn btn btn-warning mx-1"
+                      onClick={() => onDeactivate(train.id)}
+                    >
+                      Deactivate
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn btn-success mx-1"
+                      onClick={() => onActivate(train.id)}
+                    >
+                      Activate
+                    </button>
+                  )}
+                  &nbsp; &nbsp; &nbsp; &nbsp;
+                  <a className="btn btn-warning">
                     <i className="fas fa-edit"></i>&nbsp;Publish
                   </a>
                   &nbsp;
-                  <button type='button' className="btn btn-danger">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => onDelete(train.id)}
+                  >
                     <i className="fas fa-trash-alt"></i>&nbsp;Cancel
                   </button>
                   &nbsp;
-                  <Link to="/updateTrain/" className="btn  btn-info">
-                    Update
-                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn btn-info mx-1"
+                    onClick={() => handleEdit(train.id)}
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}
