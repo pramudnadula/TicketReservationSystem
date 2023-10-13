@@ -10,7 +10,8 @@ import swal from "sweetalert";
 export default function AddTrain() {
   const navigate = useNavigate();
 
-  const [trainName, setTrainName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
+  const [trainName, setTrainName] = useState("");
+  const [trainClassName, setTrainClassName] = useState("");
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
@@ -22,6 +23,7 @@ export default function AddTrain() {
 
       const train = {
         trainName,
+        trainClassName,
         startLocation,
         endLocation,
         departureTime,
@@ -47,19 +49,29 @@ export default function AddTrain() {
           />
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
+              <InputComponent
+                label="Train Name"
+                name="trainName"
+                type="text"
+                placeholder="Train Name"
+                value={trainName}
+                inputHandler={setTrainName}
+              />
+            </div>
+            <div className="mb-3">
               <label
                 htmlFor="trainName"
                 className="form-label"
                 style={{ color: "#7a25a5" }}
               >
-                <b>Train Name</b>
+                <b>Train Class Name</b>
               </label>
               <select
                 className="form-select"
-                name="trainName"
-                id="trainName"
-                value={trainName}
-                onChange={(e) => setTrainName(e.target.value)}
+                name="trainClassName"
+                id="trainClassName"
+                value={trainClassName}
+                onChange={(e) => setTrainClassName(e.target.value)}
               >
                 <option value="">Select Train Name</option>
                 <option value="1">1 st Class</option>
@@ -67,6 +79,7 @@ export default function AddTrain() {
                 <option value="3">3 rd Class</option>
               </select>
             </div>
+
             <div className="mb-3">
               <InputComponent
                 label="Start Location"
@@ -93,7 +106,7 @@ export default function AddTrain() {
                 <InputComponent
                   label="Departure Time"
                   name="departureTime"
-                  type="time"
+                  type="text"
                   placeholder="Departure Time"
                   value={departureTime}
                   inputHandler={setDepartureTime}
@@ -103,7 +116,7 @@ export default function AddTrain() {
                 <InputComponent
                   label="Arrival Time"
                   name="arrivalTime"
-                  type="time"
+                  type="text"
                   placeholder="Arrival Time"
                   value={arrivalTime}
                   inputHandler={setArrivalTime}

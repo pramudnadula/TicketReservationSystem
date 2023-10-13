@@ -7,6 +7,8 @@ namespace TicketReservationSystem.Model
     {
         public String TrainName { get; set; } = String.Empty;
 
+          public String TrainClassName { get; set; } = String.Empty;
+
         public String StartLocation { get; set; } = String.Empty;
 
         public String EndLocation { get; set; } = String.Empty;

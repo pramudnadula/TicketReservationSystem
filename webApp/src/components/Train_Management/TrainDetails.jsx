@@ -5,6 +5,19 @@ import Layout from "../Partials/Layout";
 import { DELETE, GET } from "../helpers/HTTPHelper";
 import swal from "sweetalert";
 
+function formatTimeTo12Hour(time) {
+  const [hourMinute, ampm] = (time || "").split(" ");
+
+  if (!hourMinute) {
+    return ""; // Return an empty string if hourMinute is not provided
+  }
+
+  const [hour, minute] = hourMinute.split(".");
+  const formattedHour = parseInt(hour, 10) % 12 || 12; // Convert 0 to 12
+  const uppercasedAmpm = ampm ? ampm.toUpperCase() : "";
+  return `${formattedHour}.${minute || "00"} ${uppercasedAmpm}`;
+}
+
 export default function TrainDetails() {
   const [trains, setTrains] = useState([]);
   const [searchKey, setSearchKey] = useState("");
@@ -54,10 +67,9 @@ export default function TrainDetails() {
   const filteredTrains = trains.filter(
     (train) =>
       train.trainName.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train.trainClassName.toLowerCase().includes(searchKey.toLowerCase()) ||
       train.startLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.endLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.departureTime.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.arrivalTime.toLowerCase().includes(searchKey.toLowerCase())
+      train.endLocation.toLowerCase().includes(searchKey.toLowerCase())
   );
 
   return (
@@ -77,11 +89,12 @@ export default function TrainDetails() {
           </div>
         </div>
 
-        <table className="table shadow mb-10">
+        <table className="table shadow mb-10 ">
           <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col">Train Name</th>
+              <th scope="col">Train Class Name</th>
               <th scope="col">Start Location</th>
               <th scope="col">End Location</th>
               <th scope="col">Departure Time</th>
@@ -94,36 +107,20 @@ export default function TrainDetails() {
               <tr>
                 <th scope="row"></th>
                 <td>{train.trainName}</td>
+                <td>{train.trainClassName}</td>
                 <td>{train.startLocation}</td>
                 <td>{train.endLocation}</td>
-                <td>{train.departureTime}</td>
-                <td>{train.arrivalTime}</td>
+                <td>{formatTimeTo12Hour(train.departureTime)}</td>
+                <td>{formatTimeTo12Hour(train.arrivalTime)}</td>
                 <td>
-                  {train.active ? (
-                    <button
-                      type="button"
-                      className="btn btn btn-warning mx-1"
-                      onClick={() => onDeactivate(train.id)}
-                    >
-                      Deactivate
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn btn btn-success mx-1"
-                      onClick={() => onActivate(train.id)}
-                    >
-                      Activate
-                    </button>
-                  )}
-                  &nbsp; &nbsp; &nbsp; &nbsp;
-                  <a className="btn btn-warning">
+                  &nbsp; &nbsp;
+                  <a className="btn-sm btn-warning">
                     <i className="fas fa-edit"></i>&nbsp;Publish
                   </a>
                   &nbsp;
                   <button
                     type="button"
-                    className="btn btn-danger"
+                    className="btn-sm btn-danger"
                     onClick={() => onDelete(train.id)}
                   >
                     <i className="fas fa-trash-alt"></i>&nbsp;Cancel
@@ -131,7 +128,7 @@ export default function TrainDetails() {
                   &nbsp;
                   <button
                     type="button"
-                    className="btn btn btn-info mx-1"
+                    className="btn btn-sm btn-info mx-1"
                     onClick={() => handleEdit(train.id)}
                   >
                     Edit

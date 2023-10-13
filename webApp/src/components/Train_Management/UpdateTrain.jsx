@@ -9,7 +9,8 @@ export default function UpdateTrain() {
   const navigate = useNavigate();
 
   const [trainS, setTrainS] = useState("");
-  const [trainName, setTrainName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
+  const [trainName, setTrainName] = useState("");
+  const [trainClassName, setTrainClassName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
@@ -22,6 +23,7 @@ export default function UpdateTrain() {
       .then((response) => response.json())
       .then((data) => {
         setTrainName(data.trainName);
+        setTrainClassName(data.trainClassName);
         setStartLocation(data.startLocation);
         setEndLocation(data.endLocation);
         setDepartureTime(data.departureTime);
@@ -60,12 +62,18 @@ export default function UpdateTrain() {
             <form className="travelform">
               <div className="form-group ">
                 <br></br>
-                <label>Train Name </label>
+                <label>Train Name </label> <br />
+                <input
+                  type="text"
+                  className="form-control"
+                  value={trainClassName}
+                  onChange={(event) => setTrainClassName(event.target.value)}
+                />
+                <label>Train Class Name </label>
                 <br />
-
                 <select
                   className="form-control"
-                  value={trainName}
+                  value={trainClassName}
                   onChange={(event) => setTrainName(event.target.value)}
                 >
                   <option value="option1">1 st Class</option>

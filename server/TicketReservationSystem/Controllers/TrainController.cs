@@ -59,6 +59,7 @@ namespace TicketReservationSystem.Controllers
 
             Train train = new Train();
             train.TrainName = request.TrainName;
+            train.TrainClassName = request.TrainClassName;
             train.StartLocation = request.StartLocation;
             train.EndLocation = request.EndLocation;
             train.DepartureTime = request.DepartureTime;
