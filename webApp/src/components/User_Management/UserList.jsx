@@ -97,14 +97,20 @@ export default function UserList() {
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">NIC</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {members.map((member) => (
                 <tr key={member.id}>
-                  <th scope="row">{member.username}</th>
+                  <th scope="row">{member.username.split("undefined")[0]}</th>
                   <td>{member.email}</td>
+                  <td>{member.nic}</td>
+                  <td>{member.role}</td>
+                  <td>{member.active ? "Active" : "Inactive"}</td>
 
                   <td>
                     <button
