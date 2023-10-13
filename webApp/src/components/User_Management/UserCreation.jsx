@@ -10,20 +10,35 @@ import swal from "sweetalert";
 
 export default function UserCreation() {
   const navigate = useNavigate();
+  // {
+  //   "username": "string",
+  //     "email": "string",
+  //       "role": "string",
+  //         "active": true,
+  //           "nic": "string"
+  // }
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  // const [active, setActive] = useState(true);
+  const [nic, setNic] = useState("");
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      if (nic === "" || firstName === "" || email === "" || password === "" || role === "") {
+        swal("Please Fill All The Fields!");
+        return;
+      }
       const user = {
         username: `${firstName} ${lastName}`,
         email,
         password,
-        role
+        role,
+        active: false,
+        nic
       }
       const rest = await POST('User/registration', user)
       console.log(rest);
@@ -78,6 +93,17 @@ export default function UserCreation() {
                 placeholder="Password"
                 value={password}
                 inputHandler={setPassword}
+              />
+            </div>
+            <div className="mb-3">
+              <InputComponent
+                label="NIC"
+                name="nic"
+                type="text"
+                placeholder="NIC"
+                value={nic}
+                inputHandler={setNic}
+
               />
             </div>
             {/* user role Travel Agent and  Backoffice  */}
