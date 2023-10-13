@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-onchange */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,12 +10,27 @@ import { GET, PUT } from "../helpers/HTTPHelper";
 export default function UserUpdate() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState({});
+
+  const [type, setType] = useState("basic");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [active, setActive] = useState("");
+  const [nic, setNic] = useState("");
+
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const getUser = async () => {
     try {
       const rest = await GET(`User/${id}`)
-      setUser(rest.data)
+      setFirstName(rest?.data?.username?.split(" ")[0])
+      setLastName(rest?.data?.username?.split(" ")[1])
+      setEmail(rest?.data?.email)
+      setRole(rest?.data?.role)
+      setActive(rest?.data?.active)
+      setNic(rest?.data?.nic)
     } catch (error) {
       console.log(error)
     }
@@ -24,27 +40,6 @@ export default function UserUpdate() {
     getUser()
   }, [])
 
-
-  const [type, setType] = useState("basic");
-  const [firstName, setFirstName] = useState(user?.username?.split(" ")[0]);
-  const [lastName, setLastName] = useState(user?.username?.split(" ")[1]);
-  const [email, setEmail] = useState(user?.email);
-  const [role, setRole] = useState(user?.role);
-  const [active, setActive] = useState(user?.active);
-  const [nic, setNic] = useState(user?.nic);
-
-  useEffect(() => {
-    setFirstName(user?.username?.split(" ")[0])
-    setLastName(user?.username?.split(" ")[1])
-    setEmail(user?.email)
-    setRole(user?.role)
-    setActive(user?.active)
-    setNic(user?.nic)
-  }, [user])
-
-
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -146,8 +141,8 @@ export default function UserUpdate() {
                   className="form-select"
                   name="role"
                   id="role"
-                  defaultValue={role}
-                  onBlur={(e) => setRole(e.target.value)}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
                 >
                   <option value="">Select Role</option>
                   <option value="TRAVELAGENT">Travel Agent</option>
