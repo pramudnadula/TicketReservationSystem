@@ -24,25 +24,25 @@ export default function ReservationList() {
     }, []);
 
     //implement delete function in here
-    
-  const onDelete = (id) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        DELETE(`/Booking/${id}`).then((res) => {
-          swal("Deleted Successfully", "Booking Details Are Removed", "success");
-          window.location.reload();
+
+    const onDelete = (id) => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                DELETE(`/Booking/${id}`).then((res) => {
+                    swal("Deleted Successfully", "Booking Details Are Removed", "success");
+                    window.location.reload();
+                });
+            } else {
+                swal("Your Details are saved!");
+            }
         });
-      } else {
-        swal("Your Details are saved!");
-      }
-    });
-  };
+    };
 
     const handleEdit = (id) => {
         // Implement edit logic
@@ -75,7 +75,9 @@ export default function ReservationList() {
             <div className="container-xxl my-2">
                 <div className="text-center mb-5">
                     <h1 className="text-center topic" style={{ color: "#00008b" }}>
-                        Reserved Ticket List
+                        <b>
+                            Reserved Ticket List
+                        </b>
                     </h1>
                     <div className="shape">
                         <svg

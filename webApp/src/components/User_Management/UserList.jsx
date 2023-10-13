@@ -72,7 +72,9 @@ export default function UserList() {
       </div>
       <div className="container-xxl my-2">
         <div className="text-center mb-5">
-          <h1 className="display-4">User List</h1>
+          <h1 className="text-center topic" style={{ color: "#00008b" }}>
+            <b>User Details</b>
+          </h1>
           <div className="shape">
             <svg
               width="172"

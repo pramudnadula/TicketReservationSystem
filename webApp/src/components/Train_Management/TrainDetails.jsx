@@ -76,6 +76,25 @@ export default function TrainDetails() {
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
       <div className="container mt-12">
+        <div className="text-center mb-5">
+          <h1 className="text-center topic" style={{ color: "#00008b" }}>
+            <b>Train Details</b>
+          </h1>
+          <div className="shape">
+            <svg
+              width="172"
+              height="29"
+              viewBox="0 0 172 29"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1 5.08742C17.6667 19.0972 30.5 31.1305 62.5 27.2693C110.617 21.4634 150 -10.09 171 5.08727"
+                stroke="#D5C0ED"
+              />
+            </svg>
+          </div>
+        </div>
         <div className="row">
           <div className="col-lg-9 mt-12 mb-2">
             <h4>Search Train details</h4>
@@ -125,14 +144,14 @@ export default function TrainDetails() {
                 </td>
 
                 <td>
-                <button
+                  <button
                     type="button"
                     className="btn btn-sm btn-info mx-1"
                     onClick={() => handleEdit(train.id)}
                   >
                     View & Update
                   </button>
-                  &nbsp; 
+                  &nbsp;
                   <button
                     type="button"
                     className="btn-sm btn-danger"
@@ -141,7 +160,7 @@ export default function TrainDetails() {
                     <i className="fas fa-trash-alt"></i>&nbsp;Cancel
                   </button>
                   &nbsp;
-                 
+
                 </td>
               </tr>
             ))}
