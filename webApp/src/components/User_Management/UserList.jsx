@@ -100,7 +100,9 @@ export default function UserList() {
                 <th scope="col">NIC</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
-                <th scope="col">Actions</th>
+                <th scope="col" colSpan={
+                  localStorage.getItem("role") === "BACKOFFICE" ? "3" : "2"
+                } style={{ textAlign: "center" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -116,35 +118,48 @@ export default function UserList() {
                     <button
                       type="button"
                       className="btn btn-sm btn-info mx-1"
+                      style={{ width: "90px" }}
                       onClick={() => handleEdit(member.nic)}
                     >
                       Edit
                     </button>
+                  </td>
+
+                  <td>
                     <button
                       type="button"
                       className="btn btn-sm btn-danger mx-1"
+                      style={{ width: "90px" }}
                       onClick={() => onDelete(member.id)}
                     >
                       Delete
                     </button>
-                    {member.active ? (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-warning mx-1"
-                        onClick={() => handleDeactivate(member.id)}
-                      >
-                        Deactivate
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-success mx-1"
-                        onClick={() => handleActivate(member.id)}
-                      >
-                        Activate
-                      </button>
-                    )}
                   </td>
+                  {localStorage.getItem("role") === "BACKOFFICE" && (
+                    <td>
+                      {member.active ? (
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-warning mx-1"
+                          style={{ width: "90px" }}
+                          onClick={() => handleDeactivate(member.id)}
+                          disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                        >
+                          Deactivate
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-success mx-1"
+                          style={{ width: "90px" }}
+                          onClick={() => handleActivate(member.id)}
+                          disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                        >
+                          Activate
+                        </button>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

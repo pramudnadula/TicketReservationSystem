@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import swal from "sweetalert";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
@@ -44,6 +45,14 @@ export default function UserUpdate() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
+      if (nic === "" || firstName === "" || email === "" || role === "") {
+        swal("Please Fill All The Fields!");
+        return;
+      }
+      if (localStorage.getItem("role") === "TRAVELAGENT") {
+        setRole("TRAVELAGENT")
+      }
+
       const userOj = {
         username: `${firstName} ${lastName}`,
         email,
@@ -132,24 +141,25 @@ export default function UserUpdate() {
                   inputHandler={setEmail}
                 />
               </div>
-              {/* user role Travel Agent and  Backoffice  */}
-              <div className="mb-3">
-                <label htmlFor="role" className="form-label">
-                  Role
-                </label>
-                <select
-                  className="form-select"
-                  name="role"
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="">Select Role</option>
-                  <option value="TRAVELAGENT">Travel Agent</option>
-                  <option value="BACKOFFICE">Backoffice</option>
-                </select>
-              </div>
-
+              {localStorage.getItem("role") === "BACKOFFICE" && (
+                <div className="mb-3">
+                  <label htmlFor="role" className="form-label">
+                    Role
+                  </label>
+                  <select
+                    className="form-select"
+                    name="role"
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                  >
+                    <option value="">Select Role</option>
+                    <option value="TRAVELAGENT">Travel Agent</option>
+                    <option value="BACKOFFICE">Backoffice</option>
+                  </select>
+                </div>
+              )}
               <br />
               <div className="d-flex justify-content-between align-items-center">
                 <button type="submit" className="btn button-btn">

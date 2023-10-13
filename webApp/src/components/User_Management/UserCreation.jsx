@@ -1,22 +1,16 @@
 /* eslint-disable jsx-a11y/no-onchange */
+import swal from "sweetalert";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import { POST } from "../helpers/HTTPHelper";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
-import swal from "sweetalert";
 
 
 export default function UserCreation() {
   const navigate = useNavigate();
-  // {
-  //   "username": "string",
-  //     "email": "string",
-  //       "role": "string",
-  //         "active": true,
-  //           "nic": "string"
-  // }
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState(" ");
