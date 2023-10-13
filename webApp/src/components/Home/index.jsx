@@ -11,6 +11,7 @@ export default function Home() {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
+                    height: "91.7vh",
                 }}>
                     <div style={{
                         backgroundColor: "rgba(255, 255, 255, 0.7)",
@@ -18,6 +19,7 @@ export default function Home() {
                         paddingBottom: "15vh",
                         paddingLeft: "10vw",
                         paddingRight: "10vw",
+                        height: "91.7vh",
                     }}
                     >
                         <div>

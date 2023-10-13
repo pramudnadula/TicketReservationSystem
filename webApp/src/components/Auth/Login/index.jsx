@@ -48,7 +48,7 @@ export default function Login() {
         }}
         >
           <div className="text-center mb-5">
-            <h1 className="display-4">Log In</h1>
+            <div className="display-5" style={{ color: "#7a25a5", fontWeight: 600 }}> Log In</div>
             <div className="shape">
               <svg
                 width="172"
