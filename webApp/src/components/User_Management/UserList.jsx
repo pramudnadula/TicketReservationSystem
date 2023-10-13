@@ -1,8 +1,8 @@
+import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { GET, DELETE } from "../helpers/HTTPHelper";
-import swal from "sweetalert";
 
 export default function UserList() {
   const [members, setMembers] = useState([]);
@@ -20,7 +20,7 @@ export default function UserList() {
     loadMembers();
   }, []);
 
-  //implement delete function here
+  // implement delete function here
   const onDelete = (id) => {
     swal({
       title: "Are you sure?",
@@ -41,7 +41,8 @@ export default function UserList() {
   };
 
   const handleEdit = (id) => {
-    console.log(`Edit user with ID ${id}`);
+    // console.log(`Edit user with ID ${id}`);
+    console.log(id);
     navigate(`/user-update/${id}`);
   };
 
@@ -109,7 +110,7 @@ export default function UserList() {
                     <button
                       type="button"
                       className="btn btn-sm btn-info mx-1"
-                      onClick={() => handleEdit(member.id)}
+                      onClick={() => handleEdit(member.nic)}
                     >
                       Edit
                     </button>

@@ -1,38 +1,91 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import { GET, PUT } from "../helpers/HTTPHelper";
 
 export default function UserUpdate() {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    try {
+      const rest = await GET(`User/${id}`)
+      setUser(rest.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
 
   const [type, setType] = useState("basic");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState(" ");
-  const [role, setRole] = useState("");
+  const [firstName, setFirstName] = useState(user?.username?.split(" ")[0]);
+  const [lastName, setLastName] = useState(user?.username?.split(" ")[1]);
+  const [email, setEmail] = useState(user?.email);
+  const [role, setRole] = useState(user?.role);
+  const [active, setActive] = useState(user?.active);
+  const [nic, setNic] = useState(user?.nic);
+
+  useEffect(() => {
+    setFirstName(user?.username?.split(" ")[0])
+    setLastName(user?.username?.split(" ")[1])
+    setEmail(user?.email)
+    setRole(user?.role)
+    setActive(user?.active)
+    setNic(user?.nic)
+  }, [user])
+
 
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("Form handleUpdate");
-    console.log(firstName, lastName, email, password, role);
-    navigate("/user-list");
+    try {
+      const userOj = {
+        username: `${firstName} ${lastName}`,
+        email,
+        role,
+        active,
+        nic
+      }
+
+      const rest = await PUT(`User/${id}`, userOj)
+      console.log(rest);
+      navigate("/user-list");
+    } catch (error) {
+      console.log(error)
+    }
   };
 
 
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    try {
+      const userOj = {
+        oldPassword: password,
+        newPassword
+      }
+      const rest = await PUT(`User/updatepassword/${id}`, userOj)
+      console.log(rest);
+      navigate("/user-list");
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
-
         <div className="card p-5 shadow w-50 mx-auto">
           <MainHeaderTitle title="User Update" link="/user-list" buttonTitle="User List" />
-
           <div className="d-flex justify-content-center align-items-center gap-2 mt-3">
             <button
               type="button"
@@ -60,7 +113,7 @@ export default function UserUpdate() {
                   name="firstName"
                   type="text"
                   placeholder="First Name"
-                  // value={firstName}
+                  value={firstName}
                   inputHandler={setFirstName}
                 />
               </div>
@@ -70,7 +123,7 @@ export default function UserUpdate() {
                   name="lastName"
                   type="text"
                   placeholder="Last Name"
-                  // value={lastName}
+                  value={lastName}
                   inputHandler={setLastName}
                 />
               </div>
@@ -80,18 +133,8 @@ export default function UserUpdate() {
                   name="email"
                   type="email"
                   placeholder="Email Address"
-                  // value={email}
+                  value={email}
                   inputHandler={setEmail}
-                />
-              </div>
-              <div className="mb-3">
-                <InputComponent
-                  label="Password"
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  // value={password}
-                  inputHandler={setPassword}
                 />
               </div>
               {/* user role Travel Agent and  Backoffice  */}
@@ -103,7 +146,7 @@ export default function UserUpdate() {
                   className="form-select"
                   name="role"
                   id="role"
-                  // value={role}
+                  defaultValue={role}
                   onBlur={(e) => setRole(e.target.value)}
                 >
                   <option value="">Select Role</option>
@@ -121,7 +164,7 @@ export default function UserUpdate() {
             </form>
           )}
           {type === "password" && (
-            <form>
+            <form onSubmit={handleUpdatePassword}>
               <div className="mb-3">
                 <InputComponent
                   label="Current Password"
