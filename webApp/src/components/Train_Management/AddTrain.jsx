@@ -54,7 +54,7 @@ export default function AddTrain() {
             buttonTitle="Train Details"
           />
           <form onSubmit={handleSubmit}>
-          
+
             <div className="mb-3">
               <InputComponent
                 label="Train Name"
@@ -135,45 +135,42 @@ export default function AddTrain() {
                   inputHandler={setArrivalTime}
                 />
               </div>
-             
+
               <div className="mb-3">
-              {showStatusField && (
-            <>
-              <label
-                htmlFor="trainName"
-                className="form-label"
-                style={{ color: "#7a25a5" }}
-              >
-                <b>Status</b>
-              </label>
-              <select
-                className="form-select"
-                name="trainClassName"
-                id="trainClassName"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="">Select Train Status</option>
-                <option value="option2">Active</option>
-                <option value="option2">Deactive</option>
-                
-              </select>
-              </>
-            )}
-            </div>
+                {showStatusField && (
+                  <>
+                    <label
+                      htmlFor="trainName"
+                      className="form-label"
+                      style={{ color: "#7a25a5" }}
+                    >
+                      <b>Status</b>
+                    </label>
+                    <select
+                      className="form-select"
+                      name="trainClassName"
+                      id="trainClassName"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                    >
+                      <option value="">Select Train Status</option>
+                      <option value="option2">Active</option>
+                      <option value="option2">Deactive</option>
+
+                    </select>
+                  </>
+                )}
+              </div>
             </div>
             <br />
             <div className="d-flex justify-content-center">
               <button
                 type="submit"
-                className="btn"
-                style={{ backgroundColor: "#7a25a5", color: "white" }}
+                className="btn button-btn"
               >
                 Add Reservations
               </button>
             </div>
-          
-
           </form>
         </div>
       </div>
