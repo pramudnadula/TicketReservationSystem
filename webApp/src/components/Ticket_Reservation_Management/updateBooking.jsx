@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
+import { PUT } from "../helpers/HTTPHelper";
 
 export default function UpdateBooking() {
     const navigate = useNavigate();
@@ -13,13 +14,40 @@ export default function UpdateBooking() {
     const [noOfTickets, setnoOfTickets] = useState("");
     const [ticketclass, setTicketClass] = useState("");
 
-    const handleUpdate = (e) => {
+    const handleSubmit = async (e) => {
+        try {
+          e.preventDefault();
+      
+          const booking = {
+            fromStation,
+            toStation,
+            journeyDate,
+            noOfTickets,
+            ticketclass,
+          };
+      
+          // Assuming you have an `id` for the booking you want to update
+          
+      
+          // Use the PUT function to update the booking
+          const updatedBooking = await PUT(`Booking/${id}`, booking);
+      
+          console.log(updatedBooking);
+          navigate("/booking-list");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+
+      const handleUpdate = (e) => {
         e.preventDefault();
-        console.log("Train Reservation Details Updated Successfully !");
+        console.log("Form handleUpdate");
         console.log(fromStation, toStation, journeyDate, noOfTickets, ticketclass);
         navigate("/booking-list");
 
     }
+
 
     return (
         <Layout childrenClasses="pt-0 pb-0">
@@ -75,7 +103,8 @@ export default function UpdateBooking() {
                                     name="fromStation"
                                     type="text"
                                     placeholder="From Station"
-                                    inputHandler={setFromStation}
+                                 
+                                    value={fromStation}
                                 />
                             </div>
                             <div className="mb-3">
@@ -86,7 +115,7 @@ export default function UpdateBooking() {
                                     name="toStation"
                                     type="text"
                                     placeholder="To Station"
-                                    inputHandler={setToStation}
+                                     value={toStation}
                                 />
                             </div>
                             <div className="mb-3">
@@ -97,7 +126,8 @@ export default function UpdateBooking() {
                                     name="journeyDate"
                                     type="date"
                                     placeholder="Journey Date"
-                                    inputHandler={setJourneyDate}
+                               
+                                    value={journeyDate}
                                 />
                             </div>
                             <div className="mb-3">
@@ -109,7 +139,8 @@ export default function UpdateBooking() {
                                     name="noOfTickets"
                                     type="integer"
                                     placeholder="Number Of Tickets"
-                                    inputHandler={setnoOfTickets}
+                               
+                                    value={noOfTickets}
                                 />
                             </div>
                             {/* Train Ticket Classes */}
@@ -121,7 +152,8 @@ export default function UpdateBooking() {
                                     className="form-select"
                                     name="ticketclass"
                                     id="ticketclass"
-                                    onBlur={(e) => setTicketClass(e.target.value)}
+                                    value={ticketclass}
+                                 
                                 >
                                     <option value="">Select Train Ticket Class</option>
                                     <option value="First Class">First Class</option>
@@ -130,7 +162,7 @@ export default function UpdateBooking() {
                                 </select>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <button type="submit" className="btn" style={{ backgroundColor: 'navy', color: 'white' }}>
+                                <button type="submit" onClick={handleSubmit} className="btn" style={{ backgroundColor: 'navy', color: 'white' }}>
                                     Update Reservation
                                 </button>
                             </div>&nbsp;

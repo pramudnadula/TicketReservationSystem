@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import { POST } from "../helpers/HTTPHelper";
 
 export default function CreateBooking() {
   const navigate = useNavigate();
@@ -12,11 +13,24 @@ export default function CreateBooking() {
   const [noOfTickets, setnoOfTickets] = useState("");
   const [ticketclass, setTicketClass] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Train Reservation Form Submitted Successfully !");
-    console.log(fromStation, toStation, journeyDate, noOfTickets);
-    navigate("/booking-list");
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      const booking = {
+        fromStation,
+        toStation,
+        journeyDate,
+        noOfTickets,
+        ticketclass,
+      };
+
+      const rest = await POST('Booking/addBooking', booking)
+      console.log(rest);
+      navigate("/booking-list");
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -75,7 +89,7 @@ export default function CreateBooking() {
                 name="ticketclass"
                 id="ticketclass"
                 value={ticketclass}
-                onBlur={(e) => setTicketClass(e.target.value)}
+                onChange={(e) => setTicketClass(e.target.value)}
               >
 
                 <option value="">Select Train Ticket Class</option>

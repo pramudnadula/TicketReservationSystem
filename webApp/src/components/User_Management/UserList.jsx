@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import axios from 'axios'
+import { GET } from "../helpers/HTTPHelper";
 
 export default function UserList() {
     const [members, setMembers] = useState([]);
@@ -10,7 +10,7 @@ export default function UserList() {
     useEffect(() => {
         async function loadMembers() {
             try {
-                const response = await axios.get("https://localhost:7104/api/User");
+                const response = await GET ("User");
                 setMembers(response.data);
             } catch (error) {
                 console.error("Error loading members:", error);

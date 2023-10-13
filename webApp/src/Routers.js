@@ -25,7 +25,7 @@ export default function Routers() {
       {/* Train management */}
       <Route exact path="/create-train" element={<AddTrain />} />
       <Route exact path="/train-details" element={<TrainDetails />} />
-      <Route exact path="/updateTrain" element={<UpdateTrain />} />
+      <Route  path="/updateTrain/:id" element={<UpdateTrain />} />
 
       {/* Ticket Reservation Management */}
       <Route exact path="/create-booking" element={<CreateBooking />} />

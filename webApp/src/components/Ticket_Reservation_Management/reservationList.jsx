@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
+import { GET } from "../helpers/HTTPHelper";
 
 export default function ReservationList() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function ReservationList() {
     useEffect(() => {
         async function loadTrains() {
             try {
-                const response = await axios.get("https://localhost:7104/api/Booking");
+                const response = await GET('Booking');
                 setBookings(response.data);
             } catch (error) {
                 console.error("Error loading booking details:", error);
@@ -23,7 +24,7 @@ export default function ReservationList() {
     const handleEdit = (id) => {
         // Implement edit logic
         console.log(`Edit booking with ID ${id}`);
-        navigate(`/booking-update/${id}`);
+        navigate(`/update-booking/${id}`);
     };
 
     const handleDelete = (id) => {
