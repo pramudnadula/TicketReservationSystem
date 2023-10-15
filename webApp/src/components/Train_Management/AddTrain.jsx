@@ -21,6 +21,27 @@ export default function AddTrain() {
 
 
   const handleSubmit = async (e) => {
+
+    if (
+      !trainName ||
+      !trainClassName ||
+      !startLocation ||
+      !endLocation ||
+      !departureTime ||
+      !arrivalTime ||
+      !status ||
+      !isNaN(trainName) // Check if trainName is a number
+    ) {
+      if (!trainName) {
+        swal('Train Name is required.');
+      } else if (!isNaN(trainName)) {
+        swal('Train Name cannot be a number.');
+      } else {
+        swal('Please fill in all the required fields.');
+      }
+      return;
+  }
+  
     try {
       e.preventDefault();
 
