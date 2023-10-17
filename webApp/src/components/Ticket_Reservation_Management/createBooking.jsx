@@ -6,13 +6,14 @@ import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateBooking() {
   const navigate = useNavigate();
   const [fromStation, setFromStation] = useState("");
   const [toStation, setToStation] = useState("");
-  const [journeyDate, setJourneyDate] = useState(" ");
+  const [journeyDate, setJourneyDate] = useState(new Date());
   const [noOfTickets, setnoOfTickets] = useState("");
   const [ticketclass, setTicketClass] = useState("");
 
@@ -28,20 +29,35 @@ export default function CreateBooking() {
         ticketclass,
       };
 
-      const rest = await POST('Booking/addBooking', booking)
+      const rest = await POST("Booking/addBooking", booking);
       console.log(rest);
       swal("Your Booking Details Succefully Added!");
       navigate("/booking-list");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
+  // Function to filter dates to current month
+  const filterDates = (date) => {
+    const today = new Date();
+    return (
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
-      <div className="container-xxl my-2">
-        <div className="card p-5 shadow w-50 mx-auto">
-          <MainHeaderTitle title="Train Ticket Reservation" link="/user-list" buttonTitle="User List" />
+      <br></br>
+      <br></br>
+      <div className="container-xxl my-2 mb-5 ">
+        <div className="card p-5 shadow w-50 mx-auto mb-14">
+          <MainHeaderTitle
+            title="Train Ticket Reservation"
+            link="/user-list"
+            buttonTitle="User List"
+          />
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <InputComponent
@@ -53,6 +69,7 @@ export default function CreateBooking() {
                 inputHandler={setFromStation}
               />
             </div>
+
             <div className="mb-3">
               <InputComponent
                 label="To Station"
@@ -63,29 +80,46 @@ export default function CreateBooking() {
                 inputHandler={setToStation}
               />
             </div>
-            <div className="mb-3">
-              <InputComponent
-                label="Journey Date"
-                name="journeyDate"
-                type="date"
-                placeholder="Journey Date"
-                value={journeyDate}
-                inputHandler={setJourneyDate}
-              />
-            </div>
-            <div className="mb-3">
-              <InputComponent
-                label="Number Of Tickets"
-                name="noOfTickets"
-                type="integer"
-                placeholder="Number Of Tickets"
-                value={noOfTickets}
-                inputHandler={setnoOfTickets}
-              />
+
+            <div className="row">
+              <div className="col-md-6">
+                <label
+                  htmlFor="journeyDate"
+                  className="form-label"
+                  style={{ color: "#7a25a5" }}
+                >
+                  <b>Journey Date</b>
+                </label>
+                <div className="input-wrapper ">
+                  <DatePicker
+                    selected={new Date(journeyDate)}
+                    onChange={(date) => setJourneyDate(date.toISOString())}
+                    filterDate={filterDates}
+                    dateFormat="MM/dd/yyyy"
+                    className="form-control"
+                    id="journeyDate"
+                    style={{ width: "800%" }}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <InputComponent
+                  label="Number Of Tickets"
+                  name="noOfTickets"
+                  type="integer"
+                  placeholder="Number Of Tickets"
+                  value={noOfTickets}
+                  inputHandler={setnoOfTickets}
+                />
+              </div>
             </div>
             {/* Train Ticket Classes */}
             <div className="mb-3">
-              <label htmlFor="ticketclass" className="form-label" style={{ color: "#7a25a5" }}>
+              <label
+                htmlFor="ticketclass"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
                 <b>Train Ticket Classes</b>
               </label>
               <select
@@ -95,7 +129,6 @@ export default function CreateBooking() {
                 value={ticketclass}
                 onChange={(e) => setTicketClass(e.target.value)}
               >
-
                 <option value="">Select Train Ticket Class</option>
                 <option value="First Class">First Class</option>
                 <option value="Second Class">Second Class</option>
@@ -109,7 +142,6 @@ export default function CreateBooking() {
               </button>
             </div>
           </form>
-
         </div>
       </div>
     </Layout>

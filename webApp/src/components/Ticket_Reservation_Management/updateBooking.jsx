@@ -4,6 +4,8 @@ import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import { GET, PUT } from "../helpers/HTTPHelper";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function UpdateBooking() {
   const navigate = useNavigate();
@@ -97,14 +99,26 @@ export default function UpdateBooking() {
               />
             </div>
             <div className="mb-3">
-              <InputComponent
-                label="Journey Date"
-                name="journeyDate"
-                type="date"
-                placeholder="Journey Date"
-                inputHandler={setJourneyDate}
-                value={journeyDate}
-              />
+              <div className="mb-3">
+                <label
+                  htmlFor="journeyDate"
+                  className="form-label"
+                  style={{ color: "#7a25a5" }}
+                >
+                  <b>Journey Date</b>
+                </label>
+                <div className="input-wrapper">
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="journeyDate"
+                    placeholder="2023-10-18" // Set the desired format as a placeholder
+                    value={new Date(journeyDate).toLocaleDateString("en-CA")} // Convert and format the date
+                    onChange={(e) => setJourneyDate(e.target.value)}
+                    style={{ width: "100%" }}
+                  />
+                </div>
+              </div>
             </div>
             <div className="mb-3">
               <InputComponent
