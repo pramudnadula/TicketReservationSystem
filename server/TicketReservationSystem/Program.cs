@@ -3,6 +3,9 @@ using MongoDB.Driver;
 using TicketReservationSystem.Auth;
 using TicketReservationSystem.Model;
 using TicketReservationSystem.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +50,31 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "YourIssuer", // Replace with your issuer
+        ValidAudience = "YourAudience", // Replace with your audience
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("24sxdf5g6h7j8k9l0;./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl,./';p0o9i8u7y6t5r4e3w2q1azsxdcfvgbhnjmkl"))
+    };
+});
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,7 +91,10 @@ app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication(); // Add this line
 app.UseAuthorization();
+app.UseSession();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
