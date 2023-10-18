@@ -8,6 +8,7 @@ import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
 import "react-datepicker/dist/react-datepicker.css";
+import places from "../Data/places.json";
 
 export default function CreateBooking() {
   const navigate = useNavigate();
@@ -63,26 +64,53 @@ export default function CreateBooking() {
           />
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <InputComponent
-                label="From Station"
+              <label
+                htmlFor="fromStation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>From Station</b>
+              </label>
+              <select
+                className="form-select"
                 name="fromStation"
-                type="text"
-                placeholder="From Station"
+                id="fromStation"
                 value={fromStation}
-                inputHandler={setFromStation}
-              />
+                onChange={(e) => setFromStation(e.target.value)}
+              >
+                <option value="">Select From Station</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-3">
-              <InputComponent
-                label="To Station"
+              <label
+                htmlFor="toStation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>To Station</b>
+              </label>
+              <select
+                className="form-select"
                 name="toStation"
-                type="text"
-                placeholder="To Station"
+                id="toStation"
                 value={toStation}
-                inputHandler={setToStation}
-              />
+                onChange={(e) => setToStation(e.target.value)}
+              >
+                <option value="">Select To Station</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
 
             <div className="row">
               <div className="col-md-6">
@@ -93,16 +121,16 @@ export default function CreateBooking() {
                 >
                   <b>Journey Date</b>
                 </label>
-                <div className="input-wrapper ">
-                  <DatePicker
-                    selected={new Date(journeyDate)}
-                    onChange={(date) => setJourneyDate(date.toISOString())}
-                    filterDate={filterDates}
-                    dateFormat="MM/dd/yyyy"
-                    className="form-control"
-                    id="journeyDate"
-                    style={{ width: "800%" }}
-                  />
+                <DatePicker
+                  selected={new Date(journeyDate)}
+                  onChange={(date) => setJourneyDate(date.toISOString())}
+                  filterDate={filterDates}
+                  dateFormat="MM/dd/yyyy"
+                  className="form-control"
+                  id="journeyDate"
+
+                />
+                <div className="input-wrapper">
                 </div>
               </div>
               <div className="col-md-6">

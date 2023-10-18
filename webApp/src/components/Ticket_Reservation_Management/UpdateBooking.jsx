@@ -8,6 +8,7 @@ import Layout from "../Partials/Layout";
 import { GET, PUT } from "../helpers/HTTPHelper";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import "react-datepicker/dist/react-datepicker.css";
+import places from "../Data/places.json";
 
 export default function UpdateBooking() {
   const navigate = useNavigate();
@@ -82,25 +83,53 @@ export default function UpdateBooking() {
           />
           <form>
             <div className="mb-3">
-              <InputComponent
-                label="From Station"
+              <label
+                htmlFor="fromStation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>From Station</b>
+              </label>
+              <select
+                className="form-select"
                 name="fromStation"
-                type="text"
-                placeholder="From Station"
-                inputHandler={setFromStation}
+                id="fromStation"
                 value={fromStation}
-              />
+                onChange={(e) => setFromStation(e.target.value)}
+              >
+                <option value="">Select From Station</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="mb-3">
-              <InputComponent
-                label="To Station"
+              <label
+                htmlFor="toStation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>To Station</b>
+              </label>
+              <select
+                className="form-select"
                 name="toStation"
-                type="text"
-                placeholder="To Station"
+                id="toStation"
                 value={toStation}
-                inputHandler={setToStation}
-              />
+                onChange={(e) => setToStation(e.target.value)}
+              >
+                <option value="">Select To Station</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="mb-3">
               <div className="mb-3">
                 <label
