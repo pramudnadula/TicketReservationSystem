@@ -1,51 +1,58 @@
-import axios from "axios";
+import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { GET, DELETE } from "../helpers/HTTPHelper";
-import swal from "sweetalert";
 
 export default function ReservationList() {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState([]); // create state varible for store values
 
   // Implement booking get funtion api
-  useEffect(() => {
-    async function loadTrains() {
-      try {
-        const response = await GET("Booking");
-        setBookings(response.data);
-      } catch (error) {
-        console.error("Error loading booking details:", error);
-      }
+
+  const fetchBookings = async () => {
+    try {
+      const response = await GET("Booking");
+      setBookings(response.data);
     }
-    loadTrains();
+    catch (error) {
+      console.error("Error loading booking details:", error);
+      swal("Failed to load booking details", "Please try again later", "error");
+    }
+  };
+
+  useEffect(() => {
+    fetchBookings();
   }, []);
 
-  //implement delete function in here
+  // implement delete function in here
 
-  const onDelete = (id) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
+  const onDelete = async (id) => {
+    try {
+      const willDelete = await swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      });
+
       if (willDelete) {
-        DELETE(`/Booking/${id}`).then((res) => {
-          swal(
-            "Deleted Successfully",
-            "Booking Details Are Removed",
-            "success"
-          );
-          window.location.reload();
-        });
-      } else {
-        swal("Your Details are saved!");
+        const res = await DELETE(`/Booking/${id}`);
+        console.log(res);
+        swal(
+          "Deleted Successfully",
+          "Booking Details Are Removed",
+          "success"
+        );
+        fetchBookings();
       }
-    });
+    } catch (error) {
+      console.error(error);
+      swal("Failed to delete", "Booking Details are not removed", "error");
+    }
   };
+
 
   const handleEdit = (id) => {
     // Implement edit logic

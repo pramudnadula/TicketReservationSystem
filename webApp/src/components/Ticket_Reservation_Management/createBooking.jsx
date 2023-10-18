@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateBooking() {
