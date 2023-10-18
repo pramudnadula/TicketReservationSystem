@@ -1,13 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/no-onchange */
+import swal from "sweetalert";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import { Link } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
-import { PUT } from "../helpers/HTTPHelper";
-import axios from "axios";
+import { GET, PUT } from "../helpers/HTTPHelper";
+import places from "../Data/places.json";
 
 export default function UpdateTrain() {
   const { id } = useParams();
@@ -21,52 +21,42 @@ export default function UpdateTrain() {
   const [arrivalTime, setArrivalTime] = useState("");
   const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    fetch(`https://localhost:7104/api/Train/${id}`, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setTrainName(data.trainName);
-        setTrainClassName(data.trainClassName);
-        setStartLocation(data.startLocation);
-        setEndLocation(data.endLocation);
-        setDepartureTime(data.departureTime);
-        setArrivalTime(data.arrivalTime);
-        setStatus(data.status);
-      })
+  const getTrain = async () => {
+    try {
+      const rest = await GET(`Train/${id}`);
+      setTrainName(rest?.data?.trainName);
+      setTrainClassName(rest?.data?.trainClassName);
+      setStartLocation(rest?.data?.startLocation);
+      setEndLocation(rest?.data?.endLocation);
+      setDepartureTime(rest?.data?.departureTime);
+      setArrivalTime(rest?.data?.arrivalTime);
+      setStatus(rest?.data?.status);
+    } catch (error) {
+      console.log(error);
+      swal(`${error?.response?.data ? error.response.data : "Train Details Loading Failed"}`);
+    }
+  };
 
-      .catch((error) => {
-        console.log("Error from API call:", error);
-        console.error(error);
-      });
+  useEffect(() => {
+    getTrain();
   }, [id]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
-    if (
-      !trainName ||
-      !trainClassName ||
-      !startLocation ||
-      !endLocation ||
-      !departureTime ||
-      !arrivalTime ||
-      !status ||
-      !isNaN(trainName) // Check if trainName is a number
-    ) {
-      if (!trainName) {
-        swal('Train Name is required.');
-      } else if (!isNaN(trainName)) {
-        swal('Train Name cannot be a number.');
-      } else {
-        swal('Please fill in all the required fields.');
-      }
-      return;
-  }
-
-  
     try {
+
+      if (
+        !trainName || !trainClassName || !startLocation || !endLocation || !departureTime || !arrivalTime || !status || Number.isNaN(Number(trainName))) {
+        if (!trainName) {
+          swal('Train Name is required.');
+        } else if (Number.isNaN(Number(trainName))) {
+          swal('Train Name cannot be a number.');
+        } else {
+          swal('Please fill in all the required fields.');
+        }
+        return;
+      }
+
       const trainObj = {
         id,
         trainName,
@@ -77,16 +67,17 @@ export default function UpdateTrain() {
         arrivalTime,
         status,
       };
-
       // Assuming PUT is a function to make the API call
       const result = await PUT(`Train/${id}`, trainObj);
 
       // Assuming PUT function returns the updated data
       console.log(result);
       swal("Your Train Details Succefully Updated!");
+      getTrain();
       navigate("/train-details");
     } catch (error) {
       console.log(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Train Details Updating Failed"}`);
     }
   };
 
@@ -134,27 +125,51 @@ export default function UpdateTrain() {
               </select>
             </div>
             <div className="mb-3">
-              <InputComponent
-                label="Start Location"
+              <label
+                htmlFor="startLocation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Start Location</b>
+              </label>
+              <select
+                className="form-select"
                 name="startLocation"
-                type="text"
-                placeholder="Start Location"
+                id="startLocation"
                 value={startLocation}
-                required
-                inputHandler={setStartLocation}
-              />
+                onChange={(e) => setStartLocation(e.target.value)}
+              >
+                <option value="">Select Start Location</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-3">
-              <InputComponent
-                label="End Location"
+              <label
+                htmlFor="endLocation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>End Location</b>
+              </label>
+              <select
+                className="form-select"
                 name="endLocation"
-                type="text"
-                placeholder="End Location"
+                id="endLocation"
                 value={endLocation}
-                required
-                inputHandler={setEndLocation}
-              />
+                onChange={(e) => setEndLocation(e.target.value)}
+              >
+                <option value="">Select End Location</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="row">
               <div className="col-md-6">

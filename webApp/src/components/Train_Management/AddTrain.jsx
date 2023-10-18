@@ -6,6 +6,7 @@ import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
 import InputComponent from "../helpers/InputComponent";
+import places from "../Data/places.json";
 
 export default function AddTrain() {
   const navigate = useNavigate();
@@ -109,28 +110,53 @@ export default function AddTrain() {
             </div>
 
             <div className="mb-3">
-              <InputComponent
-                label="Start Location"
+              <label
+                htmlFor="startLocation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Start Location</b>
+              </label>
+              <select
+                className="form-select"
                 name="startLocation"
-                type="text"
-                placeholder="Start Location"
+                id="startLocation"
                 value={startLocation}
-                required
-                inputHandler={setStartLocation}
-              />
+                onChange={(e) => setStartLocation(e.target.value)}
+              >
+                <option value="">Select Start Location</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-3">
-              <InputComponent
-                label="End Location"
+              <label
+                htmlFor="endLocation"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>End Location</b>
+              </label>
+              <select
+                className="form-select"
                 name="endLocation"
-                type="text"
-                placeholder="End Location"
+                id="endLocation"
                 value={endLocation}
-                required
-                inputHandler={setEndLocation}
-              />
+                onChange={(e) => setEndLocation(e.target.value)}
+              >
+                <option value="">Select End Location</option>
+                {places.map((place) => (
+                  <option key={place.id} value={place.name}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="row">
               <div className="col-md-6">
                 <InputComponent
