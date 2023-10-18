@@ -38,7 +38,7 @@ export const GET = async (url, useHeaders = true, params = null) => {
     return response;
   } catch (error) {
     console.error("GET request error:", error);
-    if (error.response && error.response.status === 403) {
+    if (error.response && error.response.status === 401) {
       logoutAndRedirect();
     }
     throw error;
@@ -58,7 +58,7 @@ export const POST = async (
     return response;
   } catch (error) {
     console.error("POST request error:", error);
-    if (error.response && error.response.status === 403) {
+    if (error.response && error.response.status === 401) {
       logoutAndRedirect();
     }
     throw error;
@@ -78,7 +78,7 @@ export const PUT = async (
     return response;
   } catch (error) {
     console.error("PUT request error:", error);
-    if (error.response && error.response.status === 403) {
+    if (error.response && error.response.status === 401) {
       logoutAndRedirect();
     }
     throw error;
@@ -92,7 +92,7 @@ export const DELETE = async (url, useHeaders = true) => {
     return response;
   } catch (error) {
     console.error("DELETE request error:", error);
-    if (error.response && error.response.status === 403) {
+    if (error.response && error.response.status === 401) {
       logoutAndRedirect();
     }
     throw error;

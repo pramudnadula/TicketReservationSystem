@@ -21,9 +21,15 @@ export default function Login() {
           password
         }
       )
+
       console.log(rest);
-      toastSuccess('Login Successfull');
-      localStorage.setItem('token', rest?.data?.password);
+
+      if (rest?.data?.active === false) {
+        toastFail('Your account is not active. Please contact the BACK OFFICE for more information');
+        return;
+      }
+      toastSuccess('Login Successful');
+      localStorage.setItem('AccessToken', rest?.data?.token);
       localStorage.setItem('user', rest?.data?.email);
       localStorage.setItem('role', rest?.data?.role);
       localStorage.setItem('userID', rest?.data?.nic);

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { GET, DELETE, PUT } from "../helpers/HTTPHelper";
+import axios from "axios";
 
 export default function UserList() {
   const [members, setMembers] = useState([]);
@@ -84,7 +85,18 @@ export default function UserList() {
         updatedUser.active = true;
       }
 
-      const res = await PUT(`/User/active/${updatedUser.nic}?active=${updatedUser.active}`);
+      // const res = await axios.put(
+      //   `https://localhost:44334/api/`,
+      //   null, // This is the request body, which is null in your case
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
+      //     },
+      //   }
+      // );
+
+      const res = await PUT(`User/active/${updatedUser.nic}?active=${updatedUser.active}`, null, "application/json", true);
+
       console.log(res);
       swal(`${res?.data ? res?.data : "Deactivate Failed"}`);
       fetchMembers();
@@ -230,7 +242,7 @@ export default function UserList() {
                         className="btn btn-sm btn-success mx-1"
                         style={{ width: "90px" }}
                         onClick={() => handleActivation(member)}
-                        disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                      // disabled={localStorage.getItem("role") !== "BACKOFFICE"}
                       >
                         Activate
                       </button>

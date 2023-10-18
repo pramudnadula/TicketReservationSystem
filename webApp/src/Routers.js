@@ -15,7 +15,7 @@ import UpdateBooking from "./components/Ticket_Reservation_Management/UpdateBook
 export default function Routers() {
   return (
     <Routes>
-      <Route exact path="/" element={<Login />} />
+      <Route exact path="/" element={localStorage.getItem("AccessToken") ? <Home /> : <Login />} />
       <Route exact path="/home" element={<Home />} />
       <Route exact path="/login" element={<Login />} />
 
