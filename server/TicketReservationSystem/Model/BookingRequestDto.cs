@@ -16,7 +16,7 @@ namespace TicketReservationSystem.Model
 
         public String ticketclass { get; set; } = String.Empty;
 
-        public UserUpdateRequest user { get; set; } = null;
+        public UserObjectRequest user { get; set; } = null;
 
     }
 }

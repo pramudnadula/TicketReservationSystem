@@ -32,6 +32,10 @@ export default function UserList() {
   // implement delete function in here
   const onDelete = async (id) => {
     try {
+      if (localStorage.getItem("role") === "TRAVELAGENT") {
+        swal("You are not allowed to delete this user");
+        return;
+      }
       const willDelete = await swal({
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -50,12 +54,6 @@ export default function UserList() {
       console.error(error);
       swal(`${error?.response?.data ? error?.response?.data : "Delete Failed"}`);
     }
-  };
-
-
-  const handleActivate = (id) => {
-    console.log(`Activate user with ID ${id}`);
-
   };
 
   const handleActivation = async (user) => {

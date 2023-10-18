@@ -48,7 +48,7 @@ namespace TicketReservationSystem.Controllers
             bookingRequestDto.journeyDate = booking.journeyDate;
             bookingRequestDto.noOfTickets = booking.noOfTickets;
             bookingRequestDto.ticketclass = booking.ticketclass;
-            bookingRequestDto.user = new UserUpdateRequest(user);
+            bookingRequestDto.user = new UserObjectRequest(user);
 
 
             if (booking == null)
