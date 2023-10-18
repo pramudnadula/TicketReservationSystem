@@ -62,6 +62,11 @@ namespace TicketReservationSystem.Service
             var update = Builders<Booking>.Update.Set("Active", active);
             _booking.UpdateOne(filter, update);
         }
+
+        public object GetBookingsByUser(string nIC)
+        {
+            return _booking.Find(booking => booking.NIC == nIC).ToList();
+        }
     }
 
 }

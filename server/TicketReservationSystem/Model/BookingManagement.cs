@@ -14,15 +14,21 @@ namespace TicketReservationSystem.Model
         public String fromStation { get; set; } = String.Empty;
         [BsonElement("toStation")]
         public String toStation { get; set; } = String.Empty;
-         [BsonElement("journeyDate")]
+        [BsonElement("journeyDate")]
         public String journeyDate { get; set; } = String.Empty;
-         [BsonElement("noOfTickets")]
+        [BsonElement("noOfTickets")]
         public String noOfTickets { get; set; } = String.Empty;
         [BsonElement("ticketclass")]
         public String ticketclass { get; set; } = String.Empty;
-        
-       
-        
-       
+        // user NIC as Object
+        [BsonElement("user")]
+        public User User { get; set; } = new User();
+
+        [BsonElement("NIC")]
+        public String NIC { get; set; } = String.Empty;
+
+
+
+
     }
 }

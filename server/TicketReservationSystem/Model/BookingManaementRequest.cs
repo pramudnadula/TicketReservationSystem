@@ -14,8 +14,9 @@ namespace TicketReservationSystem.Model
 
         public String noOfTickets { get; set; } = String.Empty;
 
-          public String ticketclass { get; set; } = String.Empty;
+        public String ticketclass { get; set; } = String.Empty;
 
+        public String NIC { get; set; } = String.Empty;
 
     }
 }

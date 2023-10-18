@@ -15,7 +15,7 @@ export default function Login() {
       console.log("Form Submitted");
       console.log(email, password);
 
-      const rest = await axios.post('https://localhost:7104/api/User/login',
+      const rest = await axios.post('https://localhost:44334/api/User/login',
         {
           email,
           password
@@ -23,15 +23,15 @@ export default function Login() {
       )
       console.log(rest);
       toastSuccess('Login Successfull');
-      localStorage.setItem('token', rest.data.password);
-      localStorage.setItem('user', rest.data.email);
-      localStorage.setItem('role', rest.data.role);
+      localStorage.setItem('token', rest?.data?.password);
+      localStorage.setItem('user', rest?.data?.email);
+      localStorage.setItem('role', rest?.data?.role);
 
       navigate("/home");
 
     } catch (error) {
       console.log(error);
-      toastFail(`${error.response.data}`);
+      toastFail(`${error?.response?.data ? error.response.data : 'Login Failed'}`);
     }
   }
 

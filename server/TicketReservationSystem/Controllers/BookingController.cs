@@ -18,12 +18,12 @@ namespace TicketReservationSystem.Controllers
     {
         // variable for hold servies interfaces
         private readonly IBookingService bookingService;
-
+        private readonly IUserService userService;
         // constructor 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, IUserService userService)
         {
             this.bookingService = bookingService;
-
+            this.userService = userService;
         }
 
         // GET: api/<Booking controller>
@@ -55,6 +55,24 @@ namespace TicketReservationSystem.Controllers
                 return BadRequest("Fail to add booking");
             }
 
+            User user = userService.Get(request.NIC);
+
+            if (user == null)
+            {
+                return NotFound($"User with NIC = {request.NIC} not found");
+            }
+
+            // if user is not active
+            if (!user.Active)
+            {
+                return BadRequest("User is not active");
+            }
+
+            // only one user can have 4 bookings
+            if (((List<Booking>)bookingService.GetBookingsByUser(request.NIC)).Count() >= 4)
+            {
+                return BadRequest("User can have only 4 bookings");
+            }
 
             Booking booking = new Booking();
             booking.fromStation = request.fromStation;
@@ -62,7 +80,9 @@ namespace TicketReservationSystem.Controllers
             booking.journeyDate = request.journeyDate;
             booking.noOfTickets = request.noOfTickets;
             booking.ticketclass = request.ticketclass;
-
+            // remove this in user model and add it 
+            booking.User = user;
+            booking.NIC = request.NIC;
 
             bookingService.Create(booking);
             return CreatedAtAction(nameof(Get), new { id = booking.Id }, booking);

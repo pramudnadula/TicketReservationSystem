@@ -17,7 +17,7 @@ namespace TicketReservationSystem.Model
 
         public String ArrivalTime { get; set; } = String.Empty;
 
-         public String Status { get; set; } = String.Empty;
+        public String Status { get; set; } = String.Empty;
 
          //public String Status { get; set; } = "UNPUBLISHED";
 
