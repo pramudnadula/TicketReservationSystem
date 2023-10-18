@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { GET, DELETE, PUT } from "../helpers/HTTPHelper";
-import axios from "axios";
 
 export default function UserList() {
   const [members, setMembers] = useState([]);
@@ -242,7 +241,7 @@ export default function UserList() {
                         className="btn btn-sm btn-success mx-1"
                         style={{ width: "90px" }}
                         onClick={() => handleActivation(member)}
-                      // disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                        disabled={localStorage.getItem("role") !== "BACKOFFICE"}
                       >
                         Activate
                       </button>
