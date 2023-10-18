@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +9,18 @@ export default function UserList() {
   const [members, setMembers] = useState([]);
   const navigate = useNavigate();
   const [searchKey, setSearchKey] = useState("");
+  const [filterRole, setFilterRole] = useState("ALL");
 
   const fetchMembers = async () => {
     try {
       const response = await GET("User");
+      if (localStorage.getItem("role") === "TRAVELAGENT") {
+        const filteredMembers = response.data.filter((member) => member.role === "TRAVELER");
+        setMembers(filteredMembers);
+        return;
+      }
       setMembers(response.data);
+
     } catch (error) {
       console.error("Error loading members:", error);
       swal(`${error?.response?.data ? error.response.data : "Failed to load members"}`);
@@ -100,6 +108,11 @@ export default function UserList() {
       user?.role.toLowerCase().includes(searchKey.toLowerCase())
   );
 
+  const filteredUsersByRole =
+    filterRole !== "ALL"
+      ? filteredUsers.filter((user) => user.role === filterRole)
+      : filteredUsers;
+
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
@@ -131,7 +144,7 @@ export default function UserList() {
           </div>
         </div>
         <div className="row">
-          <div className="col-lg-9 mt-12 mb-2">
+          <div className="col-lg-6 mt-12 mb-2">
             <h4>Search Train details</h4>
           </div>
           <div className="col-lg-3 mt-2 mb-2">
@@ -141,6 +154,20 @@ export default function UserList() {
               placeholder="Search by Train Name"
               onChange={handleSearch}
             />
+          </div>
+          <div className="col-lg-3 mt-2 mb-2">
+            <select
+              className="form-select"
+              name="role"
+              id="role"
+              value={filterRole}
+              onChange={(e) => setFilterRole(e.target.value)}
+            >
+              <option value="ALL">All</option>
+              <option value="TRAVELAGENT">Travel Agent</option>
+              <option value="BACKOFFICE">Backoffice</option>
+              <option value="TRAVELER">Traveler</option>
+            </select>
           </div>
         </div>
         <div className="w-100 mx-auto overflow-auto">
@@ -152,13 +179,11 @@ export default function UserList() {
                 <th scope="col">NIC</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
-                <th scope="col" colSpan={
-                  localStorage.getItem("role") === "BACKOFFICE" ? "3" : "2"
-                } style={{ textAlign: "center" }}>Actions</th>
+                <th scope="col" colSpan="3" style={{ textAlign: "center" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((member) => (
+              {filteredUsersByRole.map((member) => (
                 <tr key={member.id}>
                   <th scope="row">{member.username.split("undefined")[0]}</th>
                   <td>{member.email}</td>
@@ -187,31 +212,31 @@ export default function UserList() {
                       Delete
                     </button>
                   </td>
-                  {localStorage.getItem("role") === "BACKOFFICE" && (
-                    <td>
-                      {member.active ? (
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-warning mx-1"
-                          style={{ width: "90px" }}
-                          onClick={() => handleActivation(member)}
-                          disabled={localStorage.getItem("role") !== "BACKOFFICE"}
-                        >
-                          Deactivate
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-success mx-1"
-                          style={{ width: "90px" }}
-                          onClick={() => handleActivation(member)}
-                          disabled={localStorage.getItem("role") !== "BACKOFFICE"}
-                        >
-                          Activate
-                        </button>
-                      )}
-                    </td>
-                  )}
+                  {/* {localStorage.getItem("role") === "BACKOFFICE" && ( */}
+                  <td>
+                    {member.active ? (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-warning mx-1"
+                        style={{ width: "90px" }}
+                        onClick={() => handleActivation(member)}
+                      // disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                      >
+                        Deactivate
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-success mx-1"
+                        style={{ width: "90px" }}
+                        onClick={() => handleActivation(member)}
+                        disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                      >
+                        Activate
+                      </button>
+                    )}
+                  </td>
+                  {/* )} */}
                 </tr>
               ))}
             </tbody>

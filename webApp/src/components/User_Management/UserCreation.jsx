@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import swal from "sweetalert";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
@@ -20,8 +20,8 @@ export default function UserCreation() {
   const [nic, setNic] = useState("");
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       if (nic === "" || firstName === "" || email === "" || password === "" || role === "") {
         swal("Please Fill All The Fields!");
         return;
@@ -40,9 +40,15 @@ export default function UserCreation() {
       navigate("/user-list");
     } catch (error) {
       console.log(error)
+      swal(`${error?.response?.data ? error?.response?.data : "Something went wrong!"}`);
     }
   }
 
+  useEffect(() => {
+    if (localStorage.getItem("role") === "TRAVELAGENT") {
+      setRole("TRAVELER");
+    }
+  }, [])
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
@@ -101,23 +107,43 @@ export default function UserCreation() {
               />
             </div>
             {/* user role Travel Agent and  Backoffice  */}
-            <div className="mb-3">
-              <label htmlFor="role" className="form-label" style={{ color: "#7a25a5" }}>
-                <b> Role </b>
-              </label>
-              <select
-                className="form-select"
-                name="role"
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
+            {(localStorage.getItem("role") === "BACKOFFICE") && (
+              <div className="mb-3">
+                <label htmlFor="role" className="form-label" style={{ color: "#7a25a5" }}>
+                  <b> Role </b>
+                </label>
+                <select
+                  className="form-select"
+                  name="role"
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
 
-                <option value="">Select Role</option>
-                <option value="Travel Agent">Travel Agent</option>
-                <option value="Backoffice">Backoffice</option>
-              </select>
-            </div>
+                  <option value="">Select Role</option>
+                  <option value="TRAVELAGENT">Travel Agent</option>
+                  <option value="BACKOFFICE">Backoffice</option>
+                  <option value="TRAVELER">Traveler</option>
+                </select>
+              </div>
+            )}
+            {(localStorage.getItem("role") === "TRAVELAGENT") && (
+              <div className="mb-3">
+                <label htmlFor="role" className="form-label" style={{ color: "#7a25a5" }}>
+                  <b> Role </b>
+                </label>
+                <input
+                  type="text"
+                  name="role"
+                  value="TRAVELER"
+                  className="form-control"
+                  disabled
+                  onChange={(e) => setRole(e.target.value)}
+                />
+              </div>
+            )}
+
+
             <br />
             <div className="d-flex justify-content-center">
               <button type="submit" className="btn" style={{ backgroundColor: '#7a25a5', color: 'white' }}>
