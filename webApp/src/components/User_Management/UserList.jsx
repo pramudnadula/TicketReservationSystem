@@ -7,6 +7,7 @@ import { GET, DELETE } from "../helpers/HTTPHelper";
 export default function UserList() {
   const [members, setMembers] = useState([]);
   const navigate = useNavigate();
+  const [searchKey, setSearchKey] = useState("");
 
   useEffect(() => {
     async function loadMembers() {
@@ -60,6 +61,18 @@ export default function UserList() {
     console.log(`Deactivate user with ID ${id}`);
     // Implement deactivate logic here
   };
+  // search function start here
+  const handleSearch = (e) => {
+    setSearchKey(e.target.value);
+  };
+
+  const filteredUsers = members?.filter(
+    (user) =>
+      user?.username.toLowerCase().includes(searchKey.toLowerCase()) ||
+      user?.email.toLowerCase().includes(searchKey.toLowerCase()) ||
+      user?.nic.toLowerCase().includes(searchKey.toLowerCase()) ||
+      user?.role.toLowerCase().includes(searchKey.toLowerCase())
+  );
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
@@ -91,7 +104,20 @@ export default function UserList() {
             </svg>
           </div>
         </div>
-        <div className="w-75 mx-auto">
+        <div className="row">
+          <div className="col-lg-9 mt-12 mb-2">
+            <h4>Search Train details</h4>
+          </div>
+          <div className="col-lg-3 mt-2 mb-2">
+            <input
+              className="form-control"
+              type="search"
+              placeholder="Search by Train Name"
+              onChange={handleSearch}
+            />
+          </div>
+        </div>
+        <div className="w-100 mx-auto overflow-auto">
           <table className="table">
             <thead>
               <tr>
@@ -106,7 +132,7 @@ export default function UserList() {
               </tr>
             </thead>
             <tbody>
-              {members.map((member) => (
+              {filteredUsers.map((member) => (
                 <tr key={member.id}>
                   <th scope="row">{member.username.split("undefined")[0]}</th>
                   <td>{member.email}</td>
