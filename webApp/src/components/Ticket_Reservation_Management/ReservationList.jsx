@@ -1,6 +1,6 @@
 import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { GET, DELETE } from "../helpers/HTTPHelper";
 
@@ -49,7 +49,7 @@ export default function ReservationList() {
       }
     } catch (error) {
       console.error(error);
-      swal("Failed to delete", "Booking Details are not removed", "error");
+      swal(`${error?.response?.data ? error?.response?.data : "Delete Failed"}`);
     }
   };
 
@@ -73,12 +73,6 @@ export default function ReservationList() {
   return (
     <Layout childrenClasses="pt-0 pb-0">
       <div className="container-xxl my-2">
-        <Link to="/create-booking">
-          <button type="button" className="btn btn-primary float-end">
-            Download
-          </button>
-        </Link>
-        <br />
       </div>
       <div className="container-xxl my-2">
         <div className="text-center mb-5">

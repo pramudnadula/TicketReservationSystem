@@ -15,20 +15,13 @@ namespace TicketReservationSystem.Model
         [BsonElement("toStation")]
         public String toStation { get; set; } = String.Empty;
         [BsonElement("journeyDate")]
-        public String journeyDate { get; set; } = String.Empty;
+        public DateTime journeyDate { get; set; } = new DateTime();
         [BsonElement("noOfTickets")]
         public String noOfTickets { get; set; } = String.Empty;
         [BsonElement("ticketclass")]
         public String ticketclass { get; set; } = String.Empty;
-        // user NIC as Object
-        [BsonElement("user")]
-        public User User { get; set; } = new User();
-
         [BsonElement("NIC")]
         public String NIC { get; set; } = String.Empty;
-
-
-
 
     }
 }

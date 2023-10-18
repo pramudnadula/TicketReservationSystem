@@ -59,6 +59,7 @@ export default function UpdateBooking() {
       navigate("/booking-list");
     } catch (error) {
       console.log(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Booking Failed"}`);
     }
   };
 

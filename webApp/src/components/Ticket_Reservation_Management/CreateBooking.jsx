@@ -16,12 +16,14 @@ export default function CreateBooking() {
   const [journeyDate, setJourneyDate] = useState(new Date());
   const [noOfTickets, setnoOfTickets] = useState("");
   const [ticketclass, setTicketClass] = useState("");
+  console.log(journeyDate);
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
 
       const booking = {
+        nic: localStorage.getItem("userID"),
         fromStation,
         toStation,
         journeyDate,
@@ -35,6 +37,7 @@ export default function CreateBooking() {
       navigate("/booking-list");
     } catch (error) {
       console.log(error);
+      swal(`${error?.response?.data ? error.response.data : "Booking Failed"}`);
     }
   };
 

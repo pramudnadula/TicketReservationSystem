@@ -35,15 +35,28 @@ namespace TicketReservationSystem.Controllers
 
         // GET api/<BookingController>/5
         [HttpGet("{id}")]
-        public ActionResult<Booking> Get(String id)
+        public ActionResult<BookingRequestDto> Get(String id)
         {
             var booking = bookingService.Get(id);
+
+            // get user using booking NIC
+            var user = userService.Get(booking.NIC);
+            // create booking request dto
+            BookingRequestDto bookingRequestDto = new BookingRequestDto();
+            bookingRequestDto.fromStation = booking.fromStation;
+            bookingRequestDto.toStation = booking.toStation;
+            bookingRequestDto.journeyDate = booking.journeyDate;
+            bookingRequestDto.noOfTickets = booking.noOfTickets;
+            bookingRequestDto.ticketclass = booking.ticketclass;
+            bookingRequestDto.user = new UserUpdateRequest(user);
+
+
             if (booking == null)
             {
                 return NotFound($"booking with id = {id} not found");
             }
-
-            return booking;
+            // bookingRequestDto
+            return bookingRequestDto;
         }
 
         // POST api/<UserController>
@@ -80,8 +93,6 @@ namespace TicketReservationSystem.Controllers
             booking.journeyDate = request.journeyDate;
             booking.noOfTickets = request.noOfTickets;
             booking.ticketclass = request.ticketclass;
-            // remove this in user model and add it 
-            booking.User = user;
             booking.NIC = request.NIC;
 
             bookingService.Create(booking);
@@ -95,6 +106,13 @@ namespace TicketReservationSystem.Controllers
         public ActionResult Put(String id, [FromBody] Booking booking)
         {
             var existingBooking = bookingService.Get(id);
+
+            DateTime currentDateTime = DateTime.Now;
+
+            if (existingBooking.journeyDate < currentDateTime.AddDays(5))
+            {
+                return BadRequest("Booking cannot be updated because journey date is less than 5 days");
+            }
 
             if (existingBooking == null)
             {
@@ -111,6 +129,13 @@ namespace TicketReservationSystem.Controllers
         public ActionResult Delete(String id)
         {
             var booking = bookingService.Get(id);
+
+            DateTime currentDateTime = DateTime.Now;
+
+            if (booking.journeyDate < currentDateTime.AddDays(5))
+            {
+                return BadRequest("Booking cannot be deleted because journey date is less than 5 days");
+            }
 
             if (booking == null)
             {

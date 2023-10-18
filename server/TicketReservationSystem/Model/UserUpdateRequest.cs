@@ -15,5 +15,16 @@ namespace TicketReservationSystem.Model
         public bool Active { get; set; } = false;
 
         public string NIC { get; set; } = String.Empty;
+
+        public UserUpdateRequest(User user)
+        {
+            this.Username = user.Username;
+            this.Email = user.Email;
+            this.Role = user.Role;
+            this.Active = user.Active;
+            this.NIC = user.NIC;
+        }
+
     }
+
 }

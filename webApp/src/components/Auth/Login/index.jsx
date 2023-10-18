@@ -26,6 +26,7 @@ export default function Login() {
       localStorage.setItem('token', rest?.data?.password);
       localStorage.setItem('user', rest?.data?.email);
       localStorage.setItem('role', rest?.data?.role);
+      localStorage.setItem('userID', rest?.data?.nic);
 
       navigate("/home");
 
