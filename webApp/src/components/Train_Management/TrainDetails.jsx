@@ -1,9 +1,8 @@
-import axios from "axios";
+import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { DELETE, GET } from "../helpers/HTTPHelper";
-import swal from "sweetalert";
 
 function formatTimeTo12Hour(time) {
   const [hourMinute, ampm] = (time || "").split(" ");
@@ -23,16 +22,18 @@ export default function TrainDetails() {
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function loadTrains() {
-      try {
-        const response = await GET("Train");
-        setTrains(response.data);
-      } catch (error) {
-        console.error("Error loading train details:", error);
-      }
+  const fetchTrains = async () => {
+    try {
+      const response = await GET("Train");
+      setTrains(response.data);
+    } catch (error) {
+      console.error("Error loading train details:", error);
+      swal(`${error?.response?.data ? error?.response?.data : "Failed to load train details"}`);
     }
-    loadTrains();
+  }
+
+  useEffect(() => {
+    fetchTrains();
   }, []);
 
   const handleEdit = (id) => {
@@ -40,26 +41,30 @@ export default function TrainDetails() {
     navigate(`/updateTrain/${id}`);
   };
 
-  const onDelete = (id) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
+  const onDelete = async (id) => {
+    try {
+      const willDelete = await swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      });
+
       if (willDelete) {
-        DELETE(`/Train/${id}`).then((res) => {
-          swal("Deleted Successfully", "Train Details Are Removed", "success");
-          window.location.reload();
-        });
-      } else {
-        swal("Your imaginary file is safe!");
+        const res = await DELETE(`/Train/${id}`);
+        console.log(res);
+        swal("Deleted Successfully", "Train Details Are Removed", "success");
+        fetchTrains();
       }
-    });
+    } catch (error) {
+      console.error(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Delete Failed"}`);
+    }
   };
 
-  //search function start here
+
+  // search function start here
   const handleSearch = (e) => {
     setSearchKey(e.target.value);
   };

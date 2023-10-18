@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import React, { useState } from "react";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
 import { POST } from "../helpers/HTTPHelper";
 import InputComponent from "../helpers/InputComponent";
-import swal from "sweetalert";
 
 export default function AddTrain() {
   const navigate = useNavigate();
@@ -17,8 +17,6 @@ export default function AddTrain() {
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
   const [status, setStatus] = useState("Deactive");
-  const [showStatusField, setShowStatusField] = useState(false);
-
 
   const handleSubmit = async (e) => {
 
@@ -30,18 +28,18 @@ export default function AddTrain() {
       !departureTime ||
       !arrivalTime ||
       !status ||
-      !isNaN(trainName) // Check if trainName is a number
+      Number.isNaN(Number(trainName))
     ) {
       if (!trainName) {
         swal('Train Name is required.');
-      } else if (!isNaN(trainName)) {
+      } else if (Number.isNaN(Number(trainName))) {
         swal('Train Name cannot be a number.');
       } else {
         swal('Please fill in all the required fields.');
       }
       return;
-  }
-  
+    }
+
     try {
       e.preventDefault();
 
@@ -157,30 +155,25 @@ export default function AddTrain() {
                 />
               </div>
 
-              <div className="mb-3">
-                {showStatusField && (
-                  <>
-                    <label
-                      htmlFor="trainName"
-                      className="form-label"
-                      style={{ color: "#7a25a5" }}
-                    >
-                      <b>Status</b>
-                    </label>
-                    <select
-                      className="form-select"
-                      name="trainClassName"
-                      id="trainClassName"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value="">Select Train Status</option>
-                      <option value="option2">Active</option>
-                      <option value="option2">Deactive</option>
-
-                    </select>
-                  </>
-                )}
+              <div className="mb-3" style={{ display: "none" }}>
+                <label
+                  htmlFor="trainName"
+                  className="form-label"
+                  style={{ color: "#7a25a5" }}
+                >
+                  <b>Status</b>
+                </label>
+                <select
+                  className="form-select"
+                  name="trainClassName"
+                  id="trainClassName"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="">Select Train Status</option>
+                  <option value="option2">Active</option>
+                  <option value="option2">Deactive</option>
+                </select>
               </div>
             </div>
             <br />
