@@ -2,64 +2,92 @@ import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import { GET, DELETE } from "../helpers/HTTPHelper";
+import { GET, DELETE, PUT } from "../helpers/HTTPHelper";
 
 export default function UserList() {
   const [members, setMembers] = useState([]);
   const navigate = useNavigate();
   const [searchKey, setSearchKey] = useState("");
 
-  useEffect(() => {
-    async function loadMembers() {
-      try {
-        const response = await GET("User");
-        setMembers(response.data);
-      } catch (error) {
-        console.error("Error loading members:", error);
-      }
+  const fetchMembers = async () => {
+    try {
+      const response = await GET("User");
+      setMembers(response.data);
+    } catch (error) {
+      console.error("Error loading members:", error);
+      swal(`${error?.response?.data ? error.response.data : "Failed to load members"}`);
     }
-    loadMembers();
-  }, []);
-
-  // implement delete function here
-  const onDelete = (id) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this imaginary file!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        DELETE(`/User/${id}`).then((res) => {
-          swal("Deleted Successfully", "User Details Are Removed", "success");
-          window.location.reload();
-        });
-      } else {
-        swal("Your user details are safe!");
-      }
-    });
   };
 
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  // Implement edit logic pass id to edit page
   const handleEdit = (id) => {
-    // console.log(`Edit user with ID ${id}`);
     console.log(id);
     navigate(`/user-update/${id}`);
   };
 
-  const handleDelete = (id) => {
-    console.log(`Delete user with ID ${id}`);
-    // Implement delete logic here
+  // implement delete function in here
+  const onDelete = async (id) => {
+    try {
+      const willDelete = await swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      });
+
+      if (willDelete) {
+        const res = await DELETE(`/User/${id}`);
+        console.log(res);
+        swal(`${res?.data?.message ? res?.data?.message : "Delete Failed"}`);
+        fetchMembers();
+      }
+    } catch (error) {
+      console.error(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Delete Failed"}`);
+    }
   };
+
 
   const handleActivate = (id) => {
     console.log(`Activate user with ID ${id}`);
-    // Implement activate logic here
+
   };
 
-  const handleDeactivate = (id) => {
-    console.log(`Deactivate user with ID ${id}`);
-    // Implement deactivate logic here
+  const handleActivation = async (user) => {
+    try {
+      const willDelete = await swal({
+        title: "Are you sure?",
+        text: "Once deactivated, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      });
+
+      if (!willDelete) {
+        return;
+      }
+      const updatedUser = { ...user };
+      if (updatedUser.active === true) {
+        updatedUser.active = false;
+      } else {
+        updatedUser.active = true;
+      }
+
+      const res = await PUT(`/User/active/${updatedUser.nic}?active=${updatedUser.active}`);
+      console.log(res);
+      swal(`${res?.data ? res?.data : "Deactivate Failed"}`);
+      fetchMembers();
+
+    } catch (error) {
+      console.error(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Deactivate Failed"}`);
+    }
+
   };
   // search function start here
   const handleSearch = (e) => {
@@ -168,7 +196,7 @@ export default function UserList() {
                           type="button"
                           className="btn btn-sm btn-warning mx-1"
                           style={{ width: "90px" }}
-                          onClick={() => handleDeactivate(member.id)}
+                          onClick={() => handleActivation(member)}
                           disabled={localStorage.getItem("role") !== "BACKOFFICE"}
                         >
                           Deactivate
@@ -178,7 +206,7 @@ export default function UserList() {
                           type="button"
                           className="btn btn-sm btn-success mx-1"
                           style={{ width: "90px" }}
-                          onClick={() => handleActivate(member.id)}
+                          onClick={() => handleActivation(member)}
                           disabled={localStorage.getItem("role") !== "BACKOFFICE"}
                         >
                           Activate
