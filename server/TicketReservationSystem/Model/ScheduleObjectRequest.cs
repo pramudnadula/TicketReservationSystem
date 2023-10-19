@@ -23,5 +23,4 @@ namespace TicketReservationSystem.Model
         public String Status { get; set; } = String.Empty;
 
     }
-
 }

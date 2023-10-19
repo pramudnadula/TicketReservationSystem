@@ -10,9 +10,9 @@ namespace TicketReservationSystem.Service
   public interface IBookingService
   {
     // get all booking in the collection
-    List<Booking> GetBookings();
+    List<BookingRequestDto> GetBookings();
     // get booking using id
-    Booking Get(String id);
+    BookingRequestDto Get(String id);
     // create booking
     Booking Create(Booking booking);
     // get user using username

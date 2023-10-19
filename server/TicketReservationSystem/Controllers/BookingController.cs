@@ -28,8 +28,12 @@ namespace TicketReservationSystem.Controllers
 
         // GET: api/<Booking controller>
         [HttpGet]
-        public ActionResult<List<Booking>> Get()
+        public ActionResult<List<BookingRequestDto>> Get()
         {
+            if (bookingService.GetBookings().Count == 0)
+            {
+                return NotFound("No bookings found");
+            }
             return bookingService.GetBookings();
         }
 
@@ -39,24 +43,12 @@ namespace TicketReservationSystem.Controllers
         {
             var booking = bookingService.Get(id);
 
-            // get user using booking NIC
-            var user = userService.Get(booking.NIC);
-            // create booking request dto
-            BookingRequestDto bookingRequestDto = new BookingRequestDto();
-            bookingRequestDto.fromStation = booking.fromStation;
-            bookingRequestDto.toStation = booking.toStation;
-            bookingRequestDto.journeyDate = booking.journeyDate;
-            bookingRequestDto.noOfTickets = booking.noOfTickets;
-            bookingRequestDto.ticketclass = booking.ticketclass;
-            bookingRequestDto.user = new UserObjectRequest(user);
-
-
             if (booking == null)
             {
                 return NotFound($"booking with id = {id} not found");
             }
-            // bookingRequestDto
-            return bookingRequestDto;
+            // 
+            return booking;
         }
 
         // POST api/<UserController>
@@ -94,6 +86,7 @@ namespace TicketReservationSystem.Controllers
             booking.noOfTickets = request.noOfTickets;
             booking.ticketclass = request.ticketclass;
             booking.NIC = request.NIC;
+            booking.scheduleId = request.scheduleId;
 
             bookingService.Create(booking);
             return CreatedAtAction(nameof(Get), new { id = booking.Id }, booking);

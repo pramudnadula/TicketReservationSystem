@@ -6,6 +6,8 @@ namespace TicketReservationSystem.Model
      * **/
     public class BookingRequestDto
     {
+        public String Id { get; set; } = String.Empty;
+
         public String fromStation { get; set; } = String.Empty;
 
         public String toStation { get; set; } = String.Empty;

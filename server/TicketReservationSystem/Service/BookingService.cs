@@ -10,12 +10,16 @@ namespace TicketReservationSystem.Service
     {
         // veriable for hold mongo colllection
         private readonly IMongoCollection<Booking> _booking;
+        private readonly IUserService userService;
+        private readonly IScheduleService scheduleService;
 
         //constructor 
-        public BookingService(IDatabaseSettings settings, IMongoClient mongoClient)
+        public BookingService(IDatabaseSettings settings, IMongoClient mongoClient, IUserService userService, IScheduleService scheduleService)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _booking = database.GetCollection<Booking>(settings.BookingCollectionName);
+            this.userService = userService;
+            this.scheduleService = scheduleService;
         }
 
         // create booking 
@@ -26,9 +30,35 @@ namespace TicketReservationSystem.Service
         }
 
         // get booking using id
-        public Booking Get(string id)
+        public BookingRequestDto Get(string id)
         {
-            return _booking.Find(booking => booking.Id == id).FirstOrDefault();
+            Booking booking = _booking.Find(booking => booking.Id == id).FirstOrDefault();
+            // get user using booking NIC
+            var user = userService.Get(booking.NIC);
+            // get schedule using booking schedule id
+            var schedule = scheduleService.Get(booking.scheduleId);
+
+            BookingRequestDto bookingRequestDto = new BookingRequestDto();
+            bookingRequestDto.Id = booking.Id;
+            bookingRequestDto.fromStation = booking.fromStation;
+            bookingRequestDto.toStation = booking.toStation;
+            bookingRequestDto.journeyDate = booking.journeyDate;
+            bookingRequestDto.noOfTickets = booking.noOfTickets;
+            bookingRequestDto.ticketclass = booking.ticketclass;
+            bookingRequestDto.user = new UserObjectRequest(user);
+            bookingRequestDto.schedule = new ScheduleObjectRequest();
+
+            bookingRequestDto.schedule.Id = schedule.Id;
+            bookingRequestDto.schedule.Train = schedule.Train;
+            bookingRequestDto.schedule.TrainClassName = schedule.TrainClassName;
+            bookingRequestDto.schedule.StartLocation = schedule.StartLocation;
+            bookingRequestDto.schedule.EndLocation = schedule.EndLocation;
+            bookingRequestDto.schedule.DepartureTime = schedule.DepartureTime;
+            bookingRequestDto.schedule.ArrivalTime = schedule.ArrivalTime;
+            bookingRequestDto.schedule.Status = schedule.Status;
+
+
+            return bookingRequestDto;
         }
 
         // get booking using booking name
@@ -38,9 +68,39 @@ namespace TicketReservationSystem.Service
         }
 
         // get all booking in the collection
-        public List<Booking> GetBookings()
+        public List<BookingRequestDto> GetBookings()
         {
-            return _booking.Find(booking => true).ToList();
+            List<BookingRequestDto> bookingRequestDtos = new List<BookingRequestDto>();
+            var bookings = _booking.Find(booking => true).ToList();
+            foreach (var booking in bookings)
+            {
+                // get user using booking NIC
+                var user = userService.Get(booking.NIC);
+                // get schedule using booking schedule id
+                var schedule = scheduleService.Get(booking.scheduleId);
+
+                BookingRequestDto bookingRequestDto = new BookingRequestDto();
+                bookingRequestDto.Id = booking.Id;
+                bookingRequestDto.fromStation = booking.fromStation;
+                bookingRequestDto.toStation = booking.toStation;
+                bookingRequestDto.journeyDate = booking.journeyDate;
+                bookingRequestDto.noOfTickets = booking.noOfTickets;
+                bookingRequestDto.ticketclass = booking.ticketclass;
+                bookingRequestDto.user = new UserObjectRequest(user);
+                bookingRequestDto.schedule = new ScheduleObjectRequest();
+
+                bookingRequestDto.schedule.Id = schedule.Id;
+                bookingRequestDto.schedule.Train = schedule.Train;
+                bookingRequestDto.schedule.TrainClassName = schedule.TrainClassName;
+                bookingRequestDto.schedule.StartLocation = schedule.StartLocation;
+                bookingRequestDto.schedule.EndLocation = schedule.EndLocation;
+                bookingRequestDto.schedule.DepartureTime = schedule.DepartureTime;
+                bookingRequestDto.schedule.ArrivalTime = schedule.ArrivalTime;
+                bookingRequestDto.schedule.Status = schedule.Status;
+
+                bookingRequestDtos.Add(bookingRequestDto);
+            }
+            return bookingRequestDtos;
         }
 
         // remove booking using id
