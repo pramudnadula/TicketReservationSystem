@@ -38,7 +38,6 @@ export default function UpdateBooking() {
   const getBooking = async () => {
     try {
       const rest = await GET(`Booking/${id}`);
-      console.log(rest);
 
       setFromStation(rest?.data?.fromStation);
       setToStation(rest?.data?.toStation);
