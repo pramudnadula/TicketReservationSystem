@@ -24,7 +24,7 @@ export default function TrainDetails() {
 
   const fetchTrains = async () => {
     try {
-      const response = await GET("Train");
+      const response = await GET("/Schedule");
       setTrains(response.data);
     } catch (error) {
       console.error("Error loading train details:", error);
@@ -52,7 +52,7 @@ export default function TrainDetails() {
       });
 
       if (willDelete) {
-        const res = await DELETE(`/Train/${id}`);
+        const res = await DELETE(`/Schedule/${id}`);
         console.log(res);
         swal("Deleted Successfully", "Train Details Are Removed", "success");
         fetchTrains();

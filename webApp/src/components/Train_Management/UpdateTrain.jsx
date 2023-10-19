@@ -23,7 +23,7 @@ export default function UpdateTrain() {
 
   const getTrain = async () => {
     try {
-      const rest = await GET(`Train/${id}`);
+      const rest = await GET(`/Schedule/${id}`);
       setTrainName(rest?.data?.trainName);
       setTrainClassName(rest?.data?.trainClassName);
       setStartLocation(rest?.data?.startLocation);
@@ -62,7 +62,7 @@ export default function UpdateTrain() {
         status,
       };
       // Assuming PUT is a function to make the API call
-      const result = await PUT(`Train/${id}`, trainObj);
+      const result = await PUT(`/Schedule/${id}`, trainObj);
 
       // Assuming PUT function returns the updated data
       console.log(result);

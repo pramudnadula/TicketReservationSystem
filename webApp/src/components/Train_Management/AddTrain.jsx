@@ -43,7 +43,7 @@ export default function AddTrain() {
         status,
       };
 
-      const rest = await POST("Train/create", train);
+      const rest = await POST("/Schedule/create", train);
       console.log(rest);
       swal("Your Train Details Succefully Added!");
       navigate("/train-details");
