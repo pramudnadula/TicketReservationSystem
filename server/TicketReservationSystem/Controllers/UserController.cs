@@ -115,21 +115,28 @@ namespace TicketReservationSystem.Controllers
             {
                 return BadRequest("Fail to login");
             }
+            // Check if a user with the provided email exists
             var existingUser = userService.GetUserByEmail(request.Email);
-
             if (existingUser == null)
             {
                 return NotFound($"user with email = {request.Email} not found");
             }
+            // Check if the provided password matches the stored password hash
             bool verification = authService.VerifyPassword(request.Password, existingUser.Password, existingUser.PasswordKey);
-
             if (!verification)
             {
                 return NotFound("Your email or password is wrong");
             }
 
+            // if user is not active
+            if (!existingUser.Active)
+            {
+                return BadRequest("User has been deactivated");
+            }
+
+            // Generate JWT token
             var token = GenerateJwtToken(existingUser);
-            var expiration = DateTime.UtcNow.AddHours(2); // Set the expiration time here (should match the token expiration)
+            var expiration = DateTime.UtcNow.AddHours(2); // Set the expiration time - (should match the token expiration)
 
             // Store the token in session
             HttpContext.Session.SetString("AccessToken", token);
@@ -198,7 +205,7 @@ namespace TicketReservationSystem.Controllers
                 if (userRoleClaim == "BACKOFFICE")
                 {
                     userService.UpdateActiveStatus(nic, active);
-                    return StatusCode(204, $"Active status updated to active");
+                    return Ok("You have successfully activated the user");
                 }
                 else
                 {
@@ -211,7 +218,7 @@ namespace TicketReservationSystem.Controllers
                 if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELAGENT" || userRoleClaim == "TRAVELER")
                 {
                     userService.UpdateActiveStatus(nic, active);
-                    return StatusCode(204, $"Active status updated to inactive");
+                    return Ok("You have successfully deactivated the user");
                 }
                 else
                 {
