@@ -1,6 +1,6 @@
 import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { DELETE, GET } from "../helpers/HTTPHelper";
 
@@ -17,7 +17,7 @@ function formatTimeTo12Hour(time) {
   return `${formattedHour}.${minute || "00"} ${uppercasedAmpm}`;
 }
 
-export default function TrainDetails() {
+export default function ScheduleDetails() {
   const [trains, setTrains] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export default function TrainDetails() {
 
   const handleEdit = (id) => {
     console.log(`Edit train with ID ${id}`);
-    navigate(`/updateTrain/${id}`);
+    navigate(`/update-schedule/${id}`);
   };
 
   const onDelete = async (id) => {
@@ -81,9 +81,17 @@ export default function TrainDetails() {
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
       <div className="container mt-12">
+        <div className="container-xxl my-2">
+          <Link to="/create-schedule">
+            <button type="button" className="btn btn-primary float-end">
+              Add Schedule
+            </button>
+          </Link>
+          <br />
+        </div>
         <div className="text-center mb-5">
           <h1 className="text-center topic" style={{ color: "#00008b" }}>
-            <b>Train Details</b>
+            <b>Schedule Details</b>
           </h1>
           <div className="shape">
             <svg

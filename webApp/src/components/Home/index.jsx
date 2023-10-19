@@ -42,7 +42,7 @@ export default function Home() {
                                         <div className="card-body">
                                             <h5 className="card-title">Train Management</h5>
                                             <p className="card-text">Manage trains and schedules.</p>
-                                            <Link to="/train-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
+                                            <Link to="/schedule-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
                                         </div>
                                     </div>
                                 </div>

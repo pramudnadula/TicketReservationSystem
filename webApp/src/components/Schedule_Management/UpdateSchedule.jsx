@@ -1,39 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/no-onchange */
-import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
-import MainHeaderTitle from "../Partials/MainHeaderTitle";
-import { POST } from "../helpers/HTTPHelper";
 import InputComponent from "../helpers/InputComponent";
+import MainHeaderTitle from "../Partials/MainHeaderTitle";
+import { GET, PUT } from "../helpers/HTTPHelper";
 import places from "../Data/places.json";
 
-export default function AddTrain() {
+export default function UpdateSchedule() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [trainName, setTrainName] = useState("");
-  const [trainClassName, setTrainClassName] = useState("");
+  const [trainClassName, setTrainClassName] = useState(""); // startLocation, endLocation, departureTime, arrivalTime
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
-  const [status, setStatus] = useState("Deactive");
+  const [status, setStatus] = useState("");
 
-  const handleSubmit = async (e) => {
-
-    if (!trainName || !trainClassName || !startLocation || !endLocation || !departureTime || !arrivalTime || !status || !trainName) {
-      if (!trainName) {
-        swal('Train Name is required.');
-      }
-      return;
-    }
-
+  const getTrain = async () => {
     try {
-      e.preventDefault();
+      const rest = await GET(`/Schedule/${id}`);
+      setTrainName(rest?.data?.trainName);
+      setTrainClassName(rest?.data?.trainClassName);
+      setStartLocation(rest?.data?.startLocation);
+      setEndLocation(rest?.data?.endLocation);
+      setDepartureTime(rest?.data?.departureTime);
+      setArrivalTime(rest?.data?.arrivalTime);
+      setStatus(rest?.data?.status);
+    } catch (error) {
+      console.log(error);
+      swal(`${error?.response?.data ? error.response.data : "Train Details Loading Failed"}`);
+    }
+  };
 
-      setStatus("Deactive");
+  useEffect(() => {
+    getTrain();
+  }, [id]);
 
-      const train = {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+
+      if (!trainName || !trainClassName || !startLocation || !endLocation || !departureTime || !arrivalTime || !status || !trainName) {
+        if (!trainName) {
+          swal('Train Name is required.');
+        }
+        return;
+      }
+      const trainObj = {
+        id,
         trainName,
         trainClassName,
         startLocation,
@@ -42,26 +61,30 @@ export default function AddTrain() {
         arrivalTime,
         status,
       };
+      // Assuming PUT is a function to make the API call
+      const result = await PUT(`/Schedule/${id}`, trainObj);
 
-      const rest = await POST("/Schedule/create", train);
-      console.log(rest);
-      swal("Your Train Details Succefully Added!");
-      navigate("/train-details");
+      // Assuming PUT function returns the updated data
+      console.log(result);
+      swal("Your Train Details Succefully Updated!");
+      getTrain();
+      navigate("/schedule-details");
     } catch (error) {
       console.log(error);
+      swal(`${error?.response?.data ? error?.response?.data : "Train Details Updating Failed"}`);
     }
   };
+
   return (
-    <Layout childrenClasses="pt-0 pb-0">
+    <Layout childrenClasses="pt-4 pb-0 ">
       <div className="container-xxl my-2">
         <div className="card p-5 shadow w-50 mx-auto">
           <MainHeaderTitle
-            title="Train Management"
-            link="/train-details"
+            title="Update Train Details"
+            link="/schedule-details"
             buttonTitle="Train Details"
           />
-          <form onSubmit={handleSubmit}>
-
+          <form className="travelform" onSubmit={handleUpdate}>
             <div className="mb-3">
               <InputComponent
                 label="Train Name"
@@ -95,7 +118,6 @@ export default function AddTrain() {
                 <option value="3">3 rd Class</option>
               </select>
             </div>
-
             <div className="mb-3">
               <label
                 htmlFor="startLocation"
@@ -143,7 +165,6 @@ export default function AddTrain() {
                 ))}
               </select>
             </div>
-
             <div className="row">
               <div className="col-md-6">
                 <InputComponent
@@ -167,35 +188,29 @@ export default function AddTrain() {
                   inputHandler={setArrivalTime}
                 />
               </div>
-
-              <div className="mb-3" style={{ display: "none" }}>
-                <label
-                  htmlFor="trainName"
-                  className="form-label"
-                  style={{ color: "#7a25a5" }}
-                >
-                  <b>Status</b>
-                </label>
-                <select
-                  className="form-select"
-                  name="trainClassName"
-                  id="trainClassName"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  <option value="">Select Train Status</option>
-                  <option value="option2">Active</option>
-                  <option value="option2">Deactive</option>
-                </select>
-              </div>
             </div>
+            <label
+              htmlFor="status"
+              className="form-label"
+              style={{ color: "#7a25a5" }}
+            >
+              <b>Status</b>
+            </label>
+            <select
+              className="form-select"
+              name="status"
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="">Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Deactive">Deactive</option>
+            </select>
             <br />
             <div className="d-flex justify-content-center">
-              <button
-                type="submit"
-                className="btn button-btn"
-              >
-                Add Reservations
+              <button type="submit" className="btn button-btn">
+                Update Reservations
               </button>
             </div>
           </form>
