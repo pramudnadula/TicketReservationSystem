@@ -20,8 +20,22 @@ export default function UpdateSchedule() {
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
   const [status, setStatus] = useState("");
+  const [trains, setTrains] = useState([]);
 
-  const getTrain = async () => {
+  const getTrains = async () => {
+    try {
+      const res = await GET("/Train");
+      setTrains(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTrains();
+  }, []);
+
+  const getSchedule = async () => {
     try {
       const rest = await GET(`/Schedule/${id}`);
       setTrainName(rest?.data?.trainName);
@@ -38,7 +52,7 @@ export default function UpdateSchedule() {
   };
 
   useEffect(() => {
-    getTrain();
+    getSchedule();
   }, [id]);
 
   const handleUpdate = async (e) => {
@@ -67,7 +81,7 @@ export default function UpdateSchedule() {
       // Assuming PUT function returns the updated data
       console.log(result);
       swal("Your Train Details Succefully Updated!");
-      getTrain();
+      getSchedule();
       navigate("/schedule-details");
     } catch (error) {
       console.log(error);
@@ -86,19 +100,33 @@ export default function UpdateSchedule() {
           />
           <form className="travelform" onSubmit={handleUpdate}>
             <div className="mb-3">
-              <InputComponent
-                label="Train Name"
-                name="trainName"
-                type="text"
-                placeholder="Train Name"
-                value={trainName}
-                required
-                inputHandler={setTrainName}
-              />
-            </div>
-            <div className="mb-3">
               <label
                 htmlFor="trainName"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Train Name</b>
+              </label>
+              <select
+                className="form-select"
+                name="trainName"
+                id="trainName"
+                value={trainName}
+                required
+                onChange={(e) => setTrainName(e.target.value)}
+              >
+                <option value="">Select Train Name</option>
+                {trains.map((train) => (
+                  <option key={train?.id} value={train?.id}>
+                    {train?.trainName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="mb-3">
+              <label
+                htmlFor="trainClass"
                 className="form-label"
                 style={{ color: "#7a25a5" }}
               >
@@ -106,13 +134,13 @@ export default function UpdateSchedule() {
               </label>
               <select
                 className="form-select"
-                name="trainClassName"
-                id="trainClassName"
+                name="trainClass"
+                id="trainClass"
                 value={trainClassName}
                 required
                 onChange={(e) => setTrainClassName(e.target.value)}
               >
-                <option value="">Select Train Name</option>
+                <option value="">Select Train</option>
                 <option value="1">1 st Class</option>
                 <option value="2">2 nd Class</option>
                 <option value="3">3 rd Class</option>

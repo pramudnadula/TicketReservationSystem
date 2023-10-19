@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/no-onchange */
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
-import { POST } from "../helpers/HTTPHelper";
+import { GET, POST } from "../helpers/HTTPHelper";
 import InputComponent from "../helpers/InputComponent";
 import places from "../Data/places.json";
 
@@ -20,6 +20,18 @@ export default function AddSchedule() {
   const [status, setStatus] = useState("Deactive");
   const [trains, setTrains] = useState([]);
 
+  const getTrains = async () => {
+    try {
+      const res = await GET("/Train");
+      setTrains(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTrains();
+  }, []);
 
   const handleSubmit = async (e) => {
 
@@ -65,16 +77,30 @@ export default function AddSchedule() {
           <form onSubmit={handleSubmit}>
 
             <div className="mb-3">
-              <InputComponent
-                label="Train Name"
+              <label
+                htmlFor="trainName"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Train Name</b>
+              </label>
+              <select
+                className="form-select"
                 name="trainName"
-                type="text"
-                placeholder="Train Name"
+                id="trainName"
                 value={trainName}
                 required
-                inputHandler={setTrainName}
-              />
+                onChange={(e) => setTrainName(e.target.value)}
+              >
+                <option value="">Select Train Name</option>
+                {trains.map((train) => (
+                  <option key={train?.id} value={train?.id}>
+                    {train?.trainName}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="mb-3">
               <label
                 htmlFor="trainClassName"
