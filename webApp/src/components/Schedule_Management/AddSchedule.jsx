@@ -18,6 +18,8 @@ export default function AddSchedule() {
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
   const [status, setStatus] = useState("Deactive");
+  const [trains, setTrains] = useState([]);
+
 
   const handleSubmit = async (e) => {
 
@@ -56,7 +58,7 @@ export default function AddSchedule() {
       <div className="container-xxl my-2">
         <div className="card p-5 shadow w-50 mx-auto">
           <MainHeaderTitle
-            title="Train Management"
+            title="Schedule Management"
             link="/schedule-details"
             buttonTitle="Train Details"
           />
