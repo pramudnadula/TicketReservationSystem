@@ -31,7 +31,7 @@ export default function UserCreation() {
         email,
         password,
         role,
-        active: false,
+        active: true,
         nic
       }
       const rest = await POST('User/registration', user)

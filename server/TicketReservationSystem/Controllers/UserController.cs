@@ -182,7 +182,7 @@ namespace TicketReservationSystem.Controllers
             return Ok($"Student with nic = {nic} deleted");
         }
 
-        //UPDATE active status
+        // UPDATE active status
         [HttpPut("active/{nic}")]
         public ActionResult UpdateActiveStatus(String nic, bool active)
         {
@@ -193,6 +193,7 @@ namespace TicketReservationSystem.Controllers
                 return NotFound($"Student with nic = {nic} not found");
             }
 
+            // Get the user role from the JWT token claims (if the token is valid)
             var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
             if (string.IsNullOrEmpty(userRoleClaim))
@@ -243,6 +244,12 @@ namespace TicketReservationSystem.Controllers
             if (request.OldPassword == null)
             {
                 return BadRequest("Old password cannot be empty");
+            }
+
+            // if user is not active
+            if (!existingUser.Active)
+            {
+                return BadRequest("User has been deactivated");
             }
 
             // Check if the provided old password matches the stored password hash

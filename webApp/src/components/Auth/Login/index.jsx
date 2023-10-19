@@ -28,6 +28,12 @@ export default function Login() {
         toastFail('Your account is not active. Please contact the BACK OFFICE for more information');
         return;
       }
+
+      if (rest?.data?.role !== 'TRAVELER') {
+        toastFail('You are not allowed to login to this system');
+        return;
+      }
+
       toastSuccess('Login Successful');
       localStorage.setItem('AccessToken', rest?.data?.token);
       localStorage.setItem('user', rest?.data?.email);
