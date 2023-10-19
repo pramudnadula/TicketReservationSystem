@@ -22,9 +22,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 //train
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
-
 //booking
 builder.Services.AddScoped<IBookingService, BookingService>();
+
+//train
+builder.Services.AddScoped<ITrainService, TrainService>();
+
 
 // Enable CORS
 // builder.Services.AddCors(options =>

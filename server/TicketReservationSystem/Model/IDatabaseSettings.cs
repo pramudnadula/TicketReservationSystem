@@ -20,6 +20,9 @@
         // get the booking collection name
         string BookingCollectionName { get; set; }
 
+        // get the train collection name
+        string TrainCollectionName { get; set; }
+
 
 
     }

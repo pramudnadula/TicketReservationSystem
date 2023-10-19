@@ -21,6 +21,9 @@
     // get the Booking collection name
     public string BookingCollectionName { get; set; } = String.Empty;
 
+    // get the Train collection name
+    public string TrainCollectionName { get; set; } = String.Empty;
+
 
   }
 
