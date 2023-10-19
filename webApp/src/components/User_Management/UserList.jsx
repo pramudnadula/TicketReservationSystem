@@ -85,7 +85,7 @@ export default function UserList() {
       }
 
       // const res = await axios.put(
-      //   `https://localhost:44334/api/`,
+      //   `https://localhost:44334/api/User/active/${updatedUser.nic}?active=${updatedUser.active`,
       //   null, // This is the request body, which is null in your case
       //   {
       //     headers: {

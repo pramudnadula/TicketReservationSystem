@@ -208,7 +208,7 @@ namespace TicketReservationSystem.Controllers
             }
             else
             {
-                if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELAGENT")
+                if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELAGENT" || userRoleClaim == "TRAVELER")
                 {
                     userService.UpdateActiveStatus(nic, active);
                     return StatusCode(204, $"Active status updated to inactive");
