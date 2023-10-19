@@ -63,7 +63,7 @@ namespace TicketReservationSystem.Controllers
         [HttpPost("addBooking")]
         public ActionResult<Booking> AddBooking([FromBody] BookingRequest request)
         {
-            if (request.fromStation == null || request.toStation == null || request.journeyDate == null || request.noOfTickets == null || request.ticketclass == null)
+            if (request.fromStation == null || request.toStation == null || request.noOfTickets == null || request.ticketclass == null)
             {
                 return BadRequest("Fail to add booking");
             }
