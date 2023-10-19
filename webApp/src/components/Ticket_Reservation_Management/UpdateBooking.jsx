@@ -13,21 +13,39 @@ import places from "../Data/places.json";
 export default function UpdateBooking() {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
   const [fromStation, setFromStation] = useState("");
   const [toStation, setToStation] = useState("");
   const [journeyDate, setJourneyDate] = useState(" ");
   const [noOfTickets, setnoOfTickets] = useState("");
   const [ticketclass, setTicketClass] = useState("");
+  const [scheduleId, setScheduleId] = useState("");
+  const [schedule, setSchedule] = useState([]);
+
+  const fetchSchedule = async () => {
+    try {
+      const response = await GET("/Schedule");
+      setSchedule(response.data);
+    } catch (error) {
+      console.error("Error loading train details:", error);
+      swal(`${error?.response?.data ? error?.response?.data : "Failed to load train details"}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedule();
+  }, []);
 
   const getBooking = async () => {
     try {
       const rest = await GET(`Booking/${id}`);
+      console.log(rest);
+
       setFromStation(rest?.data?.fromStation);
       setToStation(rest?.data?.toStation);
       setJourneyDate(rest?.data?.journeyDate);
       setnoOfTickets(rest?.data?.noOfTickets);
       setTicketClass(rest?.data?.ticketclass);
+      setScheduleId(rest?.data?.schedule?.id);
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +53,7 @@ export default function UpdateBooking() {
 
   useEffect(() => {
     getBooking();
-  }, []);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     try {
@@ -82,6 +100,32 @@ export default function UpdateBooking() {
             buttonTitle="User List"
           />
           <form>
+            <div className="mb-3">
+              <label
+                htmlFor="trainSchedules"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Train Schedules</b>
+              </label>
+              <select
+                className="form-select h-100"
+                name="trainSchedules"
+                id="trainSchedules"
+                value={scheduleId}
+                onChange={(e) => setScheduleId(e.target.value)}
+                style={{ height: "40px !important" }}
+              >
+                <option value="">Select Train Schedule</option>
+                {schedule.map((sched) => (
+                  <option key={sched.id} value={sched.id} style={{ height: "40px" }} >
+                    {sched.train.trainName} - {sched.trainClassName} -{" "}
+                    {sched.startLocation} - {sched.endLocation} -{" "}
+                    {sched.arrivalTime} - {sched.departureTime}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="mb-3">
               <label
                 htmlFor="fromStation"

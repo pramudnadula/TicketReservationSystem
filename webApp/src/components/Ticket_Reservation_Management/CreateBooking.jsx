@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-onchange */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import InputComponent from "../helpers/InputComponent";
 import Layout from "../Partials/Layout";
 import MainHeaderTitle from "../Partials/MainHeaderTitle";
-import { POST } from "../helpers/HTTPHelper";
+import { GET, POST } from "../helpers/HTTPHelper";
 import "react-datepicker/dist/react-datepicker.css";
 import places from "../Data/places.json";
 
@@ -17,7 +17,23 @@ export default function CreateBooking() {
   const [journeyDate, setJourneyDate] = useState(new Date());
   const [noOfTickets, setnoOfTickets] = useState("");
   const [ticketclass, setTicketClass] = useState("");
-  console.log(journeyDate);
+  const [scheduleId, setScheduleId] = useState("");
+  const [schedule, setSchedule] = useState([]);
+
+  const fetchSchedule = async () => {
+    try {
+      const response = await GET("/Schedule");
+      setSchedule(response.data);
+    } catch (error) {
+      console.error("Error loading train details:", error);
+      swal(`${error?.response?.data ? error?.response?.data : "Failed to load train details"}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedule();
+  }, []);
+
 
   const handleSubmit = async (e) => {
     try {
@@ -30,9 +46,10 @@ export default function CreateBooking() {
         journeyDate,
         noOfTickets,
         ticketclass,
+        scheduleId,
       };
 
-      const rest = await POST("Booking/addBooking", booking);
+      const rest = await POST("/Booking/addBooking", booking);
       console.log(rest);
       swal("Your Booking Details Succefully Added!");
       navigate("/booking-list");
@@ -63,6 +80,33 @@ export default function CreateBooking() {
             buttonTitle="User List"
           />
           <form onSubmit={handleSubmit}>
+
+            <div className="mb-3">
+              <label
+                htmlFor="trainSchedules"
+                className="form-label"
+                style={{ color: "#7a25a5" }}
+              >
+                <b>Train Schedules</b>
+              </label>
+              <select
+                className="form-select h-100"
+                name="trainSchedules"
+                id="trainSchedules"
+                value={scheduleId}
+                onChange={(e) => setScheduleId(e.target.value)}
+                style={{ height: "40px !important" }}
+              >
+                <option value="">Select Train Schedule</option>
+                {schedule.map((sched) => (
+                  <option key={sched.id} value={sched.id} style={{ height: "40px" }} >
+                    {sched.train.trainName} - {sched.trainClassName} -{" "}
+                    {sched.startLocation} - {sched.endLocation} -{" "}
+                    {sched.arrivalTime} - {sched.departureTime}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="mb-3">
               <label
                 htmlFor="fromStation"
