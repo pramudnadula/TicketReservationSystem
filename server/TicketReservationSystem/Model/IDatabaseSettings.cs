@@ -15,11 +15,11 @@
         string UserCollectionName { get; set; }
 
         // get the train collection name
-        string TrainCollectionName { get; set; }
+        string ScheduleCollectionName { get; set; }
 
-         // get the booking collection name
+        // get the booking collection name
         string BookingCollectionName { get; set; }
-          
+
 
 
     }

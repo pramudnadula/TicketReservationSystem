@@ -20,7 +20,7 @@ builder.Services.AddScoped<IAuthHashService, AuthHashService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 //train
-builder.Services.AddScoped<ITrainService, TrainService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
 
 //booking
