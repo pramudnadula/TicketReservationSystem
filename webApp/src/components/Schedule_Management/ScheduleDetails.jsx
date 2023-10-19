@@ -68,14 +68,15 @@ export default function ScheduleDetails() {
   const handleSearch = (e) => {
     setSearchKey(e.target.value);
   };
+  console.log(trains);
 
   const filteredTrains = trains.filter(
     (train) =>
-      train.trainName.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.trainClassName.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.startLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.endLocation.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train.status.toLowerCase().includes(searchKey.toLowerCase())
+      train?.train?.trainName?.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train?.trainClassName?.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train?.startLocation?.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train?.endLocation?.toLowerCase().includes(searchKey.toLowerCase()) ||
+      train?.status?.toLowerCase().includes(searchKey.toLowerCase())
   );
 
   return (
@@ -140,12 +141,12 @@ export default function ScheduleDetails() {
             {filteredTrains.map((train) => (
               <tr>
                 <th scope="row"></th>
-                <td>{train.trainName}</td>
-                <td>{train.trainClassName}</td>
-                <td>{train.startLocation}</td>
-                <td>{train.endLocation}</td>
-                <td>{formatTimeTo12Hour(train.departureTime)}</td>
-                <td>{formatTimeTo12Hour(train.arrivalTime)}</td>
+                <td>{train?.train?.trainName}</td>
+                <td>{train?.trainClassName}</td>
+                <td>{train?.startLocation}</td>
+                <td>{train?.endLocation}</td>
+                <td>{formatTimeTo12Hour(train?.departureTime)}</td>
+                <td>{formatTimeTo12Hour(train?.arrivalTime)}</td>
                 <td
                   className={
                     train.status === "Active"
