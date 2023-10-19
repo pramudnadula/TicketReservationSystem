@@ -10,12 +10,14 @@ namespace TicketReservationSystem.Service
     {
         // veriable for hold mongo colllection
         private readonly IMongoCollection<Schedule> _schedule;
+        private readonly ITrainService trainService;
 
         //constructor 
-        public ScheduleService(IDatabaseSettings settings, IMongoClient mongoClient)
+        public ScheduleService(IDatabaseSettings settings, IMongoClient mongoClient, ITrainService trainService)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _schedule = database.GetCollection<Schedule>(settings.ScheduleCollectionName);
+            this.trainService = trainService;
         }
 
         // create user 
@@ -26,9 +28,20 @@ namespace TicketReservationSystem.Service
         }
 
         // get user using id
-        public Schedule Get(string id)
+        public ScheduleObjectRequest Get(string id)
         {
-            return _schedule.Find(schedule => schedule.Id == id).FirstOrDefault();
+            Schedule schedule = _schedule.Find(schedule => schedule.Id == id).FirstOrDefault();
+            Train train = trainService.Get(schedule.TrainName);
+            ScheduleObjectRequest scheduleObjectRequest = new ScheduleObjectRequest();
+            scheduleObjectRequest.Id = schedule.Id;
+            scheduleObjectRequest.Train = train;
+            scheduleObjectRequest.TrainClassName = schedule.TrainClassName;
+            scheduleObjectRequest.StartLocation = schedule.StartLocation;
+            scheduleObjectRequest.EndLocation = schedule.EndLocation;
+            scheduleObjectRequest.DepartureTime = schedule.DepartureTime;
+            scheduleObjectRequest.ArrivalTime = schedule.ArrivalTime;
+            scheduleObjectRequest.Status = schedule.Status;
+            return scheduleObjectRequest;
         }
 
         // get user using scheduleName
@@ -38,9 +51,25 @@ namespace TicketReservationSystem.Service
         }
 
         // get all user in the collection
-        public List<Schedule> GetSchedule()
+        public List<ScheduleObjectRequest> GetSchedule()
         {
-            return _schedule.Find(schedule => true).ToList();
+            List<ScheduleObjectRequest> scheduleObjectRequests = new List<ScheduleObjectRequest>();
+            var schedules = _schedule.Find(schedule => true).ToList();
+            foreach (var schedule in schedules)
+            {
+                Train train = trainService.Get(schedule.TrainName);
+                ScheduleObjectRequest scheduleObjectRequest = new ScheduleObjectRequest();
+                scheduleObjectRequest.Id = schedule.Id;
+                scheduleObjectRequest.Train = train;
+                scheduleObjectRequest.TrainClassName = schedule.TrainClassName;
+                scheduleObjectRequest.StartLocation = schedule.StartLocation;
+                scheduleObjectRequest.EndLocation = schedule.EndLocation;
+                scheduleObjectRequest.DepartureTime = schedule.DepartureTime;
+                scheduleObjectRequest.ArrivalTime = schedule.ArrivalTime;
+                scheduleObjectRequest.Status = schedule.Status;
+                scheduleObjectRequests.Add(scheduleObjectRequest);
+            }
+            return scheduleObjectRequests;
         }
 
         // remove schedule using id

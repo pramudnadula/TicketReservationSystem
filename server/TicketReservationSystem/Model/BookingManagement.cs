@@ -23,5 +23,8 @@ namespace TicketReservationSystem.Model
         [BsonElement("NIC")]
         public String NIC { get; set; } = String.Empty;
 
+        [BsonElement("scheduleId")]
+        public String scheduleId { get; set; } = String.Empty;
+
     }
 }

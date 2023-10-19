@@ -23,20 +23,18 @@ namespace TicketReservationSystem.Controllers
         public ScheduleController(IScheduleService scheduleService)
         {
             this.scheduleService = scheduleService;
-
-
         }
 
         // GET: api/<UserController>
         [HttpGet]
-        public ActionResult<List<Schedule>> Get()
+        public ActionResult<List<ScheduleObjectRequest>> Get()
         {
             return scheduleService.GetSchedule();
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public ActionResult<Schedule> Get(String id)
+        public ActionResult<ScheduleObjectRequest> Get(String id)
         {
             var schedule = scheduleService.Get(id);
             if (schedule == null)

@@ -18,5 +18,7 @@ namespace TicketReservationSystem.Model
 
         public UserObjectRequest? user { get; set; } = null;
 
+        public ScheduleObjectRequest? schedule { get; set; } = null;
+
     }
 }

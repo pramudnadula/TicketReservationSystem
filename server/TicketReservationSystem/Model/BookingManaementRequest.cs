@@ -17,5 +17,7 @@ namespace TicketReservationSystem.Model
 
         public String NIC { get; set; } = String.Empty;
 
+        public String scheduleId { get; set; } = String.Empty;
+
     }
 }

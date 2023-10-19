@@ -10,9 +10,9 @@ namespace TicketReservationSystem.Service
   public interface IScheduleService
   {
     // get all train in the collection
-    List<Schedule> GetSchedule();
+    List<ScheduleObjectRequest> GetSchedule();
     // get train using id
-    Schedule Get(String id);
+    ScheduleObjectRequest Get(String id);
     // create train
     Schedule Create(Schedule train);
     // get train using trainname
