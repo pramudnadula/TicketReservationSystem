@@ -77,7 +77,7 @@ export default function AddSchedule() {
             </div>
             <div className="mb-3">
               <label
-                htmlFor="trainName"
+                htmlFor="trainClassName"
                 className="form-label"
                 style={{ color: "#7a25a5" }}
               >
@@ -91,7 +91,7 @@ export default function AddSchedule() {
                 required
                 onChange={(e) => setTrainClassName(e.target.value)}
               >
-                <option value="">Select Train Name</option>
+                <option value="">Select Train Class Name</option>
                 <option value="1">1 st Class</option>
                 <option value="2">2 nd Class</option>
                 <option value="3">3 rd Class</option>
