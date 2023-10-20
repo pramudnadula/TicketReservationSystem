@@ -29,7 +29,7 @@ export default function Login() {
         return;
       }
 
-      if (rest?.data?.role !== 'TRAVELER') {
+      if (rest?.data?.role === 'TRAVELER') {
         toastFail('You are not allowed to login to this system');
         return;
       }
