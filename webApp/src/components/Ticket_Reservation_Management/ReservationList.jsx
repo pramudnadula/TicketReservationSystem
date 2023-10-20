@@ -123,14 +123,14 @@ export default function ReservationList() {
                       className="btn btn-sm btn-info mx-1"
                       onClick={() => handleEdit(booking.id)}
                     >
-                      Modify
+                      Update Booking
                     </button>
                     <button
                       type="button"
                       className="btn btn-sm btn-danger mx-1"
                       onClick={() => onDelete(booking.id)}
                     >
-                      Cancel
+                      Cancel Reservation
                     </button>
                   </td>
                 </tr>
