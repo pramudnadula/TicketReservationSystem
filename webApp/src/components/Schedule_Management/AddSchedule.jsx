@@ -34,24 +34,14 @@ export default function AddSchedule() {
   }, []);
 
   const handleSubmit = async (e) => {
-
-    if (!trainName || !trainClassName || !startLocation || !endLocation || !departureTime || !arrivalTime || !status || !trainName) {
-      if (!trainName) {
-        swal('Train Name is required.');
-      }
-      return;
-    }
-
-    // Add validation to check if trainName contains numbers
-    if (/\d/.test(trainName)) {
-      swal("Train Name should not contain numbers.");
-      return;
-    }
-
-
-
+    e.preventDefault();
     try {
-      e.preventDefault();
+      if (!trainName || !trainClassName || !startLocation || !endLocation || !departureTime || !arrivalTime || !status || !trainName) {
+        if (!trainName) {
+          swal('Train Name is required.');
+        }
+        return;
+      }
 
       setStatus("Active");
 

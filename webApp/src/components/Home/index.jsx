@@ -12,7 +12,7 @@ export default function Home() {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
-                    className="h-[91.7vh]"
+                    className="home-background"
                 >
                     <div style={{
                         backgroundColor: "rgba(255, 255, 255, 0.7)",
@@ -21,15 +21,15 @@ export default function Home() {
                         paddingLeft: "10vw",
                         paddingRight: "10vw",
                     }}
-                        className="h-[91.7vh]"
+                        className="home-background"
 
                     >
                         <div>
-                            <h1 className="display-1 text-center " style={{ color: "#7a25a5", fontWeight: 400 }}>Welcome to Train Reservation System</h1>
-                            <p className="lead text-center" style={{ color: "#7a25a5", fontWeight: 500 }}>This is a simple web application to manage train reservations.</p>
+                            <h1 className="headTitle text-center" style={{ color: "#7a25a5", fontWeight: 400 }}>Welcome to Train Reservation System</h1>
+                            <p className="SubTitle text-center" style={{ color: "#7a25a5", fontWeight: 500 }}>This is a simple web application to manage train reservations.</p>
                         </div>
                         <div className="row justify-content-center gap-5 gap-lg-0">
-                            <div className="col-lg-4">
+                            <div className="col-lg-3">
                                 <div className="card">
                                     <div className="card-body">
                                         <h5 className="card-title">User Creation</h5>
@@ -39,17 +39,28 @@ export default function Home() {
                                 </div>
                             </div>
                             {localStorage.getItem("role") === "BACKOFFICE" && (
-                                <div className="col-lg-4">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h5 className="card-title">Train Management</h5>
-                                            <p className="card-text">Manage trains and schedules.</p>
-                                            <Link to="/schedule-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
+                                <>
+                                    <div className="col-lg-3">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">Schedule Management</h5>
+                                                <p className="card-text">Manage Train Schedules.</p>
+                                                <Link to="/train-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Schedule Management</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div className="col-lg-3">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h5 className="card-title">Train Management</h5>
+                                                <p className="card-text">Manage trains and schedules.</p>
+                                                <Link to="/schedule-details" className="btn btn-primary" style={{ backgroundColor: '#7a25a5', color: 'white' }}>Go to Train Management</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
                             )}
-                            <div className="col-lg-4">
+                            <div className="col-lg-3">
                                 <div className="card">
                                     <div className="card-body">
                                         <h5 className="card-title">Train Ticket Reservation</h5>

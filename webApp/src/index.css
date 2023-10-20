@@ -73,3 +73,59 @@ body {
   border-color: #6c2192 !important;
   color: white !important;
 }
+
+.headTitle {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.SubTitle {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.home-background {
+  height: 91.3vh;
+}
+@media (max-width: 992px) {
+  .headTitle {
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .SubTitle {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .home-background {
+    height: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .headTitle {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .SubTitle {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .home-background {
+    height: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .headTitle {
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  .SubTitle {
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
