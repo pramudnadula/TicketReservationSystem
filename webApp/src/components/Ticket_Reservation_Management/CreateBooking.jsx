@@ -59,14 +59,13 @@ export default function CreateBooking() {
     }
   };
 
-  // Function to filter dates to current month
-  const filterDates = (date) => {
-    const today = new Date();
-    return (
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  };
+// Function to filter dates from current date to 30 days after
+const filterDates = (date) => {
+  const today = new Date();
+  const thirtyDaysLater = new Date(today);
+  thirtyDaysLater.setDate(today.getDate() + 30); 
+  return date >= today && date <= thirtyDaysLater;
+};
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
