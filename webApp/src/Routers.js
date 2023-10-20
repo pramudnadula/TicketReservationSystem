@@ -10,6 +10,9 @@ import UpdateSchedule from "./components/Schedule_Management/UpdateSchedule";
 import ReservationList from "./components/Ticket_Reservation_Management/ReservationList";
 import CreateBooking from "./components/Ticket_Reservation_Management/CreateBooking";
 import UpdateBooking from "./components/Ticket_Reservation_Management/UpdateBooking";
+import AddTrain from "./components/Train_Management/AddTrain";
+import UpdateTrain from "./components/Train_Management/UpdateTrain";
+import TrainDetails from "./components/Train_Management/TrainDetails";
 
 
 export default function Routers() {
@@ -24,10 +27,16 @@ export default function Routers() {
       <Route exact path="/user-list" element={<UserList />} />
       <Route exact path="/user-update/:id" element={<UserUpdate />} />
 
-      {/* Train Management */}
+      {/* Schedule Management */}
       <Route exact path="/create-schedule" element={localStorage.getItem("role") === "BACKOFFICE" ? <AddSchedule /> : <Home />} />
       <Route exact path="/schedule-details" element={localStorage.getItem("role") === "BACKOFFICE" ? <ScheduleDetails /> : <Home />} />
       <Route path="/update-schedule/:id" element={localStorage.getItem("role") === "BACKOFFICE" ? <UpdateSchedule /> : <Home />} />
+
+      {/* Train Management */}
+      <Route exact path="/create-train" element={localStorage.getItem("role") === "BACKOFFICE" ? <AddTrain /> : <Home />} />
+      <Route exact path="/train-details" element={localStorage.getItem("role") === "BACKOFFICE" ? <TrainDetails /> : <Home />} />
+      <Route path="/update-train/:id" element={localStorage.getItem("role") === "BACKOFFICE" ? <UpdateTrain /> : <Home />} />
+
 
       {/* Ticket Reservation Management */}
       <Route exact path="/create-booking" element={<CreateBooking />} />

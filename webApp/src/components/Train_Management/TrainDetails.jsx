@@ -4,27 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Layout from "../Partials/Layout";
 import { DELETE, GET } from "../helpers/HTTPHelper";
 
-function formatTimeTo12Hour(time) {
-  const [hourMinute, ampm] = (time || "").split(" ");
 
-  if (!hourMinute) {
-    return ""; // Return an empty string if hourMinute is not provided
-  }
 
-  const [hour, minute] = hourMinute.split(".");
-  const formattedHour = parseInt(hour, 10) % 12 || 12; // Convert 0 to 12
-  const uppercasedAmpm = ampm ? ampm.toUpperCase() : "";
-  return `${formattedHour}.${minute || "00"} ${uppercasedAmpm}`;
-}
-
-export default function ScheduleDetails() {
+export default function TrainDetails() {
   const [trains, setTrains] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const navigate = useNavigate();
 
-  const fetchSchedule = async () => {
+  const fetchTrains = async () => {
     try {
-      const response = await GET("/Schedule");
+      const response = await GET("/Train");
       setTrains(response.data);
     } catch (error) {
       console.error("Error loading train details:", error);
@@ -33,12 +22,12 @@ export default function ScheduleDetails() {
   }
 
   useEffect(() => {
-    fetchSchedule();
+    fetchTrains();
   }, []);
 
   const handleEdit = (id) => {
     console.log(`Edit train with ID ${id}`);
-    navigate(`/update-schedule/${id}`);
+    navigate(`/update-train/${id}`);
   };
 
   const onDelete = async (id) => {
@@ -52,7 +41,7 @@ export default function ScheduleDetails() {
       });
 
       if (willDelete) {
-        const res = await DELETE(`/Schedule/${id}`);
+        const res = await DELETE(`/Train/${id}`);
         console.log(res);
         swal("Deleted Successfully", "Train Details Are Removed", "success");
         fetchTrains();
@@ -68,31 +57,27 @@ export default function ScheduleDetails() {
   const handleSearch = (e) => {
     setSearchKey(e.target.value);
   };
-  console.log(trains);
 
   const filteredTrains = trains.filter(
     (train) =>
-      train?.train?.trainName?.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train?.trainClassName?.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train?.startLocation?.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train?.endLocation?.toLowerCase().includes(searchKey.toLowerCase()) ||
-      train?.status?.toLowerCase().includes(searchKey.toLowerCase())
+      train.trainName.toLowerCase().includes(searchKey.toLowerCase()) 
+      
   );
 
   return (
     <Layout childrenClasses="pt-4 pb-0 ">
       <div className="container mt-12">
         <div className="container-xxl my-2">
-          <Link to="/create-schedule">
+          <Link to="/create-train">
             <button type="button" className="btn btn-primary float-end">
-              Add Schedule
+              Add Train
             </button>
           </Link>
           <br />
         </div>
         <div className="text-center mb-5">
           <h1 className="text-center topic" style={{ color: "#00008b" }}>
-            <b>Schedule Details</b>
+            <b>Train Details</b>
           </h1>
           <div className="shape">
             <svg
@@ -127,13 +112,11 @@ export default function ScheduleDetails() {
           <thead>
             <tr>
               <th scope="col"></th>
+              <th scope="col">Trin ID</th>
               <th scope="col">Train Name</th>
-              <th scope="col">Train Class </th>
-              <th scope="col">Start Location</th>
-              <th scope="col">End Location</th>
-              <th scope="col">Departure Time</th>
-              <th scope="col">Arrival Time</th>
-              <th scope="col">Status</th>
+             
+              
+              
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -141,22 +124,9 @@ export default function ScheduleDetails() {
             {filteredTrains.map((train) => (
               <tr>
                 <th scope="row"></th>
-                <td>{train?.train?.trainName}</td>
-                <td>{train?.trainClassName}</td>
-                <td>{train?.startLocation}</td>
-                <td>{train?.endLocation}</td>
-                <td>{formatTimeTo12Hour(train?.departureTime)}</td>
-                <td>{formatTimeTo12Hour(train?.arrivalTime)}</td>
-                <td
-                  className={
-                    train.status === "Active"
-                      ? "text-success font-weight-bold"
-                      : "text-warning font-weight-bold "
-                  }
-                >
-                  {train.status}
-                </td>
-
+                <td>{train.id}</td>
+                <td>{train.trainName}</td>
+               
                 <td>
                   <button
                     type="button"
