@@ -11,16 +11,18 @@ export default function Home() {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    height: "91.7vh",
-                }}>
+                }}
+                    className="h-[91.7vh]"
+                >
                     <div style={{
                         backgroundColor: "rgba(255, 255, 255, 0.7)",
                         paddingTop: "15vh",
                         paddingBottom: "15vh",
                         paddingLeft: "10vw",
                         paddingRight: "10vw",
-                        height: "91.7vh",
                     }}
+                        className="h-[91.7vh]"
+
                     >
                         <div>
                             <h1 className="display-1 text-center " style={{ color: "#7a25a5", fontWeight: 400 }}>Welcome to Train Reservation System</h1>

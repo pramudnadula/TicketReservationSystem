@@ -15,7 +15,7 @@ export default function Login() {
       console.log("Form Submitted");
       console.log(email, password);
 
-      const rest = await axios.post('https://localhost:7104/api/User/login',
+      const rest = await axios.post('https://localhost:44334/api/User/login',
         {
           email,
           password

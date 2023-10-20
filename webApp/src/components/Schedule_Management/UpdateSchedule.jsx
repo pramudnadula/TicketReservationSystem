@@ -38,7 +38,7 @@ export default function UpdateSchedule() {
   const getSchedule = async () => {
     try {
       const rest = await GET(`/Schedule/${id}`);
-      setTrainName(rest?.data?.trainName);
+      setTrainName(rest?.data?.train?.id);
       setTrainClassName(rest?.data?.trainClassName);
       setStartLocation(rest?.data?.startLocation);
       setEndLocation(rest?.data?.endLocation);
