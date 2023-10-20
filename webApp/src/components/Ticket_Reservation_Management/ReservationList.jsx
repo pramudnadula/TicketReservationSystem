@@ -132,23 +132,6 @@ export default function ReservationList() {
                     >
                       Cancel
                     </button>
-                    {booking.active ? (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-warning mx-1"
-                        onClick={() => handleDeactivate(booking.id)}
-                      >
-                        Deactivate
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-success mx-1"
-                        onClick={() => handleActivate(booking.id)}
-                      >
-                        Summary
-                      </button>
-                    )}
                   </td>
                 </tr>
               ))}
