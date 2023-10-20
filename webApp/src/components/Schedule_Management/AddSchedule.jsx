@@ -17,7 +17,7 @@ export default function AddSchedule() {
   const [endLocation, setEndLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
-  const [status, setStatus] = useState("Deactive");
+  const [status, setStatus] = useState("Active");
   const [trains, setTrains] = useState([]);
 
   const getTrains = async () => {
@@ -42,12 +42,20 @@ export default function AddSchedule() {
       return;
     }
 
+    // Add validation to check if trainName contains numbers
+    if (/\d/.test(trainName)) {
+      swal("Train Name should not contain numbers.");
+      return;
+    }
+
+
+
     try {
       e.preventDefault();
 
-      setStatus("Deactive");
+      setStatus("Active");
 
-      const train = {
+      const schedule = {
         trainName,
         trainClassName,
         startLocation,
@@ -57,9 +65,9 @@ export default function AddSchedule() {
         status,
       };
 
-      const rest = await POST("/Schedule/create", train);
+      const rest = await POST("/Schedule/create", schedule);
       console.log(rest);
-      swal("Your Train Details Succefully Added!");
+      swal("Your Schedule Details Succefully Added!");
       navigate("/schedule-details");
     } catch (error) {
       console.log(error);
@@ -138,6 +146,7 @@ export default function AddSchedule() {
                 id="startLocation"
                 value={startLocation}
                 onChange={(e) => setStartLocation(e.target.value)}
+                required
               >
                 <option value="">Select Start Location</option>
                 {places.map((place) => (
@@ -162,6 +171,7 @@ export default function AddSchedule() {
                 id="endLocation"
                 value={endLocation}
                 onChange={(e) => setEndLocation(e.target.value)}
+                required
               >
                 <option value="">Select End Location</option>
                 {places.map((place) => (
