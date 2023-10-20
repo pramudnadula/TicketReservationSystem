@@ -60,11 +60,13 @@ export default function UpdateBooking() {
 
       const booking = {
         id,
+        nic: localStorage.getItem("userID"),
         fromStation,
         toStation,
         journeyDate,
         noOfTickets,
         ticketclass,
+        scheduleId
       };
 
       // Assuming you have an `id` for the booking you want to update
