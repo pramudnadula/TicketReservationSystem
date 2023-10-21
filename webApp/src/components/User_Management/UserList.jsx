@@ -10,9 +10,13 @@ export default function UserList() {
   const navigate = useNavigate();
   const [searchKey, setSearchKey] = useState("");
   const [filterRole, setFilterRole] = useState("ALL");
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Adjust as per your requirement
 
   const fetchMembers = async () => {
     try {
+      setIsLoading(true);
       const response = await GET("User");
       if (localStorage.getItem("role") === "TRAVELAGENT") {
         const filteredMembers = response.data.filter((member) => member.role === "TRAVELER");
@@ -20,7 +24,7 @@ export default function UserList() {
         return;
       }
       setMembers(response.data);
-
+      setIsLoading(false);
     } catch (error) {
       console.error("Error loading members:", error);
       swal(`${error?.response?.data ? error.response.data : "Failed to load members"}`);
@@ -40,7 +44,7 @@ export default function UserList() {
   // implement delete function in here
   const onDelete = async (id) => {
     try {
-      if (localStorage.getItem("role") === "TRAVELAGENT") {
+      if (localStorage.getItem("role") === "TRAVELER") {
         swal("You are not allowed to delete this user");
         return;
       }
@@ -55,7 +59,7 @@ export default function UserList() {
       if (willDelete) {
         const res = await DELETE(`/User/${id}`);
         console.log(res);
-        swal(`${res?.data?.message ? res?.data?.message : "Delete Failed"}`);
+        swal(`${res?.data ? res?.data : "Delete Failed"}`);
         fetchMembers();
       }
     } catch (error) {
@@ -123,6 +127,16 @@ export default function UserList() {
     filterRole !== "ALL"
       ? filteredUsers.filter((user) => user.role === filterRole)
       : filteredUsers;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredUsersByRole.slice(indexOfFirstItem, indexOfLastItem);
+
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
 
   return (
     <Layout childrenClasses="pt-0 pb-0">
@@ -194,7 +208,12 @@ export default function UserList() {
               </tr>
             </thead>
             <tbody>
-              {filteredUsersByRole.map((member) => (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="8" className="text-center"><div className="spinner-border" role="status"><span className="visually-hidden">Loading...</span></div>
+                  </td>
+                </tr>
+              ) : currentItems.length > 0 ? currentItems.map((member) => (
                 <tr key={member.id}>
                   <th scope="row">{member.username.split("undefined")[0]}</th>
                   <td>{member.email}</td>
@@ -218,7 +237,8 @@ export default function UserList() {
                       type="button"
                       className="btn btn-sm btn-danger mx-1"
                       style={{ width: "90px" }}
-                      onClick={() => onDelete(member.id)}
+                      onClick={() => onDelete(member.nic)}
+                      disabled={localStorage.getItem("userID") === member.nic}
                     >
                       Delete
                     </button>
@@ -231,7 +251,7 @@ export default function UserList() {
                         className="btn btn-sm btn-warning mx-1"
                         style={{ width: "90px" }}
                         onClick={() => handleActivation(member)}
-                      // disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                        disabled={localStorage.getItem("userID") === member.nic || localStorage.getItem("role") === "TRAVELAGENT"}
                       >
                         Deactivate
                       </button>
@@ -241,7 +261,7 @@ export default function UserList() {
                         className="btn btn-sm btn-success mx-1"
                         style={{ width: "90px" }}
                         onClick={() => handleActivation(member)}
-                        disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                        disabled={localStorage.getItem("role") === "TRAVELER" || localStorage.getItem("role") === "TRAVELAGENT"}
                       >
                         Activate
                       </button>
@@ -249,9 +269,26 @@ export default function UserList() {
                   </td>
                   {/* )} */}
                 </tr>
-              ))}
+              )) : (
+                <tr>
+                  <td colSpan="8" className="text-center">
+                    No records found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
+          <nav>
+            <ul className="pagination">
+              {Array.from({ length: Math.ceil(filteredUsersByRole.length / itemsPerPage) }).map((_, index) => (
+                <li key={`page-${index + 1}`} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                  <button type="button" className="page-link" onClick={() => paginate(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </Layout>

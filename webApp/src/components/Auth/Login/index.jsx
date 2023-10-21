@@ -6,7 +6,7 @@ import { toastFail, toastSuccess } from "../../helpers/ToastNotification";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("shamli@gmail.com");
+  const [email, setEmail] = useState("pramud@gmail.com");
   const [password, setPassword] = useState("123456");
 
   const handleSubmit = async (e) => {

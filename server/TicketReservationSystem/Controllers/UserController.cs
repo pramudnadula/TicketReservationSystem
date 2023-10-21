@@ -10,6 +10,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,7 +37,7 @@ namespace TicketReservationSystem.Controllers
         [HttpGet]
         public ActionResult<List<User>> Get()
         {
-            return userService.GetStudents();
+            return userService.GetUsers();
         }
 
         // GET api/<UserController>/5
@@ -65,6 +66,22 @@ namespace TicketReservationSystem.Controllers
             if (existingUser != null)
             {
                 return BadRequest("A user with this NIC already exists");
+            }
+            // const nicRegex12 = /^[0-9]{12}$/;
+            //       const nicRegex9 = /^[0-9]{9}[vV]$/;
+            // Validate NIC format using a regular expression
+            string nicRegex12 = @"^[0-9]{12}$";
+            string nicRegex9 = @"^[0-9]{9}[vV]$";
+            if (!Regex.IsMatch(request.NIC, nicRegex12) && !Regex.IsMatch(request.NIC, nicRegex9))
+            {
+                return BadRequest("NIC must be 12 digits or 9 digits and v = 123456789v or 123456789123");
+            }
+
+            // Check if a user with the provided email already exists
+            existingUser = userService.GetUserByEmail(request.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("A user with this email already exists");
             }
 
             authService.PasswordHashing(request.Password, out byte[] passwordHash, out byte[] passwordKey);
@@ -96,8 +113,10 @@ namespace TicketReservationSystem.Controllers
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    // user role 
                     new Claim(ClaimTypes.Role, user.Role), 
-                    // Add any additional claims if needed
+                    // user nic
+                    new Claim(ClaimTypes.Name, user.NIC)
                 },
                 expires: DateTime.UtcNow.AddHours(2), // Set the expiration time here
                 signingCredentials: credentials
@@ -177,9 +196,41 @@ namespace TicketReservationSystem.Controllers
                 return NotFound($"Student with nic = {nic} not found");
             }
 
-            userService.Remove(user.NIC);
+            // Get the user role from the JWT token claims (if the token is valid)
+            var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            return Ok($"Student with nic = {nic} deleted");
+            // get current user nic
+            var userNicClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            // check if user is trying to delete his own account 
+            if (userNicClaim == nic)
+            {
+                return BadRequest("You cannot delete your own account");
+            }
+
+            // check if user role claim is null or empty
+            if (string.IsNullOrEmpty(userRoleClaim))
+            {
+                return BadRequest("User role not found");
+            }
+
+            // check if user role is backoffice or travelagent
+            if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELAGENT")
+            {
+                // check if user nic foreign key is used in other tables
+                if (userService.IsUserForeignKeyUsed(nic))
+                {
+                    return BadRequest("You cannot delete this user because it is used in other tables");
+                }
+
+                userService.Remove(user.NIC);
+                return Ok($"You have successfully deleted the user with NIC = {nic}");
+            }
+            else
+            {
+                // User does not have permission so return 403 Forbidden code and message
+                return StatusCode(403, "You do not have permission to delete the user");
+            }
         }
 
         // UPDATE active status
@@ -195,6 +246,10 @@ namespace TicketReservationSystem.Controllers
 
             // Get the user role from the JWT token claims (if the token is valid)
             var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+            // get current user nic
+            var userNicClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
 
             if (string.IsNullOrEmpty(userRoleClaim))
             {
@@ -216,8 +271,13 @@ namespace TicketReservationSystem.Controllers
             }
             else
             {
-                if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELAGENT" || userRoleClaim == "TRAVELER")
+                if (userRoleClaim == "BACKOFFICE" || userRoleClaim == "TRAVELER")
                 {
+                    // only backoffice and travel agent cannot deactivate his own account
+                    if (userNicClaim == nic && userRoleClaim == "BACKOFFICE")
+                    {
+                        return BadRequest("You cannot deactivate your own account");
+                    }
                     userService.UpdateActiveStatus(nic, active);
                     return Ok("You have successfully deactivated the user");
                 }

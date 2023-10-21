@@ -10,12 +10,14 @@ namespace TicketReservationSystem.Service
     {
         // veriable for hold mongo colllection
         private readonly IMongoCollection<User> _user;
+        private readonly IMongoCollection<Booking> _booking;
 
         //constructor 
         public UserService(IDatabaseSettings settings, IMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _user = database.GetCollection<User>(settings.UserCollectionName);
+            _booking = database.GetCollection<Booking>(settings.BookingCollectionName);
         }
 
         // create user 
@@ -38,7 +40,7 @@ namespace TicketReservationSystem.Service
         }
 
         // get all user in the collection
-        public List<User> GetStudents()
+        public List<User> GetUsers()
         {
             return _user.Find(user => true).ToList();
         }
@@ -62,6 +64,20 @@ namespace TicketReservationSystem.Service
             var update = Builders<User>.Update.Set("Active", active);
             _user.UpdateOne(filter, update);
         }
-    }
 
+        // check if user nic foreign key is used in other tables
+        public bool IsUserForeignKeyUsed(string nic)
+        {
+            var filter = Builders<Booking>.Filter.Eq("NIC", nic);
+            var result = _booking.Find(filter).FirstOrDefault();
+            if (result != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }

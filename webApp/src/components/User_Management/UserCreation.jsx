@@ -26,6 +26,14 @@ export default function UserCreation() {
         swal("Please Fill All The Fields!");
         return;
       }
+
+      // NIC must be 12 digits or 9 digits and v = 123456789v
+      const nicRegex12 = /^[0-9]{12}$/;
+      const nicRegex9 = /^[0-9]{9}[vV]$/;
+      if (!nicRegex12.test(nic) && !nicRegex9.test(nic)) {
+        swal("NIC must be 12 digits or 9 digits and v = 123456789v or 123456789123");
+        return;
+      }
       const user = {
         username: `${firstName} ${lastName}`,
         email,

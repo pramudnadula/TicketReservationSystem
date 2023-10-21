@@ -10,6 +10,7 @@ export default function InputComponent({
   value,
   inputClasses,
   labelClasses = "text-sm font-normal",
+  disabled = false,
 }) {
   return (
     <div className="form-group">
@@ -30,6 +31,7 @@ export default function InputComponent({
           className={`form-control ${inputClasses || ""}`}
           type={type}
           id={name}
+          disabled={disabled}
         />
         {children && children}
       </div>

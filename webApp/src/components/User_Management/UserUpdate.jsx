@@ -139,6 +139,7 @@ export default function UserUpdate() {
                   placeholder="Email Address"
                   value={email}
                   inputHandler={setEmail}
+                  disabled={localStorage.getItem("userID") === nic}
                 />
               </div>
               {localStorage.getItem("role") === "BACKOFFICE" && (
@@ -152,7 +153,7 @@ export default function UserUpdate() {
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    disabled={localStorage.getItem("role") !== "BACKOFFICE"}
+                    disabled={localStorage.getItem("role") !== "BACKOFFICE" || localStorage.getItem("userID") === nic}
                   >
                     <option value="">Select Role</option>
                     <option value="TRAVELAGENT">Travel Agent</option>
